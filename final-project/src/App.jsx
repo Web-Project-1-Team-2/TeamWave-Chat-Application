@@ -1,8 +1,10 @@
 import './App.css'
 import { Route, Routes } from 'react-router-dom'
 import Btn from './components/Button/Button'
+// import Btn from './components/Button/Button'
 import { AppContext } from './context/authContext'
 import DrawerNav from './components/Drawer/Drawer'
+import Register from './pages/Register/Register'
 
 function App() {
 
@@ -18,7 +20,8 @@ function App() {
         {/* <Route path='/userboard' element={} /> */}
         {/* <Route path='/register' element={} /> */}
       </Routes>
-            <Btn />
+            {/* <Btn /> */}
+            <Register />
     </AppContext.Provider>
   )
 }
