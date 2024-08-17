@@ -3,13 +3,14 @@ import { Route, Routes } from 'react-router-dom'
 import { AppContext } from './context/authContext'
 import SignIn from './pages/LandingPage/LandingPage'
 import { Container } from '@mui/material';
-import Register from './pages/Register/Rgister'
+
 import { useEffect, useState } from 'react'
 import { getUserData } from './services/user.service'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { auth } from './config/firebase-config'
 import NavBar from './components/NavBar/NavBar';
 import UserBoard from './pages/UserBoard/UserBoard';
+import Register from './pages/Register/Register';
 
 function App() {
 

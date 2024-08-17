@@ -17,19 +17,15 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import { AppContext } from "../../context/authContext";
 
-const SnackbarAlert = forwardRef(
-  function SnackbarAlert(props, ref) {
-    return <Alert elevation={6} ref={ref} {...props} />
-  }
-)
+const SnackbarAlert = forwardRef(function SnackbarAlert(props, ref) {
+  return <Alert elevation={6} ref={ref} {...props} />;
+});
 
 function Register() {
   const [view, setView] = useState(false);
   const handleVisibility = () => {
     setView(!view);
   };
-
-
 
   const { setAppState } = useContext(AppContext);
   const navigate = useNavigate();
@@ -52,8 +48,8 @@ function Register() {
 
   const [snackbar, setSnackbar] = useState({
     open: false,
-    message: '',
-    severity: 'success',
+    message: "",
+    severity: "success",
   });
 
   const updateUser = (prop) => (e) => {
@@ -97,8 +93,8 @@ function Register() {
     if (dbUser) {
       setSnackbar({
         open: true,
-        message: 'User already exists!',
-        severity: 'error',
+        message: "User already exists!",
+        severity: "error",
       });
       setUser({
         username: "",
@@ -124,8 +120,8 @@ function Register() {
         });
         setSnackbar({
           open: true,
-          message: 'Registration successful!',
-          severity: 'success',
+          message: "Registration successful!",
+          severity: "success",
         });
         setTimeout(() => {
           navigate(location.state?.from.pathname ?? "/");
@@ -135,7 +131,7 @@ function Register() {
         setSnackbar({
           open: true,
           message: error.message,
-          severity: 'error',
+          severity: "error",
         });
       }
     }
@@ -143,7 +139,12 @@ function Register() {
 
   return (
     <>
-      <Stack spacing={2} alignItems="center" justifyContent="center">
+      <Stack
+        spacing={2}
+        alignItems="center"
+        justifyContent="center"
+        sx={{ height: "100vh" }}
+      >
         <Stack direction="column" spacing={4} sx={{ width: "350px" }}>
           <TextField
             label="Username:"
@@ -230,7 +231,7 @@ function Register() {
         onClose={handleCloseSnackbar}
         anchorOrigin={{
           vertical: "bottom",
-          horizontal: "right"
+          horizontal: "right",
         }}
       >
         <SnackbarAlert
