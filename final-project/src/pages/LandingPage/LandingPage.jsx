@@ -87,6 +87,7 @@ export default function SignIn() {
                         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
                             <TextField
                                 margin="normal"
+                                variant="standard"
                                 required
                                 fullWidth
                                 id="email"
@@ -97,6 +98,7 @@ export default function SignIn() {
                             />
                             <TextField
                                 margin="normal"
+                                variant="standard"
                                 required
                                 fullWidth
                                 name="password"
@@ -104,10 +106,6 @@ export default function SignIn() {
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
-                            />
-                            <FormControlLabel
-                                control={<Checkbox value="remember" color="primary" />}
-                                label="Remember me"
                             />
                             <Button
                                 type="submit"
@@ -118,13 +116,8 @@ export default function SignIn() {
                                 Sign In
                             </Button>
                             <Grid container>
-                                <Grid item xs>
-                                    <Link href="#" variant="body2">
-                                        Forgot password?
-                                    </Link>
-                                </Grid>
                                 <Grid item>
-                                    <Link href="#" variant="body2">
+                                    <Link href="/register" variant="body2">
                                         {"Don't have an account? Sign Up"}
                                     </Link>
                                 </Grid>

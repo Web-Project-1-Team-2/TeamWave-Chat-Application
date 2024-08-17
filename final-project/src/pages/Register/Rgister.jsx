@@ -9,13 +9,13 @@ import {
   } from "@mui/material";
   import { forwardRef, useContext, useState } from "react";
   import { useNavigate, useLocation } from "react-router-dom";
-  import { constrains } from "../../../common/constraints";
-  import { createUser, getUserByUsername } from "../../../services/user.service";
-  import { registerUser } from "../../../services/auth.service";
+  import { constrains } from "../../common/constraints";
+  import { createUser, getUserByUsername } from "../../services/user.service";
+  import { registerUser } from "../../services/auth.service";
   import VisibilityIcon from "@mui/icons-material/Visibility";
   import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
   import HowToRegIcon from "@mui/icons-material/HowToReg";
-  import { AppContext } from "../../../context/authContext";
+  import { AppContext } from "../../context/authContext";
   
   const SnackbarAlert = forwardRef(
     function SnackbarAlert(props, ref) {
