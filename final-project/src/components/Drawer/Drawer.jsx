@@ -1,64 +1,38 @@
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import CssBaseline from '@mui/material/CssBaseline';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+// import { makeStyles } from '@material-ui/core/styles';
+import PermanentDrawer from './PermanentDrawer';
 
-const drawerWidth = 100;
 
-export default function DrawerNav() {
+// const useStyles = makeStyles((theme) => ({
+//     root: {
+//         display: 'flex',
+//     },
+//     content: {
+//         flexGrow: 1,
+//         padding: theme.spacing(3),
+//     },
+// }));
+
+const DrawerNav = () => {
+    // const classes = useStyles();
+
     return (
-        <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
-            <Drawer
-                sx={{
-                    width: drawerWidth,
-                    flexShrink: 0,
-                    '& .MuiDrawer-paper': {
-                        width: drawerWidth,
-                        boxSizing: 'border-box',
-                    },
-                }}
-                variant="permanent"
-                anchor="left"
-            >
-                <Toolbar />
-                <Divider />
-                <List>
-                    {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                        <ListItem key={text} disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                                </ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-                </List>
-                <Divider />
-                <List>
-                    {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                        <ListItem key={text} disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                                </ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-                </List>
-            </Drawer>
-        </Box>
+        <div>
+            <PermanentDrawer />
+            <main>
+                {/* Your main content goes here */}
+                <h1>Main Content</h1>
+                <p>This is where your main content will appear.</p>
+            </main>
+        </div>
     );
-}
+};
+
+export default DrawerNav;
+
+        // <div className={classes.root}>
+        //     <PermanentDrawer />
+        //     <main className={classes.content}>
+        //         <h1>Main Content</h1>
+        //         <p>This is where your main content will appear.</p>
+        //     </main>
+        // </div>
