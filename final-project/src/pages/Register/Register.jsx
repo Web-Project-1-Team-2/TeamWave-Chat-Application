@@ -1,11 +1,13 @@
 import {
+  Alert,
   Button,
   IconButton,
   InputAdornment,
+  Snackbar,
   Stack,
   TextField,
 } from "@mui/material";
-import { useContext, useState } from "react";
+import { forwardRef, useContext, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { constrains } from "../../common/constraints";
 import { createUser, getUserByUsername } from "../../services/user.service";
@@ -20,7 +22,14 @@ function Register() {
   const handleVisibility = () => {
     setView(!view);
   };
-  //   const { setAppState } = useContext(AppContext);
+
+  const SnackbarAlert = forwardRef(
+    function SnackbarAlert(props, ref) {
+      return <Alert elevation={6} ref={6} {...props} />
+    }
+  )
+
+  // const { setAppState } = useContext(AppContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -74,7 +83,17 @@ function Register() {
     const dbUser = await getUserByUsername(user.username);
     console.log(dbUser);
     if (dbUser) {
-      alert("User already exists");
+      <Snackbar
+          open={true}
+          autoHideDuration={3000}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right"
+          }}>
+            <SnackbarAlert severity = "error">
+            User already exists!
+            </SnackbarAlert>
+          </Snackbar>
       setUser({
         username: "",
         firstName: "",
@@ -99,14 +118,33 @@ function Register() {
           user: credential.user,
           userData: null,
         });
-
-        alert("Registration successful, redirecting to home page");
+        <Snackbar
+          open={true}
+          autoHideDuration={3000}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right"
+          }}>
+            <SnackbarAlert severity = "success">
+            Registration successful!
+            </SnackbarAlert>
+          </Snackbar>
         setTimeout(() => {
           navigate(location.state?.from.pathname ?? "/");
         }, 1000);
       } catch (error) {
         console.log(error);
-        alert(error.message);
+        <Snackbar
+          open={true}
+          autoHideDuration={3000}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right"
+          }}>
+            <SnackbarAlert severity = "error">
+            {error.message}
+            </SnackbarAlert>
+          </Snackbar>
       }
     }
   };
@@ -133,8 +171,7 @@ function Register() {
             value={user.firstName}
             onChange={updateUser("firstName")}
             error={errors.firstName}
-            helperText={errors.firstName && 'First Name is required'}
-
+            helperText={errors.firstName && "First Name is required"}
           />
           <TextField
             label="Second Name:"
@@ -143,9 +180,9 @@ function Register() {
             sx={{ width: "200px" }}
             required
             value={user.lastName}
-            onChange={updateUser('lastName')}
+            onChange={updateUser("lastName")}
             error={errors.lastName}
-            helperText={errors.lastName && 'Last Name is required'}
+            helperText={errors.lastName && "Last Name is required"}
           />
         </Stack>
         <TextField
@@ -154,9 +191,9 @@ function Register() {
           size="small"
           required
           value={user.email}
-          onChange={updateUser('email')}
+          onChange={updateUser("email")}
           error={errors.email}
-          helperText={errors.email && 'Email is required'}
+          helperText={errors.email && "Email is required"}
         />
         <TextField
           label="Password:"
@@ -165,9 +202,13 @@ function Register() {
           size="small"
           required
           value={user.password}
-          onChange={updateUser('password')}
+          onChange={updateUser("password")}
           error={errors.password}
-          helperText={errors.password ? 'Password is required' : 'Do not share your password.'}
+          helperText={
+            errors.password
+              ? "Password is required"
+              : "Do not share your password."
+          }
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -180,7 +221,12 @@ function Register() {
         />
       </Stack>
       <Stack>
-        <Button variant="contained" size="medium" endIcon={<HowToRegIcon />}>
+        <Button
+          variant="contained"
+          size="medium"
+          endIcon={<HowToRegIcon />}
+          onClick={register}
+        >
           Register
         </Button>
       </Stack>
