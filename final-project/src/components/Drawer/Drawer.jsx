@@ -27,8 +27,6 @@ export default function DrawerNav() {
     );
 };
 
-export default DrawerNav;
-
         // <div className={classes.root}>
         //     <PermanentDrawer />
         //     <main className={classes.content}>
