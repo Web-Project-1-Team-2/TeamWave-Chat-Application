@@ -9,13 +9,19 @@ import {
 } from "@mui/material";
 import { forwardRef, useContext, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { constrains } from "../../common/constraints";
-import { createUser, getUserByUsername } from "../../services/user.service";
-import { registerUser } from "../../services/auth.service";
+import { constrains } from "../../../common/constraints";
+import { createUser, getUserByUsername } from "../../../services/user.service";
+import { registerUser } from "../../../services/auth.service";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
-import { AppContext } from "../../context/authContext";
+import { AppContext } from "../../../context/authContext";
+
+const SnackbarAlert = forwardRef(
+  function SnackbarAlert(props, ref) {
+    return <Alert elevation={6} ref={ref} {...props} />
+  }
+)
 
 function Register() {
   const [view, setView] = useState(false);
@@ -23,11 +29,7 @@ function Register() {
     setView(!view);
   };
 
-  const SnackbarAlert = forwardRef(
-    function SnackbarAlert(props, ref) {
-      return <Alert elevation={6} ref={6} {...props} />
-    }
-  )
+  
 
   // const { setAppState } = useContext(AppContext);
   const navigate = useNavigate();
@@ -48,6 +50,12 @@ function Register() {
     password: false,
   });
 
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: 'success',
+  });
+
   const updateUser = (prop) => (e) => {
     setUser({
       ...user,
@@ -64,11 +72,11 @@ function Register() {
       firstName:
         !user.firstName ||
         user.firstName.length < constrains.NAMES_MIN_LENGTH ||
-        user.firstName.length > constrains.NAMES_MAX_LENGTHfirstName,
+        user.firstName.length > constrains.NAMES_MAX_LENGTH,
       lastName:
         !user.lastName ||
         user.lastName.length < constrains.NAMES_MIN_LENGTH ||
-        user.lastName.length > constrains.NAMES_MAX_LENGTHfirstNamelastName,
+        user.lastName.length > constrains.NAMES_MAX_LENGTH,
       email: !user.email || user.email.includes("@") === false,
       password: !user.password
         .split("")
@@ -79,21 +87,19 @@ function Register() {
     return !Object.values(newErrors).some((error) => error);
   };
 
+  const handleCloseSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
+
   const register = async () => {
     const dbUser = await getUserByUsername(user.username);
     console.log(dbUser);
     if (dbUser) {
-      <Snackbar
-          open={true}
-          autoHideDuration={3000}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "right"
-          }}>
-            <SnackbarAlert severity = "error">
-            User already exists!
-            </SnackbarAlert>
-          </Snackbar>
+      setSnackbar({
+        open: true,
+        message: 'User already exists!',
+        severity: 'error',
+      });
       setUser({
         username: "",
         firstName: "",
@@ -102,9 +108,7 @@ function Register() {
         password: "",
       });
       return;
-    }
-
-    if (validateForm()) {
+    } else if (validateForm()) {
       try {
         const credential = await registerUser(user.email, user.password);
         await createUser(
@@ -118,38 +122,27 @@ function Register() {
           user: credential.user,
           userData: null,
         });
-        <Snackbar
-          open={true}
-          autoHideDuration={3000}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "right"
-          }}>
-            <SnackbarAlert severity = "success">
-            Registration successful!
-            </SnackbarAlert>
-          </Snackbar>
+        setSnackbar({
+          open: true,
+          message: 'Registration successful!',
+          severity: 'success',
+        });
         setTimeout(() => {
           navigate(location.state?.from.pathname ?? "/");
         }, 1000);
       } catch (error) {
         console.log(error);
-        <Snackbar
-          open={true}
-          autoHideDuration={3000}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "right"
-          }}>
-            <SnackbarAlert severity = "error">
-            {error.message}
-            </SnackbarAlert>
-          </Snackbar>
+        setSnackbar({
+          open: true,
+          message: error.message,
+          severity: 'error',
+        });
       }
     }
   };
 
   return (
+    <>
     <Stack spacing={2} alignItems="center" justifyContent="center">
       <Stack direction="column" spacing={4} sx={{ width: "350px" }}>
         <TextField
@@ -231,6 +224,23 @@ function Register() {
         </Button>
       </Stack>
     </Stack>
+    <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right"
+        }}
+      >
+        <SnackbarAlert
+          onClose={handleCloseSnackbar}
+          severity={snackbar.severity}
+        >
+          {snackbar.message}
+        </SnackbarAlert>
+      </Snackbar>
+    </>
   );
 }
 

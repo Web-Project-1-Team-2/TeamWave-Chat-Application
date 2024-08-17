@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom'
 import Btn from './components/Button/Button'
 import { AppContext } from './context/authContext'
 import DrawerNav from './components/Drawer/Drawer'
-import Register from './pages/Register/Register'
+import Register from './pages/Register/Register/Register'
 import SignIn from './pages/Register/LandingPage/LandingPage'
 import { Container } from '@mui/material';
 

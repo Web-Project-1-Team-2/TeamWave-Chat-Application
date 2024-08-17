@@ -12,9 +12,9 @@ import PermanentDrawer from './PermanentDrawer';
 //     },
 // }));
 
-const DrawerNav = () => {
-    // const classes = useStyles();
+const drawerWidth = 100;
 
+export default function DrawerNav() {
     return (
         <div>
             <PermanentDrawer />
