@@ -47,6 +47,7 @@ function App() {
           {user ? <Route path='/' element={<UserBoard />}/> : <Route path='/' element={<SignIn />}/>}
           <Route path='/register' element={<Register />} />
         </Routes>
+        <SignIn />
       </Container>
     </AppContext.Provider>
   )
