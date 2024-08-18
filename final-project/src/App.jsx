@@ -3,7 +3,6 @@ import { Route, Routes } from 'react-router-dom'
 import { AppContext } from './context/authContext'
 import SignIn from './pages/LandingPage/LandingPage'
 import { Container } from '@mui/material';
-
 import { useEffect, useState } from 'react'
 import { getUserData } from './services/user.service'
 import { useAuthState } from 'react-firebase-hooks/auth'

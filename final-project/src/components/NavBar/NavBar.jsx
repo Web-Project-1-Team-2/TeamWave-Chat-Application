@@ -35,10 +35,10 @@ export default function NavBar() {
                 variant="permanent"
                 anchor="left"
             >
-                <IconButton aria-label="delete" size="string" sx={{marginBottom: '10px'}}>
+                <IconButton aria-label="Profile" size="string" sx={{margin: '0 auto 20px auto'}}>
                     <AccountCircleOutlinedIcon fontSize='large' />
                 </IconButton>
-                <IconButton onClick={logout} aria-label="delete" size="string" sx={{marginBottom: '10px'}}>
+                <IconButton onClick={logout} aria-label="Logout" size="string" sx={{margin: '0 auto 20px auto'}}>
                     <PowerSettingsNewOutlinedIcon fontSize='large' />
                 </IconButton>
             </Drawer>

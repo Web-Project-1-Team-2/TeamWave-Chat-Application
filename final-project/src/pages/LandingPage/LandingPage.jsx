@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../config/firebase-config";
 import { useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -19,6 +17,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { IconButton, InputAdornment } from "@mui/material";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { loginUser } from "../../services/auth.service";
 
 function Copyright(props) {
   return (
@@ -54,7 +53,7 @@ export default function SignIn() {
     const password = data.get("password");
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await loginUser(email, password);
       navigate("/");
     } catch (error) {
       setError(error.message);
