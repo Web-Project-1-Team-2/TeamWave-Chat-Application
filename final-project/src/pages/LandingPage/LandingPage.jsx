@@ -29,11 +29,9 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://your-app-url.com/">
-        STRIFE
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
+      Name
+      {' '}
+      { new Date().getFullYear()}
     </Typography>
   );
 }
