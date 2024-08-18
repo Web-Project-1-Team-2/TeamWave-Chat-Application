@@ -97,8 +97,11 @@ export default function SignIn() {
             <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
               <LockOutlinedIcon />
             </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign in
+            <Typography component="h1" variant="p">
+              Welcome back!
+            </Typography>
+            <Typography component="h2" variant="h6">
+              We're glad to see you again!
             </Typography>
             <Box component="form" onSubmit={login} sx={{ mt: 1 }}>
               <TextField
