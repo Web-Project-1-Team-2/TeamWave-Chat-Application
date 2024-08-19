@@ -6,6 +6,9 @@ import {
   Snackbar,
   Stack,
   TextField,
+  Typography,
+  Box,
+  Avatar,
 } from "@mui/material";
 import { forwardRef, useContext, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -14,6 +17,7 @@ import { createUser, getUserByUsername } from "../../services/user.service";
 import { registerUser } from "../../services/auth.service";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import { AppContext } from "../../context/authContext";
 
@@ -145,7 +149,13 @@ function Register() {
         justifyContent="center"
         sx={{ height: "100vh" }}
       >
-        <Stack direction="column" spacing={4} sx={{ width: "350px" }}>
+        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Register
+        </Typography>
+        <Stack direction="column" spacing={6} sx={{ width: "400px" }}>
           <TextField
             label="Username:"
             variant="standard"
@@ -224,6 +234,12 @@ function Register() {
             Register
           </Button>
         </Stack>
+        <Box sx={{mt: 4, textAlign: "center"}}>
+            <Typography variant="body2" color="text.secondary">
+            {"Copyright © "}
+            WebsiteName {new Date().getFullYear()}
+            </Typography>
+        </Box>
       </Stack>
       <Snackbar
         open={snackbar.open}

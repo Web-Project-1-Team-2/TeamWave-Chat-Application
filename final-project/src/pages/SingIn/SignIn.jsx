@@ -1,11 +1,9 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-// import FormControlLabel from '@mui/material/FormControlLabel';
-// import Checkbox from '@mui/material/Checkbox';
 import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
@@ -15,48 +13,54 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link as RouterLink } from "react-router-dom";
 import { IconButton, InputAdornment } from "@mui/material";
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { loginUser } from "../../services/auth.service";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      Name
-      {' '}
-      { new Date().getFullYear()}
-    </Typography>
-  );
-}
+import { AppContext } from "../../context/authContext";
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-    const [view, setView] = useState(false);
-    const handleVisibility = () => {
-        setView(!view);
-    }; 
-
-  const [setError] = useState("");
+  const { setAppState } = useContext(AppContext);
   const navigate = useNavigate();
 
-  const handleSubmit = async (event) => {
+  const [view, setView] = useState(false);
+  const handleVisibility = () => {
+    setView(!view);
+  };
+
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
+
+  const updateUser = (prop) => (e) => {
+    setUser({
+      ...user,
+      [prop]: e.target.value,
+    });
+  };
+
+  const login = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const email = data.get("email");
-    const password = data.get("password");
+    if (!user.email || user.email.includes("@") === false) {
+      alert("Please enter a valid email");
+      return;
+    }
 
     try {
-      await loginUser(email, password);
-      navigate("/");
+      const credential = await loginUser(user.email, user.password);
+      setAppState({
+        user: credential.user,
+        userData: null,
+      });
+
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
+      alert("Login successful, rederecting");
     } catch (error) {
-      setError(error.message);
+      alert(error.message);
     }
   };
 
@@ -93,21 +97,20 @@ export default function SignIn() {
             <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
               <LockOutlinedIcon />
             </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign in
+            <Typography component="h1" variant="p">
+              Welcome back!
             </Typography>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit}
-              sx={{ mt: 1 }}
-            >
+            <Typography component="h2" variant="h6">
+              We're glad to see you again!
+            </Typography>
+            <Box component="form" onSubmit={login} sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
                 variant="standard"
+                value={user.email}
+                onChange={updateUser("email")}
                 required
                 fullWidth
-                id="email"
                 label="Email Address"
                 name="email"
                 autoComplete="email"
@@ -116,21 +119,22 @@ export default function SignIn() {
               <TextField
                 margin="normal"
                 variant="standard"
+                value={user.password}
+                onChange={updateUser("password")}
                 required
                 fullWidth
                 name="password"
                 label="Password"
                 type={view ? "text" : "password"}
-                id="password"
                 autoComplete="current-password"
                 InputProps={{
-                    endAdornment : (
-                        <InputAdornment position="end">
-                        <IconButton onClick={handleVisibility}>
-                            {view ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                        </IconButton>
-                        </InputAdornment>
-                    )
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={handleVisibility}>
+                        {view ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
                 }}
               />
               <Button
@@ -148,7 +152,15 @@ export default function SignIn() {
                   </Link>
                 </Grid>
               </Grid>
-              <Copyright sx={{ mt: 5 }} />
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                align="center"
+                mt={5}
+              >
+                {"Copyright © "}
+                Name {new Date().getFullYear()}
+              </Typography>
             </Box>
           </Box>
         </Grid>
