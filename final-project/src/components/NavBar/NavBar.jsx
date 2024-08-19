@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import PowerSettingsNewOutlinedIcon from '@mui/icons-material/PowerSettingsNewOutlined';
+import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import { logoutUser } from '../../services/auth.service';
 import { useContext } from 'react';
 import { AppContext } from '../../context/authContext';
@@ -18,6 +19,7 @@ export default function NavBar() {
 
     const logout = async () => {
         await logoutUser();
+        navigate('/');
         setAppState({ user: null, userData: null });
     };
 
@@ -38,11 +40,14 @@ export default function NavBar() {
                 variant="permanent"
                 anchor="left"
             >
-                <IconButton onClick={() => navigate('/profile')} aria-label="Profile" size="string" sx={{margin: '0 auto 20px auto'}}>
-                    <AccountCircleOutlinedIcon fontSize='large' />
+                <IconButton onClick={() => navigate('/createTeam')} aria-label="createTeam" size="large" sx={{ margin: '0 auto 20px auto' }}>
+                    <AddCircleOutlineRoundedIcon fontSize='inherit' />
                 </IconButton>
-                <IconButton onClick={logout} aria-label="Logout" size="string" sx={{margin: '0 auto 20px auto'}}>
-                    <PowerSettingsNewOutlinedIcon fontSize='large' />
+                <IconButton onClick={() => navigate('/profile')} aria-label="Profile" size="large" sx={{ margin: '0 auto 20px auto' }}>
+                    <AccountCircleOutlinedIcon fontSize='inherit' />
+                </IconButton>
+                <IconButton onClick={logout} aria-label="Logout" size="large" sx={{ margin: '0 auto 20px auto' }}>
+                    <PowerSettingsNewOutlinedIcon fontSize='inherit' />
                 </IconButton>
             </Drawer>
         </Box>

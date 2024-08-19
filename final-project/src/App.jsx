@@ -2,7 +2,6 @@ import './App.css'
 import { Route, Routes } from 'react-router-dom'
 import { AppContext } from './context/authContext'
 import SignIn from './pages/SingIn/SignIn'
-// import { Container } from '@mui/material';
 import { useEffect, useState } from 'react'
 import { getUserData } from './services/user.service'
 import { useAuthState } from 'react-firebase-hooks/auth'
@@ -12,6 +11,7 @@ import UserBoard from './pages/UserBoard/UserBoard';
 import Register from './pages/Register/Register';
 import ContentContainer from './components/contentContainer/ContentContainer';
 import Profile from './pages/Profile/Profile'
+import CreateTeam from './pages/CreateTeam/CreateTeam'
 
 function App() {
 
@@ -38,8 +38,6 @@ function App() {
     }, 50)
   }, [user])
 
-  // const width = user ? 'xl' : 'false';
-
   return (
     <AppContext.Provider value={{ ...state, setAppState: setAppState }}>
       {user ? <NavBar /> : (
@@ -53,6 +51,7 @@ function App() {
           <Routes>
             <Route path='/' element={<UserBoard />} />
             <Route path='/profile' element={<Profile />} />
+            <Route path='/createTeam' element={<CreateTeam />} />
           </Routes>
         </ContentContainer>
       }
