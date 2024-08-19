@@ -2,7 +2,7 @@ import './App.css'
 import { Route, Routes } from 'react-router-dom'
 import { AppContext } from './context/authContext'
 import SignIn from './pages/LandingPage/LandingPage'
-import { Container } from '@mui/material';
+// import { Container } from '@mui/material';
 import { useEffect, useState } from 'react'
 import { getUserData } from './services/user.service'
 import { useAuthState } from 'react-firebase-hooks/auth'
@@ -10,6 +10,8 @@ import { auth } from './config/firebase-config'
 import NavBar from './components/NavBar/NavBar';
 import UserBoard from './pages/UserBoard/UserBoard';
 import Register from './pages/Register/Register';
+import ContentContainer from './components/contentContainer/ContentContainer';
+import Profile from './pages/Profile/Profile'
 
 function App() {
 
@@ -36,17 +38,24 @@ function App() {
     }, 50)
   }, [user])
 
-  const width = user ? 'xl' : 'false';
+  // const width = user ? 'xl' : 'false';
 
   return (
     <AppContext.Provider value={{ ...state, setAppState: setAppState }}>
-      {user && <NavBar />}
-      <Container component='main' maxWidth={width}>
+      {user ? <NavBar /> : (
         <Routes>
-          {user ? <Route path='/' element={<UserBoard />}/> : <Route path='/' element={<SignIn />}/>}
+          <Route path='/' element={<SignIn />} />
           <Route path='/register' element={<Register />} />
         </Routes>
-      </Container>
+      )}
+      {user &&
+        <ContentContainer>
+          <Routes>
+            <Route path='/' element={<UserBoard />} />
+            <Route path='/profile' element={<Profile />} />
+          </Routes>
+        </ContentContainer>
+      }
     </AppContext.Provider>
   )
 }

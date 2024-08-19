@@ -7,11 +7,14 @@ import PowerSettingsNewOutlinedIcon from '@mui/icons-material/PowerSettingsNewOu
 import { logoutUser } from '../../services/auth.service';
 import { useContext } from 'react';
 import { AppContext } from '../../context/authContext';
+import { useNavigate } from 'react-router-dom';
 
-const drawerWidth = 80;
+const drawerWidth = 70;
 
 export default function NavBar() {
     const { setAppState } = useContext(AppContext);
+
+    const navigate = useNavigate();
 
     const logout = async () => {
         await logoutUser();
@@ -35,7 +38,7 @@ export default function NavBar() {
                 variant="permanent"
                 anchor="left"
             >
-                <IconButton aria-label="Profile" size="string" sx={{margin: '0 auto 20px auto'}}>
+                <IconButton onClick={() => navigate('/profile')} aria-label="Profile" size="string" sx={{margin: '0 auto 20px auto'}}>
                     <AccountCircleOutlinedIcon fontSize='large' />
                 </IconButton>
                 <IconButton onClick={logout} aria-label="Logout" size="string" sx={{margin: '0 auto 20px auto'}}>
