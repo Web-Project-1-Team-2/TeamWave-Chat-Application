@@ -12,6 +12,7 @@ import Register from './pages/Register/Register';
 import ContentContainer from './components/contentContainer/ContentContainer';
 import Profile from './pages/Profile/Profile'
 import CreateTeam from './pages/CreateTeam/CreateTeam'
+import TeamManagement from './pages/Teams/Teams'
 
 function App() {
 
@@ -51,6 +52,7 @@ function App() {
           <Routes>
             <Route path='/' element={<UserBoard />} />
             <Route path='/profile' element={<Profile />} />
+            <Route path='/createteam' element={<TeamManagement />} />
             <Route path='/createTeam' element={<CreateTeam />} />
           </Routes>
         </ContentContainer>
