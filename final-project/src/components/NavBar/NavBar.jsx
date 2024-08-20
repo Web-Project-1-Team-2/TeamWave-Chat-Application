@@ -1,4 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { useContext, useState } from 'react';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -6,37 +7,43 @@ import IconButton from '@mui/material/IconButton';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import PowerSettingsNewOutlinedIcon from '@mui/icons-material/PowerSettingsNewOutlined';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
-import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import { logoutUser } from '../../services/auth.service';
 import { AppContext } from '../../context/authContext';
 import { useNavigate } from 'react-router-dom';
-import { ref, onValue } from 'firebase/database';
+import { ref } from 'firebase/database';
 import { db } from '../../config/firebase-config';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import MenuIcon from '@mui/icons-material/Menu';
+import { useTheme } from '@mui/material/styles';
+import { useListVals } from 'react-firebase-hooks/database';
+import TeamCard from '../TeamCard/TeamCard';
 
 const drawerWidth = 70;
 
-export default function NavBar() {
-    const { appState, setAppState } = useContext(AppContext);
-    const [userTeams, setUserTeams] = useState([]);
+const openDrawerWidth = 280;
+
+export default function NavBar({ children }) {
+
+    const { userData, setAppState } = useContext(AppContext);
+
+    const theme = useTheme();
+    const [open, setOpen] = useState(false);
+
+    const hideDrawer = open ? openDrawerWidth : drawerWidth;
+
+    const handleDrawerOpen = () => {
+        setOpen(true);
+    };
+
+    const handleDrawerClose = () => {
+        setOpen(false);
+    };
+
+    const [userTeams, teamsLoading] = useListVals(ref(db, 'teams'));
+
     const navigate = useNavigate();
-
-    useEffect(() => {
-        if (appState && appState.userData && appState.userData.uid) {
-            const teamsRef = ref(db, 'teams');
-            const unsubscribe = onValue(teamsRef, (snapshot) => {
-                const teamsData = snapshot.val();
-                if (teamsData) {
-                    const userTeamsList = Object.entries(teamsData)
-                        .filter(([_, team]) => team.members && team.members[appState.userData.uid])
-                        .map(([id, team]) => ({ id, ...team }));
-                    setUserTeams(userTeamsList);
-                }
-            });
-
-            return () => unsubscribe();
-        }
-    }, [appState]);
 
     const logout = async () => {
         await logoutUser();
@@ -45,68 +52,95 @@ export default function NavBar() {
     };
 
     return (
-        <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
-            <Drawer
-                sx={{
-                    width: drawerWidth,
-                    flexShrink: 0,
-                    '& .MuiDrawer-paper': {
+        <div style={{ display: 'flex' }}>
+            <Box sx={{ display: 'flex' }}>
+                <CssBaseline />
+                <Drawer
+                    sx={{
                         width: drawerWidth,
-                        boxSizing: 'border-box',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'space-between',
-                        padding: '20px 0',
-                    },
-                }}
-                variant="permanent"
-                anchor="left"
-            >
-                <Box>
-                    <IconButton
-                        onClick={() => navigate('/createTeam')}
-                        aria-label="createTeam"
-                        size="large"
-                        sx={{ margin: '0 auto 20px auto', display: 'block' }}
-                    >
-                        <AddCircleOutlineRoundedIcon />
+                        flexShrink: 0,
+                        '& .MuiDrawer-paper': {
+                            width: drawerWidth,
+                            boxSizing: 'border-box',
+                            justifyContent: "flex-end",
+                            gap: "10px",
+                        },
+                        position: 'relative',
+                    }}
+                    variant="permanent"
+                    anchor="left"
+                >
+
+                    <IconButton onClick={!open ? handleDrawerOpen : handleDrawerClose} aria-label="open-drawer" size="large" sx={{ margin: '0 auto 20px auto' }}>
+                        <MenuIcon fontSize='inherit' />
+                    </IconButton>
+                    <IconButton onClick={() => navigate('/createTeam')} aria-label="createTeam" size="large" sx={{ margin: '0 auto 20px auto' }}>
+                        <AddCircleOutlineRoundedIcon fontSize='inherit' />
+                    </IconButton>
+                    <IconButton onClick={() => navigate('/profile')} aria-label="profile" size="large" sx={{ margin: '0 auto 20px auto' }}>
+                        <AccountCircleOutlinedIcon fontSize='inherit' />
+                    </IconButton>
+                    <IconButton onClick={() => navigate('/')} aria-label="home" size="large" sx={{ margin: '0 auto 20px auto' }}>
+                        <HomeOutlinedIcon fontSize='inherit' />
+                    </IconButton>
+                    <IconButton onClick={logout} aria-label="logout" size="large" sx={{ margin: '0 auto 20px auto' }}>
+                        <PowerSettingsNewOutlinedIcon fontSize='inherit' />
                     </IconButton>
 
-                    {userTeams.map((team) => (
+                </Drawer>
+                <Drawer
+                    sx={{
+                        width: hideDrawer,
+                        flexShrink: 0,
+                        display: open ? 'block' : 'none',
+                        left: open ? drawerWidth : 0,
+                        '& .MuiDrawer-paper': {
+                            width: hideDrawer,
+                            boxSizing: 'border-box',
+                            zIndex: 1000,
+                            left: drawerWidth,
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                        },
+                    }}
+                    variant="persistent"
+                    anchor="left"
+                    open={open}
+                >
+
+                    <Box style={{ width: '100%', textAlign: '-webkit-center'}} mt={2}>
+                        {userTeams
+                            .filter(team => userData.username in team.members)
+                            .map(team => <TeamCard avatar={team.avatar} teamName={team.name} key={team.id} />)
+                        }
+                    </Box>
+
+
+                    <IconButton onClick={handleDrawerClose} aria-label="close-drawer" size="large" sx={{ margin: '0 auto 20px auto' }}>
+                        {theme.direction === 'ltr' ? <ChevronLeftIcon fontSize='inherit' /> : <ChevronRightIcon fontSize='inherit' />}
+                    </IconButton>
+                </Drawer>
+            </Box >
+            <div style={{ flex: 1 }}>
+                {children}
+            </div>
+        </div>
+    );
+}
+
+NavBar.propTypes = {
+    children: PropTypes.node.isRequired,
+};
+
+{/* {userTeams.map((team) => (
                         <IconButton key={team.id} title={team.name}
                             onClick={() => navigate(`/team/${team.id}`)}
                             aria-label={team.name}
                             size="large"
-                            sx={{ margin: '0 auto 20px auto', display: 'block' }}
+                            sx={{ margin: '0 auto 20px auto' }}
                         >
                             <Avatar src={team.avatar}>
                                 {team.name ? team.name[0].toUpperCase() : 'T'}
                             </Avatar>
                         </IconButton>
-
-                    ))}
-                </Box>
-
-                <Box>
-                    <IconButton
-                        onClick={() => navigate('/profile')}
-                        aria-label="Profile"
-                        size="large"
-                        sx={{ margin: '0 auto 20px auto', display: 'block' }}
-                    >
-                        <AccountCircleOutlinedIcon />
-                    </IconButton>
-                    <IconButton
-                        onClick={logout}
-                        aria-label="Logout"
-                        size="large"
-                        sx={{ margin: '0 auto', display: 'block' }}
-                    >
-                        <PowerSettingsNewOutlinedIcon />
-                    </IconButton>
-                </Box>
-            </Drawer>
-        </Box>
-    );
-}
+                    ))} */}
