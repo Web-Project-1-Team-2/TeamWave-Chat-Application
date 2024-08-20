@@ -1,34 +1,54 @@
-import { useContext, useEffect, useState } from 'react';
-import { AppContext } from '../../context/authContext';
-import { Typography } from '@mui/material';
+import { useContext, useEffect, useState } from "react";
+import { AppContext } from "../../context/authContext";
+import { Avatar, Box, Typography } from "@mui/material";
+import UploadAvatar from "../../components/UploadAvatar/UploadAvatar";
+
 
 const Profile = () => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
-    const { userData } = useContext(AppContext);
-    const [data, setData] = useState({
-        avatar: '',
-        uid: '',
-        username: '',
+  const { userData } = useContext(AppContext);
+  const [data, setData] = useState({
+    avatar: "",
+    uid: "",
+    username: "",
+  });
+
+  useEffect(() => {
+    if (!userData) return;
+    setData({
+      ...userData,
+      avatar: userData.avatar || "",
+      username: userData.username || "",
+      uid: userData.uid || "",
     });
+  }, [userData]);
 
-    useEffect(() => {
-        if (!userData) return;
-        setData({
-            ...userData,
-            avatar: userData.avatar || '',
-            username: userData.username || '',
-            uid: userData.uid || '',
-        });
-    }, [userData]) 
-    
-    return (
-        <div>
-            <Typography variant='h1'>Profile</Typography>
-            <Typography variant='h5'>Username: {data.username}</Typography>
-            <Typography variant='h5'>First Name: {data.firstName}</Typography>
-            <Typography variant='h5'>Last Name: {data.lastName}</Typography>
-        </div>
-    )
-}
+  return (
+    <Box width="100%" display="flex" flexDirection="column" alignItems="center">
+      <Typography variant="h2" mb={3}>
+        Profile
+      </Typography>
 
-export default Profile
+      <Box display="flex" alignItems="center" mb={2}>
+        <Avatar
+          src={data.avatar}
+          sx={{ width: 100, height: 100, mr: 2, cursor: "pointer" }}
+          onClick={handleOpen}
+        >
+          {!data.avatar &&
+            (data.firstName
+              ? data.firstName[0].toUpperCase() + data.lastName[0].toUpperCase()
+              : "A")}
+          
+        </Avatar>
+      </Box>
+      <UploadAvatar open={open} handleClose={handleClose} avatar={data.avatar} username={data.username} uid ={data.uid}/>
+    </Box>
+  );
+};
+
+export default Profile;
+

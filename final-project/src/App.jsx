@@ -41,22 +41,22 @@ function App() {
 
   return (
     <AppContext.Provider value={{ ...state, setAppState: setAppState }}>
-      {user ? <NavBar /> : (
-        <Routes>
-          <Route path='/' element={<SignIn />} />
-          <Route path='/register' element={<Register />} />
-        </Routes>
-      )}
-      {user &&
-        <ContentContainer>
+      {user ?
+        (<NavBar>
+          <ContentContainer>
+            <Routes>
+              <Route path='/' element={<UserBoard />} />
+              <Route path='/profile' element={<Profile />} />
+              <Route path='/createTeam' element={<CreateTeam />} />
+              <Route path="/team/:teamId" element={<TeamPage />} />
+            </Routes>
+          </ContentContainer>
+        </NavBar>) : (
           <Routes>
-            <Route path='/' element={<UserBoard />} />
-            <Route path='/profile' element={<Profile />} />
-            <Route path='/createTeam' element={<CreateTeam />} />
-            <Route path="/team/:teamId" element={<TeamPage />} />
+            <Route path='/' element={<SignIn />} />
+            <Route path='/register' element={<Register />} />
           </Routes>
-        </ContentContainer>
-      }
+        )}
     </AppContext.Provider>
   )
 }
