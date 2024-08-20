@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { ref, onValue } from 'firebase/database';
 import { db } from '../../config/firebase-config';
+import { Typography, Avatar, Stack } from '@mui/material';
+
 
 const TeamPage = () => {
     const { teamId } = useParams();
@@ -15,7 +17,6 @@ const TeamPage = () => {
                 setTeamData(data);
             }
         });
-
         return () => unsubscribe();
     }, [teamId]);
 
@@ -25,8 +26,26 @@ const TeamPage = () => {
 
     return (
         <div>
+
             <h1>{teamData.name}</h1>
-            {/* Here should be the voice/video chat and live chat */}
+            <Stack direction="row" alignItems="center" spacing={2}>
+                <Avatar alt={teamData.name} src={teamData.avatar} sx={{ width: 100, height: 100 }} />
+            </Stack>
+            <h2>Team Members</h2>
+            <Typography component="h1" variant="h5">
+                Owner: {teamData.owner}
+            </Typography>
+            {teamData.owner ? (
+                <ul>
+                    {Object.entries(teamData.members).map(([memberId]) => (
+                        <li key={memberId}>
+                            {memberId}
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <p>No members in this team yet.</p>
+            )}
         </div>
     );
 };
