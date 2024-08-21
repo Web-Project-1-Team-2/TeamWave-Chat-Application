@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -27,6 +27,11 @@ const openDrawerWidth = 280;
 export default function NavBar({ children }) {
 
     const { userData, setAppState } = useContext(AppContext);
+    const [data, setData] = useState({
+        username: '',
+    });
+
+
 
     const theme = useTheme();
     const [open, setOpen] = useState(false);
@@ -44,6 +49,11 @@ export default function NavBar({ children }) {
     const [userTeams, teamsLoading] = useListVals(ref(db, 'teams'));
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!userData) return;
+        setData({ ...userData, username: userData.username });
+    }, [userData]);
 
     const logout = async () => {
         await logoutUser();
@@ -110,8 +120,8 @@ export default function NavBar({ children }) {
 
                     <Box style={{ width: '100%', textAlign: '-webkit-center'}} mt={2}>
                         {userTeams
-                            .filter(team => userData.username in team.members)
-                            .map(team => <TeamCard avatar={team.avatar} teamName={team.name} key={team.id} />)
+                            .filter(team => data.username in team.members)
+                            .map(team => <TeamCard avatar={team.avatar} teamName={team.name} id={team.id} key={team.id} />)
                         }
                     </Box>
 
@@ -131,16 +141,3 @@ export default function NavBar({ children }) {
 NavBar.propTypes = {
     children: PropTypes.node.isRequired,
 };
-
-{/* {userTeams.map((team) => (
-                        <IconButton key={team.id} title={team.name}
-                            onClick={() => navigate(`/team/${team.id}`)}
-                            aria-label={team.name}
-                            size="large"
-                            sx={{ margin: '0 auto 20px auto' }}
-                        >
-                            <Avatar src={team.avatar}>
-                                {team.name ? team.name[0].toUpperCase() : 'T'}
-                            </Avatar>
-                        </IconButton>
-                    ))} */}
