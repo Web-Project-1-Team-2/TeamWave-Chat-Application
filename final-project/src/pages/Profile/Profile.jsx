@@ -27,12 +27,12 @@ const Profile = () => {
   }, [userData]);
 
   return (
-    <Box width="100%" display="flex" flexDirection="column" alignItems="center">
+    <Box width="100%" display="flex" flexDirection="column" alignItems="center" gap={3}>
       <Typography variant="h2" mb={3}>
         Profile
       </Typography>
 
-      <Box display="flex" alignItems="center" mb={2}>
+      <Box display="flex" alignItems="center" mb={2} gap={3}>
         <Avatar
           src={data.avatar}
           sx={{ width: 100, height: 100, mr: 2, cursor: "pointer" }}
@@ -41,9 +41,14 @@ const Profile = () => {
           {!data.avatar &&
             (data.firstName
               ? data.firstName[0].toUpperCase() + data.lastName[0].toUpperCase()
-              : "A")}
-          
+              : "A")}    
         </Avatar>
+        <Box display="flex" flexDirection="column" alignItems="center" gap={3}>
+      <Typography>Username: {data.username}</Typography>
+      <Typography >First Name: {data.firstName}</Typography>
+      <Typography >Last Name: {data.lastName}</Typography>
+      <Typography >Created on: {data.createdOn}</Typography>
+      </Box>
       </Box>
       <UploadAvatar open={open} handleClose={handleClose} avatar={data.avatar} username={data.username} uid ={data.uid}/>
     </Box>
