@@ -67,7 +67,7 @@ const Chat = ({ teamId }) => {
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     placeholder="Type your message"
-                    onKeyPress={handleKeyPress}
+                    onKeyDown={handleKeyPress}
                 />
                 <Button variant="contained" onClick={sendMessage} sx={{ ml: 1 }}>
                     Send
