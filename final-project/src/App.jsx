@@ -36,7 +36,7 @@ function App() {
           const userData = data[Object.keys(data)[0]];
           setAppState({ ...state, userData: userData });
         })
-    }, 50)
+    }, 100)
   }, [user])
 
   return (

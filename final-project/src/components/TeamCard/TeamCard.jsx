@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const ExpandMore = styled((props) => {
-    const { expand, ...other } = props;
+    const { ...other } = props;
     return <IconButton {...other} />;
 })(({ theme, expand }) => ({
     transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
@@ -36,11 +36,11 @@ const TeamCard = ({ avatar, teamName, id }) => {
                 sx={{ width: '100%', height: '100%' }
                 }>
 
-                <Grid item xs={10}>
+                <Grid item xs={10} sx={{width: '100%'}}>
                     <CardActionArea onClick={() => navigate(`/team/${id}`)}>
                         <Grid container
                             direction={'row'}
-                            justifyContent={'center'}
+                            justifyContent={'space-around'}
                             alignItems='center'
                             sx={{ width: '100%', height: '100%' }
                             }>
@@ -69,7 +69,6 @@ const TeamCard = ({ avatar, teamName, id }) => {
                     </ExpandMore>
                 </Grid>
             </Grid>
-
         </Card >
     )
 }

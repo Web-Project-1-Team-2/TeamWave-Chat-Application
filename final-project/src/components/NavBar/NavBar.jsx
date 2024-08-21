@@ -5,7 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import PowerSettingsNewOutlinedIcon from '@mui/icons-material/PowerSettingsNewOutlined';
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import { logoutUser } from '../../services/auth.service';
@@ -24,7 +24,7 @@ const drawerWidth = 70;
 
 const openDrawerWidth = 280;
 
-export default function NavBar({ children }) {
+function NavBar({ children }) {
 
     const { userData, setAppState } = useContext(AppContext);
     const [data, setData] = useState({
@@ -46,7 +46,7 @@ export default function NavBar({ children }) {
         setOpen(false);
     };
 
-    const [userTeams, teamsLoading] = useListVals(ref(db, 'teams'));
+    const [userTeams] = useListVals(ref(db, 'teams'));
 
     const navigate = useNavigate();
 
@@ -72,8 +72,9 @@ export default function NavBar({ children }) {
                         '& .MuiDrawer-paper': {
                             width: drawerWidth,
                             boxSizing: 'border-box',
-                            justifyContent: "flex-end",
+                            justifyContent: "space-between",
                             gap: "10px",
+                            textAlign: 'center',
                         },
                         position: 'relative',
                     }}
@@ -81,22 +82,25 @@ export default function NavBar({ children }) {
                     anchor="left"
                 >
 
-                    <IconButton onClick={!open ? handleDrawerOpen : handleDrawerClose} aria-label="open-drawer" size="large" sx={{ margin: '0 auto 20px auto' }}>
-                        <MenuIcon fontSize='inherit' />
-                    </IconButton>
-                    <IconButton onClick={() => navigate('/createTeam')} aria-label="createTeam" size="large" sx={{ margin: '0 auto 20px auto' }}>
-                        <AddCircleOutlineRoundedIcon fontSize='inherit' />
-                    </IconButton>
-                    <IconButton onClick={() => navigate('/profile')} aria-label="profile" size="large" sx={{ margin: '0 auto 20px auto' }}>
-                        <AccountCircleOutlinedIcon fontSize='inherit' />
-                    </IconButton>
-                    <IconButton onClick={() => navigate('/')} aria-label="home" size="large" sx={{ margin: '0 auto 20px auto' }}>
-                        <HomeOutlinedIcon fontSize='inherit' />
-                    </IconButton>
-                    <IconButton onClick={logout} aria-label="logout" size="large" sx={{ margin: '0 auto 20px auto' }}>
-                        <PowerSettingsNewOutlinedIcon fontSize='inherit' />
-                    </IconButton>
-
+                    <Box>
+                        <IconButton onClick={!open ? handleDrawerOpen : handleDrawerClose} aria-label="open-drawer" size="large" sx={{ margin: '20px auto 20px auto' }}>
+                            <MenuIcon fontSize='inherit' />
+                        </IconButton>
+                        <IconButton onClick={() => navigate('/')} aria-label="home" size="large" sx={{ margin: '0 auto 20px auto' }}>
+                            <HomeOutlinedIcon fontSize='inherit' />
+                        </IconButton>
+                        <IconButton onClick={() => navigate('/createTeam')} aria-label="createTeam" size="large" sx={{ margin: '0 auto 20px auto' }}>
+                            <AddCircleOutlineRoundedIcon fontSize='inherit' />
+                        </IconButton>
+                    </Box>
+                    <Box>
+                        <IconButton onClick={() => navigate('/profile')} aria-label="profile" size="large" sx={{ margin: '0 auto 20px auto' }}>
+                            <AccountCircleOutlinedIcon fontSize='inherit' />
+                        </IconButton>
+                        <IconButton onClick={logout} aria-label="logout" size="large" sx={{ margin: '0 auto 20px auto' }}>
+                            <LogoutRoundedIcon fontSize='inherit' />
+                        </IconButton>
+                    </Box>
                 </Drawer>
                 <Drawer
                     sx={{
@@ -118,13 +122,12 @@ export default function NavBar({ children }) {
                     open={open}
                 >
 
-                    <Box style={{ width: '100%', textAlign: '-webkit-center'}} mt={2}>
+                    <Box style={{ width: '100%', textAlign: '-webkit-center' }} mt={2}>
                         {userTeams
                             .filter(team => data.username in team.members)
                             .map(team => <TeamCard avatar={team.avatar} teamName={team.name} id={team.id} key={team.id} />)
                         }
                     </Box>
-
 
                     <IconButton onClick={handleDrawerClose} aria-label="close-drawer" size="large" sx={{ margin: '0 auto 20px auto' }}>
                         {theme.direction === 'ltr' ? <ChevronLeftIcon fontSize='inherit' /> : <ChevronRightIcon fontSize='inherit' />}
@@ -141,3 +144,5 @@ export default function NavBar({ children }) {
 NavBar.propTypes = {
     children: PropTypes.node.isRequired,
 };
+
+export default NavBar;
