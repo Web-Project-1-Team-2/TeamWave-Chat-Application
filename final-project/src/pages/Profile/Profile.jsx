@@ -3,6 +3,10 @@ import { AppContext } from "../../context/authContext";
 import { Avatar, Box, Typography } from "@mui/material";
 import UploadAvatar from "../../components/UploadAvatar/UploadAvatar";
 import UpdateFirstName from "../../components/UpdateFirstName/UpdateFirstName";
+import UpdateLastName from "../../components/UpdateLastName/UpdateLastName";
+import { ref } from "firebase/storage";
+import { db } from "../../config/firebase-config";
+import {useObjectVal } from 'react-firebase-hooks/database';
 
 
 const Profile = () => {
@@ -14,12 +18,21 @@ const Profile = () => {
   const handleOpenFirstName = () => setOpenFirstName(true);
   const handleCloseFirstName = () => setOpenFirstName(false);
 
+  const [openLastName, setOpenLastName] = useState(false);
+  const handleOpenLastName = () => setOpenLastName(true);
+  const handleCloseLastName = () => setOpenLastName(false);
+
+  
+
   const { userData } = useContext(AppContext);
   const [data, setData] = useState({
     avatar: "",
     uid: "",
     username: "",
+    firstName:"",
+    lastName:"",
   });
+
 
   useEffect(() => {
     if (!userData) return;
@@ -28,15 +41,27 @@ const Profile = () => {
       avatar: userData.avatar || "",
       username: userData.username || "",
       uid: userData.uid || "",
+      firstName:userData.firstName || "",
+      lastName:userData.lastName || "",
     });
   }, [userData]);
 
+
+
   const handleFirstNameUpdate = (newFirstName) => {
+    setData({
+      ...data,
+      firstName: newFirstName,
+    });
+  };
+
+  const handleLastNameUpdate = (newLastName) => {
     setData((prevData) => ({
       ...prevData,
-      firstName: newFirstName,
+      lastName: newLastName,
     }));
   };
+  {console.log(data.firstName)}
 
   return (
     <Box width="100%" display="flex" flexDirection="column" alignItems="center" gap={3}>
@@ -58,7 +83,7 @@ const Profile = () => {
         <Box display="flex" flexDirection="column" alignItems="center" gap={3}>
       <Typography>Username: {data.username}</Typography>
       <Typography sx={{cursor: "pointer", textDecoration: "underline"}} onClick={handleOpenFirstName}>First Name: {data.firstName}</Typography>
-      <Typography >Last Name: {data.lastName}</Typography>
+      <Typography sx={{cursor: "pointer", textDecoration: "underline"}} onClick={handleOpenLastName}>Last Name: {data.lastName}</Typography>
       <Typography >Created on: {data.createdOn}</Typography>
       </Box>
       </Box>
@@ -74,6 +99,14 @@ const Profile = () => {
       username={data.username}
       firstName={data.firstName}
       handleUpdate = {handleFirstNameUpdate}  
+      />
+      <UpdateLastName 
+      open={openLastName} 
+      handleClose={handleCloseLastName}
+      username={data.username}
+      lastName={data.lastName}
+      handleUpdate = {handleLastNameUpdate}
+      
       />
     </Box>
   );

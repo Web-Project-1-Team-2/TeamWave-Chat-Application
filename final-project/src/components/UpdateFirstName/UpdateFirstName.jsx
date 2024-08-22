@@ -22,11 +22,8 @@ function UpdateFirstName({ open, handleClose, username, firstName, handleUpdate 
     if (!firstName) return;
 
     try {
-      if (firstName !== "") {
-        await deleteFirstName(username);
-      }
       await updateFirstName(username, newFirstName);
-      await(handleUpdate(newFirstName));
+      handleUpdate(newFirstName);
       alert("Success");
       handleClose();
     } catch (error) {
@@ -75,9 +72,9 @@ function UpdateFirstName({ open, handleClose, username, firstName, handleUpdate 
 }
 UpdateFirstName.propTypes = {
     open: PropTypes.bool.isRequired,
-    handleClose: PropTypes.bool.isRequired,
+    handleClose: PropTypes.func.isRequired,
     username: PropTypes.string.isRequired,
-    firstName: PropTypes.string.isRequired,
+    firstName: PropTypes.string,
     handleUpdate:PropTypes.func.isRequired,
   };
   

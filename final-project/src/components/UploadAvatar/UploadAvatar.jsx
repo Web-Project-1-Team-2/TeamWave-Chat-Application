@@ -79,7 +79,7 @@ function UploadAvatar({ open, handleClose, avatar, uid, username }) {
 
 UploadAvatar.propTypes = {
   open: PropTypes.bool.isRequired,
-  handleClose: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
   avatar: PropTypes.string.isRequired,
   uid: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
