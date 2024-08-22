@@ -19,10 +19,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useTheme } from '@mui/material/styles';
 import { useListVals } from 'react-firebase-hooks/database';
 import TeamCard from '../TeamCard/TeamCard';
-
-const drawerWidth = 70;
-
-const openDrawerWidth = 280;
+import { sideBarOpenStyles, sideBarStyles } from './NavBarStyling';
 
 function NavBar({ children }) {
 
@@ -31,12 +28,9 @@ function NavBar({ children }) {
         username: '',
     });
 
-
-
     const theme = useTheme();
     const [open, setOpen] = useState(false);
 
-    const hideDrawer = open ? openDrawerWidth : drawerWidth;
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -65,23 +59,7 @@ function NavBar({ children }) {
         <div style={{ display: 'flex' }}>
             <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
-                <Drawer
-                    sx={{
-                        width: drawerWidth,
-                        flexShrink: 0,
-                        '& .MuiDrawer-paper': {
-                            width: drawerWidth,
-                            boxSizing: 'border-box',
-                            justifyContent: "space-between",
-                            gap: "10px",
-                            textAlign: 'center',
-                        },
-                        position: 'relative',
-                    }}
-                    variant="permanent"
-                    anchor="left"
-                >
-
+                <Drawer sx={sideBarStyles} variant="permanent" anchor="left">
                     <Box>
                         <IconButton onClick={!open ? handleDrawerOpen : handleDrawerClose} aria-label="open-drawer" size="large" sx={{ margin: '20px auto 20px auto' }}>
                             <MenuIcon fontSize='inherit' />
@@ -102,26 +80,7 @@ function NavBar({ children }) {
                         </IconButton>
                     </Box>
                 </Drawer>
-                <Drawer
-                    sx={{
-                        width: hideDrawer,
-                        flexShrink: 0,
-                        display: open ? 'block' : 'none',
-                        left: open ? drawerWidth : 0,
-                        '& .MuiDrawer-paper': {
-                            width: hideDrawer,
-                            boxSizing: 'border-box',
-                            zIndex: 1000,
-                            left: drawerWidth,
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                        },
-                    }}
-                    variant="persistent"
-                    anchor="left"
-                    open={open}
-                >
-
+                <Drawer sx={sideBarOpenStyles(open)} variant="persistent" anchor="left" open={open}>
                     <Box style={{ width: '100%', textAlign: '-webkit-center' }} mt={2}>
                         {userTeams
                             .filter(team => data.username in team.members)
