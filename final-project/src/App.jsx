@@ -13,6 +13,7 @@ import ContentContainer from './components/contentContainer/ContentContainer';
 import Profile from './pages/Profile/Profile'
 import CreateTeam from './pages/CreateTeam/CreateTeam'
 import TeamPage from './pages/TeamPage/TeamPage'
+import ChatPage from './pages/ChatPage/ChatPage'
 
 function App() {
 
@@ -49,6 +50,7 @@ function App() {
               <Route path='/profile' element={<Profile />} />
               <Route path='/createTeam' element={<CreateTeam />} />
               <Route path="/team/:teamId" element={<TeamPage />} />
+              <Route path="/team/:teamId/chat" element={<ChatPage />} />
             </Routes>
           </ContentContainer>
         </NavBar>) : (

@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { ref, onValue } from 'firebase/database';
 import { db } from '../../config/firebase-config';
 import { Typography, Avatar, Box, Grid, Button } from '@mui/material';
@@ -11,17 +11,13 @@ import AddTeamMemberModal from '../../components/AddTeamMemberModal/AddTeamMembe
 const TeamPage = () => {
 
     const { userData } = useContext(AppContext);
-
     const { teamId } = useParams();
-
+    const navigate = useNavigate(); // Use useNavigate for navigation
     const [teamData, setTeamData] = useState(null);
-
     const [teamMembersData, setTeamMembers] = useState([]);
     const [teamMembers] = useListVals(ref(db, `users`));
-
     const [addModal, setAddModal] = useState(false);
     const toggleAddModal = () => setAddModal(!addModal);
-
 
     useEffect(() => {
         const teamRef = ref(db, `teams/${teamId}`);
@@ -44,6 +40,11 @@ const TeamPage = () => {
         return <div>Loading...</div>;
     }
 
+    // Function to handle navigation to the chat page
+    const goToChatPage = () => {
+        navigate(`/team/${teamId}/chat`); // Adjust the path as needed
+    };
+
     return (
         <>
             <Box sx={{ flexGrow: 1, padding: 2 }}>
@@ -65,7 +66,7 @@ const TeamPage = () => {
                         <Grid container direction={'column'}>
                             <Grid item xs={12}>
                                 <Grid container mb={2} spacing={2}>
-                                    <Grid item xs={6}>
+                                    <Grid item xs={4}>
                                         {teamData.owner === userData?.username &&
                                             <Button
                                                 variant='contained'
@@ -73,11 +74,20 @@ const TeamPage = () => {
                                                 onClick={toggleAddModal}>Add</Button>
                                         }
                                     </Grid>
-                                    <Grid item xs={6}>
+                                    <Grid item xs={4}>
                                         <Button
                                             variant='contained'
                                             sx={{ width: '100%' }}
                                         >Leave</Button>
+                                    </Grid>
+                                    <Grid item xs={4}>
+                                        <Button
+                                            variant='contained'
+                                            sx={{ width: '100%' }}
+                                            onClick={goToChatPage} // Add the onClick handler for Chat
+                                        >
+                                            Chat
+                                        </Button>
                                     </Grid>
                                 </Grid>
                             </Grid>
@@ -96,13 +106,14 @@ const TeamPage = () => {
                 </Grid>
             </Box>
             {addModal &&
-                <AddTeamMemberModal open={addModal} toggleModal={toggleAddModal} teamId={teamId}/>
+                <AddTeamMemberModal open={addModal} toggleModal={toggleAddModal} teamId={teamId} />
             }
         </>
     );
 };
 
 export default TeamPage;
+
 
 
 {/* <Grid item xs={12} md={6}>
