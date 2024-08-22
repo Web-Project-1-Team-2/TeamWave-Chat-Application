@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { deleteFirstName, updateFirstName } from "../../services/user.service";
+import { updateFirstName } from "../../services/user.service";
 import { Box, Button, Modal, Stack, TextField, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 
@@ -15,15 +15,16 @@ const style = {
   p: 4,
 };
 
-function UpdateFirstName({ open, handleClose, username, firstName, handleUpdate }) {
-  const [newFirstName, setNewFirstName] = useState(null);
+function UpdateFirstName({ open, handleClose, username, firstName }) {
 
-  const UpadateNewFirstName = async () => {
+  const [newFirstName, setNewFirstName] = useState('');
+  
+
+  const updateNewFirstName = async () => {
     if (!firstName) return;
 
     try {
       await updateFirstName(username, newFirstName);
-      handleUpdate(newFirstName);
       alert("Success");
       handleClose();
     } catch (error) {
@@ -42,42 +43,41 @@ function UpdateFirstName({ open, handleClose, username, firstName, handleUpdate 
           Change your First Name
         </Typography>
         <TextField
-        label = "First Name"
-        value={newFirstName}
-        onChange={(e) => {setNewFirstName(e.target.value)}}
+          label="First Name"
+          value={newFirstName}
+          onChange={(e) => { setNewFirstName(e.target.value) }}
         />
-            <Stack direction="row" spacing={4} mt={3}>
-        <Box mt={2}>
-          <Button 
-            variant="contained" 
-            color="primary" 
-            onClick={UpadateNewFirstName}
-          >
-            Save
-          </Button>
-        </Box>
-        <Box mt={2}>
-          <Button 
-            variant="contained" 
-            color="primary" 
-            onClick={handleClose}
-          >
-            Cancel
-          </Button>
-        </Box>
+        <Stack direction="row" spacing={4} mt={3}>
+          <Box mt={2}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={updateNewFirstName}
+            >
+              Save
+            </Button>
+          </Box>
+          <Box mt={2}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleClose}
+            >
+              Cancel
+            </Button>
+          </Box>
         </Stack>
       </Box>
     </Modal>
   );
 }
 UpdateFirstName.propTypes = {
-    open: PropTypes.bool.isRequired,
-    handleClose: PropTypes.func.isRequired,
-    username: PropTypes.string.isRequired,
-    firstName: PropTypes.string,
-    handleUpdate:PropTypes.func.isRequired,
-  };
-  
+  open: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  username: PropTypes.string.isRequired,
+  firstName: PropTypes.string,
+};
+
 
 
 export default UpdateFirstName;

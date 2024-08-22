@@ -4,9 +4,9 @@ import { Avatar, Box, Typography } from "@mui/material";
 import UploadAvatar from "../../components/UploadAvatar/UploadAvatar";
 import UpdateFirstName from "../../components/UpdateFirstName/UpdateFirstName";
 import UpdateLastName from "../../components/UpdateLastName/UpdateLastName";
-import { ref } from "firebase/storage";
+import { useObjectVal } from "react-firebase-hooks/database";
+import { ref } from "firebase/database";
 import { db } from "../../config/firebase-config";
-import {useObjectVal } from 'react-firebase-hooks/database';
 
 
 const Profile = () => {
@@ -22,46 +22,32 @@ const Profile = () => {
   const handleOpenLastName = () => setOpenLastName(true);
   const handleCloseLastName = () => setOpenLastName(false);
 
-  
 
   const { userData } = useContext(AppContext);
-  const [data, setData] = useState({
+  
+  const [profile, loadingProfile] = useObjectVal(ref(db, `users/${userData?.username}`));
+
+
+  const [profileState, setProfileState] = useState({
     avatar: "",
     uid: "",
     username: "",
-    firstName:"",
-    lastName:"",
+    firstName: "",
+    lastName: "",
   });
 
-
   useEffect(() => {
-    if (!userData) return;
-    setData({
-      ...userData,
-      avatar: userData.avatar || "",
-      username: userData.username || "",
-      uid: userData.uid || "",
-      firstName:userData.firstName || "",
-      lastName:userData.lastName || "",
+    if (!profile) return;
+    setProfileState({ 
+      ...profile,
+      avatar: profile.avatar || "",
+      firstName: profile.firstName || "",
+      lastName: profile.lastName || "",
     });
-  }, [userData]);
+  }, [profile]);
 
 
-
-  const handleFirstNameUpdate = (newFirstName) => {
-    setData({
-      ...data,
-      firstName: newFirstName,
-    });
-  };
-
-  const handleLastNameUpdate = (newLastName) => {
-    setData((prevData) => ({
-      ...prevData,
-      lastName: newLastName,
-    }));
-  };
-  {console.log(data.firstName)}
+  if (loadingProfile) return <div>Loading...</div>
 
   return (
     <Box width="100%" display="flex" flexDirection="column" alignItems="center" gap={3}>
@@ -71,42 +57,39 @@ const Profile = () => {
 
       <Box display="flex" alignItems="center" mb={2} gap={3}>
         <Avatar
-          src={data.avatar}
+          src={profileState.avatar}
           sx={{ width: 100, height: 100, mr: 2, cursor: "pointer" }}
           onClick={handleOpen}
         >
-          {!data.avatar &&
-            (data.firstName
-              ? data.firstName[0].toUpperCase() + data.lastName[0].toUpperCase()
-              : "A")}    
+          {!profileState.avatar &&
+            (profileState.firstName
+              ? profileState.firstName[0].toUpperCase() + profileState.lastName[0].toUpperCase()
+              : "A")}
         </Avatar>
         <Box display="flex" flexDirection="column" alignItems="center" gap={3}>
-      <Typography>Username: {data.username}</Typography>
-      <Typography sx={{cursor: "pointer", textDecoration: "underline"}} onClick={handleOpenFirstName}>First Name: {data.firstName}</Typography>
-      <Typography sx={{cursor: "pointer", textDecoration: "underline"}} onClick={handleOpenLastName}>Last Name: {data.lastName}</Typography>
-      <Typography >Created on: {data.createdOn}</Typography>
+          <Typography>Username: {profileState.username}</Typography>
+          <Typography sx={{ cursor: "pointer", textDecoration: "underline" }} onClick={handleOpenFirstName}>First Name: {profileState.firstName}</Typography>
+          <Typography sx={{ cursor: "pointer", textDecoration: "underline" }} onClick={handleOpenLastName}>Last Name: {profileState.lastName}</Typography>
+          <Typography >Created on: {profileState.createdOn}</Typography>
+        </Box>
       </Box>
-      </Box>
-      <UploadAvatar 
-      open={open} 
-      handleClose={handleClose} 
-      avatar={data.avatar} 
-      username={data.username} 
-      uid ={data.uid}/>
-      <UpdateFirstName 
-      open={openFirstName} 
-      handleClose={handleCloseFirstName}
-      username={data.username}
-      firstName={data.firstName}
-      handleUpdate = {handleFirstNameUpdate}  
+      <UploadAvatar
+        open={open}
+        handleClose={handleClose}
+        avatar={profileState.avatar}
+        username={profileState.username}
+        uid={profileState.uid} />
+      <UpdateFirstName
+        open={openFirstName}
+        handleClose={handleCloseFirstName}
+        username={profileState.username}
+        firstName={profileState.firstName}
       />
-      <UpdateLastName 
-      open={openLastName} 
-      handleClose={handleCloseLastName}
-      username={data.username}
-      lastName={data.lastName}
-      handleUpdate = {handleLastNameUpdate}
-      
+      <UpdateLastName
+        open={openLastName}
+        handleClose={handleCloseLastName}
+        username={profileState.username}
+        lastName={profileState.lastName}
       />
     </Box>
   );

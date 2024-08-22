@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { deleteLastName, updateLastName } from "../../services/user.service";
+import { updateLastName } from "../../services/user.service";
 import {
   Box,
   Button,
@@ -22,24 +22,17 @@ const style = {
   p: 4,
 };
 
-function UpdateLastName({
-    lastName,
-    username,
-    handleClose,
-    open,
-    handleUpdate,
-  }) {
-  const [newLastName, setNewLastName] = useState(null);
+function UpdateLastName({lastName, username, handleClose, open}) {
+  console.log(lastName);
 
-  const UpdateNewLastName = async () => {
+  const [newLastName, setNewLastName] = useState('');
+  
+
+  const updateNewLastName = async () => {
     if (!lastName) return;
 
     try {
-      if (lastName !== "") {
-        await deleteLastName(username);
-      }
       await updateLastName(username, newLastName);
-      await handleUpdate(newLastName);
       alert("Success");
       handleClose();
     } catch (error) {
@@ -58,7 +51,7 @@ function UpdateLastName({
           Change your Last Name
         </Typography>
         <TextField
-          label="First Name"
+          label="Last Name"
           value={newLastName}
           onChange={(e) => {
             setNewLastName(e.target.value);
@@ -69,7 +62,7 @@ function UpdateLastName({
             <Button
               variant="contained"
               color="primary"
-              onClick={UpdateNewLastName}
+              onClick={updateNewLastName}
             >
               Save
             </Button>
@@ -90,7 +83,6 @@ UpdateLastName.propTypes = {
   handleClose: PropTypes.func.isRequired,
   username: PropTypes.string.isRequired,
   lastName: PropTypes.string,
-  handleUpdate: PropTypes.func.isRequired,
 };
 
 export default UpdateLastName;
