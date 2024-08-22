@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import { Avatar, Card, CardActionArea, Grid, Typography } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import IconButton from '@mui/material/IconButton';
-import { useNavigate } from 'react-router-dom';
 import { deleteTeamMember } from '../../services/teams.service';
 import { useContext } from 'react';
 import { AppContext } from '../../context/authContext';
@@ -11,17 +10,14 @@ const TeamUserCard = ({ avatar, username, id, owner, teamId }) => {
 
     const { userData } = useContext(AppContext);
 
-    const navigate = useNavigate();
+    const isOwner = userData?.username === owner ? true : false;
 
-    const isOwner = userData.username === owner ? true : false;
-
-    const isUser = userData.username === username ? true : false;
-
-    const handleDeleteMember = async () => {
+    const removeMember = async () => {
         try {
             await deleteTeamMember(username, teamId);
+            alert('Member removed successfully');
         } catch (error) {
-            console.error('Error deleting member:', error);
+            console.log(error);
         }
     };
 
@@ -45,13 +41,13 @@ const TeamUserCard = ({ avatar, username, id, owner, teamId }) => {
                             <Grid item xs={4}  >
                                 <Avatar
                                     src={avatar}
-                                    sx={{ width: '70px', height: '70px', mr: 2 }}
+                                    sx={{ width: '50px', height: '50px', mr: 2 }}
                                 >
                                     {!avatar && (username ? username[0].toUpperCase() : <Typography variant='h6'>T</Typography>)}
                                 </Avatar>
                             </Grid>
                             <Grid item xs={8}>
-                                <Typography variant='h5'>{username}</Typography>
+                                <Typography variant='h6'>{username}</Typography>
                             </Grid>
                         </Grid>
                     </CardActionArea >
@@ -59,7 +55,7 @@ const TeamUserCard = ({ avatar, username, id, owner, teamId }) => {
                 
                 <Grid item xs={2}>
                     {isOwner &&
-                        <IconButton onClick={handleDeleteMember} size="large">
+                        <IconButton onClick={removeMember} size="large">
                             <CloseRoundedIcon fontSize='inherit' />
                         </IconButton>}
                 </Grid>
