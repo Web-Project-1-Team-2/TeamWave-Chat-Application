@@ -2,12 +2,17 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/authContext";
 import { Avatar, Box, Typography } from "@mui/material";
 import UploadAvatar from "../../components/UploadAvatar/UploadAvatar";
+import UpdateFirstName from "../../components/UpdateFirstName/UpdateFirstName";
 
 
 const Profile = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const [openFirstName, setOpenFirstName] = useState(false);
+  const handleOpenFirstName = () => setOpenFirstName(true);
+  const handleCloseFirstName = () => setOpenFirstName(false);
 
   const { userData } = useContext(AppContext);
   const [data, setData] = useState({
@@ -25,6 +30,13 @@ const Profile = () => {
       uid: userData.uid || "",
     });
   }, [userData]);
+
+  const handleFirstNameUpdate = (newFirstName) => {
+    setData((prevData) => ({
+      ...prevData,
+      firstName: newFirstName,
+    }));
+  };
 
   return (
     <Box width="100%" display="flex" flexDirection="column" alignItems="center" gap={3}>
@@ -45,12 +57,24 @@ const Profile = () => {
         </Avatar>
         <Box display="flex" flexDirection="column" alignItems="center" gap={3}>
       <Typography>Username: {data.username}</Typography>
-      <Typography >First Name: {data.firstName}</Typography>
+      <Typography sx={{cursor: "pointer", textDecoration: "underline"}} onClick={handleOpenFirstName}>First Name: {data.firstName}</Typography>
       <Typography >Last Name: {data.lastName}</Typography>
       <Typography >Created on: {data.createdOn}</Typography>
       </Box>
       </Box>
-      <UploadAvatar open={open} handleClose={handleClose} avatar={data.avatar} username={data.username} uid ={data.uid}/>
+      <UploadAvatar 
+      open={open} 
+      handleClose={handleClose} 
+      avatar={data.avatar} 
+      username={data.username} 
+      uid ={data.uid}/>
+      <UpdateFirstName 
+      open={openFirstName} 
+      handleClose={handleCloseFirstName}
+      username={data.username}
+      firstName={data.firstName}
+      handleUpdate = {handleFirstNameUpdate}  
+      />
     </Box>
   );
 };
