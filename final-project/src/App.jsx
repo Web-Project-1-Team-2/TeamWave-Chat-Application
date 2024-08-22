@@ -14,6 +14,7 @@ import Profile from './pages/Profile/Profile'
 import CreateTeam from './pages/CreateTeam/CreateTeam'
 import TeamPage from './pages/TeamPage/TeamPage'
 
+
 function App() {
 
   const [state, setAppState] = useState({
@@ -49,6 +50,7 @@ function App() {
               <Route path='/profile' element={<Profile />} />
               <Route path='/createTeam' element={<CreateTeam />} />
               <Route path="/team/:teamId" element={<TeamPage />} />
+
             </Routes>
           </ContentContainer>
         </NavBar>) : (
