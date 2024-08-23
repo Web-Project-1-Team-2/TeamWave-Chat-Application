@@ -9,18 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import PropTypes from "prop-types";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+import { styleModal } from "../UpdateFirstName/UpdateFirstNameStyling";
 
 function UpdateLastName({lastName, username, handleClose, open}) {
   console.log(lastName);
@@ -46,7 +35,7 @@ function UpdateLastName({lastName, username, handleClose, open}) {
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
     >
-      <Box sx={style}>
+      <Box sx={styleModal}>
         <Typography id="modal-modal-title" variant="h6">
           Change your Last Name
         </Typography>

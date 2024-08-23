@@ -21,20 +21,12 @@ export const setImageUrl = async (username, url) => {
     return await set(ref(db, `users/${username}/avatar`), url);
 }
 
-export const deleteFirstName = async (username) => {
-    const userRef = ref(db, `users/${username}`);
-    await update(userRef, {firstName: ''});
-}
 
 export const updateFirstName = async (username, newFirstName) => {
     const userRef = ref(db , `users/${username}`);
     await update(userRef, {firstName: newFirstName});
 }
 
-export const deleteLastName = async (username) => {
-    const userRef = ref(db, `users/${username}`);
-    await update(userRef, {lastName: ''});
-}
 
 export const updateLastName = async (username, newLastName) => {
     const userRef = ref(db , `users/${username}`);

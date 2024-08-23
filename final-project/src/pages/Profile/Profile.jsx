@@ -2,11 +2,11 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/authContext";
 import { Avatar, Box, Typography } from "@mui/material";
 import UploadAvatar from "../../components/UploadAvatar/UploadAvatar";
-import UpdateFirstName from "../../components/UpdateFirstName/UpdateFirstName";
 import UpdateLastName from "../../components/UpdateLastName/UpdateLastName";
 import { useObjectVal } from "react-firebase-hooks/database";
 import { ref } from "firebase/database";
 import { db } from "../../config/firebase-config";
+import UpdateFirstName from "../../components/UpdateFirstName/UpdateFirstName";
 
 
 const Profile = () => {
