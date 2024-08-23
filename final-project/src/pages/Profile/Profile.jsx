@@ -1,15 +1,27 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/authContext";
-import { Avatar, Box, Typography } from "@mui/material";
+import { Avatar, Box, Stack, Typography } from "@mui/material";
 import UploadAvatar from "../../components/UploadAvatar/UploadAvatar";
 import UpdateLastName from "../../components/UpdateLastName/UpdateLastName";
-import { useObjectVal } from "react-firebase-hooks/database";
+import { useListVals, useObjectVal } from "react-firebase-hooks/database";
 import { ref } from "firebase/database";
 import { db } from "../../config/firebase-config";
 import UpdateFirstName from "../../components/UpdateFirstName/UpdateFirstName";
-
+import EditIcon from "@mui/icons-material/Edit";
+import TeamOwnerCard from "../../components/TeamOwnerCard/TeamOwnerCard";
 
 const Profile = () => {
+  const {userData} = useContext(AppContext);
+  const [teams] = useListVals(ref(db, `teams`));
+
+  const [myTeams, setMyTeams] = useState([]);
+
+  useEffect(() => {
+    if (!teams || !userData) return;
+    const ownerTeams = teams.filter((team) => team.owner === userData.username);
+    setMyTeams(ownerTeams);
+  },[teams,userData]);
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -22,11 +34,11 @@ const Profile = () => {
   const handleOpenLastName = () => setOpenLastName(true);
   const handleCloseLastName = () => setOpenLastName(false);
 
+ 
 
-  const { userData } = useContext(AppContext);
-  
-  const [profile, loadingProfile] = useObjectVal(ref(db, `users/${userData?.username}`));
-
+  const [profile, loadingProfile] = useObjectVal(
+    ref(db, `users/${userData?.username}`)
+  );
 
   const [profileState, setProfileState] = useState({
     avatar: "",
@@ -38,7 +50,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (!profile) return;
-    setProfileState({ 
+    setProfileState({
       ...profile,
       avatar: profile.avatar || "",
       firstName: profile.firstName || "",
@@ -46,31 +58,47 @@ const Profile = () => {
     });
   }, [profile]);
 
-
-  if (loadingProfile) return <div>Loading...</div>
+  if (loadingProfile) return <div>Loading...</div>;
 
   return (
-    <Box width="100%" display="flex" flexDirection="column" alignItems="center" gap={3}>
-      <Typography variant="h2" mb={3}>
-        Profile
-      </Typography>
+      <Box width="100%" textAlign="center">
+        <Typography variant="h3" mb={3}> Profile</Typography>
 
+    <Stack direction="row" gap={3}>
+    <Box
+      width="100%"
+      display="flex"
+      flexDirection="column"
+      alignItems="left"
+      gap={3}
+    >
       <Box display="flex" alignItems="center" mb={2} gap={3}>
         <Avatar
           src={profileState.avatar}
-          sx={{ width: 100, height: 100, mr: 2, cursor: "pointer" }}
+          sx={{ width: 150, height: 150, mr: 2, cursor: "pointer" }}
           onClick={handleOpen}
         >
           {!profileState.avatar &&
             (profileState.firstName
-              ? profileState.firstName[0].toUpperCase() + profileState.lastName[0].toUpperCase()
+              ? profileState.firstName[0].toUpperCase() +
+                profileState.lastName[0].toUpperCase()
               : "A")}
         </Avatar>
-        <Box display="flex" flexDirection="column" alignItems="center" gap={3}>
+        <Box display="flex" flexDirection="column" alignItems="left" gap={3}>
           <Typography>Username: {profileState.username}</Typography>
-          <Typography sx={{ cursor: "pointer", textDecoration: "underline" }} onClick={handleOpenFirstName}>First Name: {profileState.firstName}</Typography>
-          <Typography sx={{ cursor: "pointer", textDecoration: "underline" }} onClick={handleOpenLastName}>Last Name: {profileState.lastName}</Typography>
-          <Typography >Created on: {profileState.createdOn}</Typography>
+          <Stack>
+            <Typography>
+              First Name: {profileState.firstName}
+              <EditIcon cursor="pointer" onClick={handleOpenFirstName} />
+            </Typography>
+          </Stack>
+          <Stack spacing={2}>
+            <Typography>
+              Last Name: {profileState.lastName}
+              <EditIcon cursor="pointer" onClick={handleOpenLastName} />
+            </Typography>
+          </Stack>
+          <Typography>Created on: {profileState.createdOn}</Typography>
         </Box>
       </Box>
       <UploadAvatar
@@ -78,7 +106,8 @@ const Profile = () => {
         handleClose={handleClose}
         avatar={profileState.avatar}
         username={profileState.username}
-        uid={profileState.uid} />
+        uid={profileState.uid}
+      />
       <UpdateFirstName
         open={openFirstName}
         handleClose={handleCloseFirstName}
@@ -92,8 +121,21 @@ const Profile = () => {
         lastName={profileState.lastName}
       />
     </Box>
+    <Stack direction="column" spacing={2} width="100%">
+    <Box width="100%" display="flex" alignContent="center">
+      <Typography variant="h5">My teams:</Typography>
+    </Box>
+    <Box display="flex" sx={{height: "400px", overflow: "auto", width: "350px",} }>
+              {myTeams.map(team => <TeamOwnerCard 
+              key={team.key}
+              avatar={team.avatar}
+              teamName={team.name}
+              />)}
+    </Box>
+    </Stack>
+    </Stack>
+    </Box>
   );
 };
 
 export default Profile;
-
