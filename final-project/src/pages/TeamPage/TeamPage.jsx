@@ -13,6 +13,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import RemoveCircleOutlinedIcon from '@mui/icons-material/RemoveCircleOutlined';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import { iconStyling } from './TeamPageStyle';
+import EditTeamModal from '../../components/EditTeamModal/EditTeamModal';
+import AddChatModal from '../../components/AddChannelModal/AddChannelModal';
 
 const TeamPage = () => {
 
@@ -27,7 +29,12 @@ const TeamPage = () => {
 
     const [addModal, setAddModal] = useState(false);
     const toggleAddModal = () => setAddModal(!addModal);
-    console.log(addModal);
+
+    const [editModal, setEditModal] = useState(false);
+    const toggleEditModal = () => setEditModal(!editModal);
+
+    const [addChannelModal, setAddChannelModal] = useState(false);
+    const toggleAddChannelModal = () => setAddChannelModal(!addChannelModal);
     
 
     useEffect(() => {
@@ -73,7 +80,7 @@ const TeamPage = () => {
                             <Grid item xs={7}>
                                 <Grid container direction={'column'} spacing={2}>
                                     <Grid item xs={12}>
-                                        <IconButton sx={iconStyling}>
+                                        <IconButton sx={iconStyling} onClick={toggleAddChannelModal}>
                                             <AddCommentIcon fontSize='inherit' />
                                         </IconButton>
                                     </Grid>
@@ -86,7 +93,7 @@ const TeamPage = () => {
                                     }
                                     {userData?.username === teamData.owner &&
                                         <Grid item xs={12}>
-                                            <IconButton sx={iconStyling}>
+                                            <IconButton sx={iconStyling} onClick={toggleEditModal}>
                                                 <EditIcon fontSize='inherit' />
                                             </IconButton>
                                         </Grid>
@@ -126,6 +133,12 @@ const TeamPage = () => {
             </Box>
             {addModal &&
                 <AddTeamMemberModal open={addModal} toggleModal={toggleAddModal} teamId={teamId} />
+            }
+            {editModal &&
+                <EditTeamModal open={editModal} toggleModal={toggleEditModal} teamId={teamId} />
+            }
+            {addChannelModal &&
+                <AddChatModal open={addChannelModal} toggleModal={toggleAddChannelModal} teamId={teamId} />
             }
         </>
     );

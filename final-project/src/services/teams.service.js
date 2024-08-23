@@ -35,3 +35,11 @@ export const deleteTeamMember = async (memberName, teamId) => {
     await remove(teamMember);
     await remove(memberRef);
 };
+
+export const changeTeamName = async (teamId, newName) => {
+    await update(ref(db, `teams/${teamId}`), { name: newName });
+}
+
+export const changeTeamOwner = async (teamId, newOwner) => {
+    await update(ref(db, `teams/${teamId}`), { owner: newOwner });
+}

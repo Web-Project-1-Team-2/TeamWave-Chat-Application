@@ -1,13 +1,18 @@
-import { Avatar, Card, CardActionArea, Grid, Typography } from '@mui/material';
+import { Avatar, Card, CardActionArea, Collapse, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import IconButton from '@mui/material/IconButton';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AppContext } from '../../context/authContext';
+import { useListVals } from 'react-firebase-hooks/database';
+import { ref } from 'firebase/database';
+import { db } from '../../config/firebase-config';
+import ChannelCard from '../ChannelCard/ChannelCard';
 
 const ExpandMore = styled((props) => {
-    const { ...other } = props;
+    const { expand, ...other } = props;
     return <IconButton {...other} />;
 })(({ theme, expand }) => ({
     transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
@@ -19,12 +24,25 @@ const ExpandMore = styled((props) => {
 
 const TeamCard = ({ avatar, teamName, id }) => {
 
-    const [expanded, setExpanded] = useState(false);
+    const { userData } = useContext(AppContext);
+    const [channels] = useListVals(ref(db, 'channels'));
+
+    const [teamChannels, setTeamChannels] = useState([]);
+
     const navigate = useNavigate();
 
+    const [expanded, setExpanded] = useState(false);
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
+
+    useEffect(() => {
+        if (!userData) return;
+        if (!channels) return;
+        const userChannels = channels.filter(channel => 
+            channel.teamId === id && channel.members[userData.username] && 'id' in channel);
+        setTeamChannels(userChannels);
+    }, [userData, channels]);
 
     return (
         <Card sx={{ margin: '0 0 16px 0', width: '90%', minHeight: 60, p: 1 }}>
@@ -36,7 +54,7 @@ const TeamCard = ({ avatar, teamName, id }) => {
                 sx={{ width: '100%', height: '100%' }
                 }>
 
-                <Grid item xs={10} sx={{width: '100%'}}>
+                <Grid item xs={10} sx={{ width: '100%' }}>
                     <CardActionArea onClick={() => navigate(`/team/${id}`)}>
                         <Grid container
                             direction={'row'}
@@ -69,6 +87,14 @@ const TeamCard = ({ avatar, teamName, id }) => {
                     </ExpandMore>
                 </Grid>
             </Grid>
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+                {teamChannels.map(channel =>
+                    <ChannelCard
+                        key={channel.id}
+                        channelName={channel.name}
+                        channelId={channel.id} />)
+                }
+            </Collapse>
         </Card >
     )
 }
