@@ -17,7 +17,7 @@ const Chats = ({ id }) => {
 
     const [newMessage, setNewMessage] = useState({
         text: '',
-        author: userData.username,
+        author: userData?.username,
         authorAvatar: userData.avatar,
 
     });
@@ -28,6 +28,7 @@ const Chats = ({ id }) => {
         if (messagesEndRef.current) {
             messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
         }
+        // messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
     useEffect(() => {
@@ -79,10 +80,10 @@ const Chats = ({ id }) => {
                 sx={{
                     height: '65vh',
                     margin: '16px 0',
-                    width: '95%',
+                    width: '100%',
                     overflowY: 'auto',
                     wordWrap: 'break-word',
-                    border: '2px solid black',
+                    // border: '2px solid black',
                     borderRadius: '5px',
                 }}>
                 <Grid container
@@ -90,7 +91,7 @@ const Chats = ({ id }) => {
                     justifyContent={'flex-end'}
                     alignContent={'flex-end'}
                     spacing={1}
-                    >
+                >
                     {messagesData.length > 0 ? messagesData.map(message => {
                         return (
                             <Grid container item xs={12} key={message.id} justifyContent={userData.username === message.author ? 'flex-end' : 'flex-start'}>
@@ -104,6 +105,7 @@ const Chats = ({ id }) => {
                             </Grid>
                         )
                     }) : <Typography variant='body1'>No messages yet</Typography>}
+                    <div ref={messagesEndRef}></div>
                 </Grid>
             </Box>
             <Grid container justifyContent='center' spacing={2}>
@@ -116,12 +118,11 @@ const Chats = ({ id }) => {
                         sx={{ width: '100%' }}
                     />
                 </Grid>
-                <Grid item xs={2}>
-                    <Button variant={'contained'} onClick={sendMessage}>Send</Button>
+                <Grid item xs={2} >
+                    <Button variant={'contained'} size='large' onClick={sendMessage}>Send</Button>
                 </Grid>
             </Grid>
         </Box>
-
     )
 }
 

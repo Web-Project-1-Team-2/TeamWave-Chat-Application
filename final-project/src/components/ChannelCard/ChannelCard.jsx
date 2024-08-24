@@ -8,10 +8,10 @@ const ChannelCard = ({ channelName, channelId }) => {
     const navigate = useNavigate();
 
     return (
-        <Card sx={{mt: 1}}>
+        <Card sx={{mt: 1, p: 0.5}}>
             <CardActionArea onClick={() => navigate(`/channel/${channelId}`)}>
-                <Grid container>
-                    <Grid item xs={3}>
+                <Grid container alignItems={'center'}>
+                    <Grid container item xs={3} alignItems={'center'} justifyContent={'center'} >
                         <LockOpenOutlinedIcon />
                     </Grid>
                     <Grid item xs={9}>
