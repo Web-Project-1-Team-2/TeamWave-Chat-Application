@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { deleteImage, uploadImage } from "../../services/storage.service";
 import { setImageUrl } from "../../services/user.service";
+import { notifySuccess } from "../../services/notification.service";
 
 const style = {
   position: "absolute",
@@ -28,7 +29,7 @@ function UploadAvatar({ open, handleClose, avatar, uid, username }) {
       }
       const uploadedImage = await uploadImage(image, uid, username);
       await setImageUrl(username, uploadedImage);
-      alert("Success");
+      notifySuccess("Avatar uploaded successfully.")
       handleClose();
     } catch (error) {
       alert(error.message);

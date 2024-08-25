@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/authContext";
-import { Avatar, Box, Stack, Typography } from "@mui/material";
+import { Avatar, Box, IconButton, Stack, Typography } from "@mui/material";
 import UploadAvatar from "../../components/UploadAvatar/UploadAvatar";
 import UpdateLastName from "../../components/UpdateLastName/UpdateLastName";
 import { useListVals, useObjectVal } from "react-firebase-hooks/database";
@@ -72,7 +72,7 @@ const Profile = () => {
       alignItems="left"
       gap={3}
     >
-      <Box display="flex" alignItems="center" mb={2} gap={3}>
+      <Box display="flex" alignItems="left" mb={2} gap={3}>
         <Avatar
           src={profileState.avatar}
           sx={{ width: 150, height: 150, mr: 2, cursor: "pointer" }}
@@ -84,18 +84,23 @@ const Profile = () => {
                 profileState.lastName[0].toUpperCase()
               : "A")}
         </Avatar>
-        <Box display="flex" flexDirection="column" alignItems="left" gap={3}>
+        
+        <Box display="flex" flexDirection="column" alignItems="flex-start" gap={3}>
           <Typography>Username: {profileState.username}</Typography>
           <Stack>
             <Typography>
               First Name: {profileState.firstName}
+              <IconButton>
               <EditIcon cursor="pointer" onClick={handleOpenFirstName} />
+              </IconButton>
             </Typography>
           </Stack>
-          <Stack spacing={2}>
+          <Stack >
             <Typography>
               Last Name: {profileState.lastName}
+              <IconButton>
               <EditIcon cursor="pointer" onClick={handleOpenLastName} />
+              </IconButton>
             </Typography>
           </Stack>
           <Typography>Created on: {profileState.createdOn}</Typography>
@@ -121,11 +126,11 @@ const Profile = () => {
         lastName={profileState.lastName}
       />
     </Box>
-    <Stack direction="column" spacing={2} width="100%">
-    <Box width="100%" display="flex" alignContent="center">
-      <Typography variant="h5">My teams:</Typography>
+    <Stack direction="column" spacing={2} width="100%" alignItems="center">
+    <Box width="100%" display="flex" textAlign="center" justifyContent="center">
+      <Typography variant="h5" >My teams:</Typography>
     </Box>
-    <Box display="flex" sx={{height: "400px", overflow: "auto", width: "350px",} }>
+    <Box display="flex" flexDirection="column" sx={{height: "400px", overflow: "auto", width: "350px",} }>
               {myTeams.map(team => <TeamOwnerCard 
               key={team.key}
               avatar={team.avatar}
