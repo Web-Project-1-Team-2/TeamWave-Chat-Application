@@ -1,14 +1,19 @@
 import { useState } from "react";
 import { updateFirstName } from "../../services/user.service";
-import { Box, Button, Modal, Stack, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Modal,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import PropTypes from "prop-types";
 import { styleModal } from "./UpdateFirstNameStyling";
 
-
 function UpdateFirstName({ open, handleClose, username, firstName }) {
+  const [newFirstName, setNewFirstName] = useState("");
 
-  const [newFirstName, setNewFirstName] = useState('');
-  
   const updateNewFirstName = async () => {
     if (!firstName) return;
 
@@ -34,7 +39,9 @@ function UpdateFirstName({ open, handleClose, username, firstName }) {
         <TextField
           label="First Name"
           value={newFirstName}
-          onChange={(e) => { setNewFirstName(e.target.value) }}
+          onChange={(e) => {
+            setNewFirstName(e.target.value);
+          }}
         />
         <Stack direction="row" spacing={4} mt={3}>
           <Box mt={2}>
@@ -47,11 +54,7 @@ function UpdateFirstName({ open, handleClose, username, firstName }) {
             </Button>
           </Box>
           <Box mt={2}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleClose}
-            >
+            <Button variant="contained" color="primary" onClick={handleClose}>
               Cancel
             </Button>
           </Box>
@@ -66,7 +69,5 @@ UpdateFirstName.propTypes = {
   username: PropTypes.string.isRequired,
   firstName: PropTypes.string,
 };
-
-
 
 export default UpdateFirstName;

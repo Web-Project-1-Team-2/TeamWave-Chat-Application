@@ -11,7 +11,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import TeamOwnerCard from "../../components/TeamOwnerCard/TeamOwnerCard";
 
 const Profile = () => {
-  const {userData} = useContext(AppContext);
+  const { userData } = useContext(AppContext);
   const [teams] = useListVals(ref(db, `teams`));
 
   const [myTeams, setMyTeams] = useState([]);
@@ -20,7 +20,7 @@ const Profile = () => {
     if (!teams || !userData) return;
     const ownerTeams = teams.filter((team) => team.owner === userData.username);
     setMyTeams(ownerTeams);
-  },[teams,userData]);
+  }, [teams, userData]);
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -33,8 +33,6 @@ const Profile = () => {
   const [openLastName, setOpenLastName] = useState(false);
   const handleOpenLastName = () => setOpenLastName(true);
   const handleCloseLastName = () => setOpenLastName(false);
-
- 
 
   const [profile, loadingProfile] = useObjectVal(
     ref(db, `users/${userData?.username}`)
@@ -61,84 +59,111 @@ const Profile = () => {
   if (loadingProfile) return <div>Loading...</div>;
 
   return (
-      <Box width="100%" textAlign="center">
-        <Typography variant="h3" mb={3}> Profile</Typography>
+    <Box width="100%" textAlign="center">
+      <Typography variant="h3" mb={3}>
+        {" "}
+        Profile
+      </Typography>
 
-    <Stack direction="row" gap={3} >
-    <Box
-      width="100%"
-      display="flex"
-      flexDirection="column"
-      alignItems="left"
-      gap={3}
-    >
-      <Box display="flex" alignItems="center" mb={2} gap={3}>
-        <Avatar
-          src={profileState.avatar}
-          sx={{ width: 150, height: 150, mr: 2, cursor: "pointer" }}
-          onClick={handleOpen}
+      <Stack direction="row" gap={3} alignItems="center">
+        <Box
+          width="100%"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          gap={3}
         >
-          {!profileState.avatar &&
-            (profileState.firstName
-              ? profileState.firstName[0].toUpperCase() +
-                profileState.lastName[0].toUpperCase()
-              : "A")}
-        </Avatar>
-        
-        <Box display="flex" flexDirection="column" alignItems="flex-start" gap={3}>
-          <Typography>Username: {profileState.username}</Typography>
-          <Stack>
-            <Typography>
-              First Name: {profileState.firstName}
-              <IconButton>
-              <EditIcon cursor="pointer" onClick={handleOpenFirstName} />
-              </IconButton>
-            </Typography>
-          </Stack>
-          <Stack >
-            <Typography>
-              Last Name: {profileState.lastName}
-              <IconButton>
-              <EditIcon cursor="pointer" onClick={handleOpenLastName} />
-              </IconButton>
-            </Typography>
-          </Stack>
-          <Typography>Created on: {profileState.createdOn}</Typography>
+          <Box
+            display="flex"
+            alignItems="center"
+            mb={2}
+            gap={3}
+            sx={{ mb: "150px" }}
+          >
+            <Avatar
+              src={profileState.avatar}
+              sx={{ width: 150, height: 150, mr: 2, cursor: "pointer" }}
+              onClick={handleOpen}
+            >
+              {!profileState.avatar &&
+                (profileState.firstName
+                  ? profileState.firstName[0].toUpperCase() +
+                    profileState.lastName[0].toUpperCase()
+                  : "A")}
+            </Avatar>
+
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="flex-start"
+              gap={3}
+            >
+              <Typography>Username: {profileState.username}</Typography>
+              <Stack>
+                <Typography>
+                  First Name: {profileState.firstName}
+                  <IconButton>
+                    <EditIcon cursor="pointer" onClick={handleOpenFirstName} />
+                  </IconButton>
+                </Typography>
+              </Stack>
+              <Stack>
+                <Typography>
+                  Last Name: {profileState.lastName}
+                  <IconButton>
+                    <EditIcon cursor="pointer" onClick={handleOpenLastName} />
+                  </IconButton>
+                </Typography>
+              </Stack>
+              <Typography>Created on: {profileState.createdOn}</Typography>
+            </Box>
+          </Box>
+          <UploadAvatar
+            open={open}
+            handleClose={handleClose}
+            avatar={profileState.avatar}
+            username={profileState.username}
+            uid={profileState.uid}
+          />
+          <UpdateFirstName
+            open={openFirstName}
+            handleClose={handleCloseFirstName}
+            username={profileState.username}
+            firstName={profileState.firstName}
+          />
+          <UpdateLastName
+            open={openLastName}
+            handleClose={handleCloseLastName}
+            username={profileState.username}
+            lastName={profileState.lastName}
+          />
         </Box>
-      </Box>
-      <UploadAvatar
-        open={open}
-        handleClose={handleClose}
-        avatar={profileState.avatar}
-        username={profileState.username}
-        uid={profileState.uid}
-      />
-      <UpdateFirstName
-        open={openFirstName}
-        handleClose={handleCloseFirstName}
-        username={profileState.username}
-        firstName={profileState.firstName}
-      />
-      <UpdateLastName
-        open={openLastName}
-        handleClose={handleCloseLastName}
-        username={profileState.username}
-        lastName={profileState.lastName}
-      />
-    </Box>
-    <Stack direction="column" spacing={1} width="100%" alignItems="center" sx={{ marginTop: '-10px' }}>
-    <Box width="100%" display="flex" textAlign="center" justifyContent="center" >
-      <Typography variant="h5" >My teams:</Typography>
-    </Box>
-    <Box display="flex" flexDirection="column"  sx={{height: "400px", overflow: "auto", width: "350px",} }>
-              {myTeams.map(team => <TeamOwnerCard 
-              key={team.key}
-              avatar={team.avatar}
-              teamName={team.name}
-              />)}
-    </Box>
-    </Stack>
-    </Stack>
+        <Stack direction="column" spacing={1} width="100%" alignItems="center">
+          <Box
+            width="100%"
+            display="flex"
+            textAlign="center"
+            justifyContent="center"
+          >
+            <Typography variant="h5">My teams:</Typography>
+          </Box>
+          <Box
+            display="flex"
+            flexDirection="column"
+            sx={{ height: "400px", overflow: "auto", width: "350px" }}
+          >
+            {myTeams.map((team) => (
+              <TeamOwnerCard
+                key={team.key}
+                avatar={team.avatar}
+                teamName={team.name}
+                teamMembers={team.members}
+                teamChannels={team.channels}
+              />
+            ))}
+          </Box>
+        </Stack>
+      </Stack>
     </Box>
   );
 };
