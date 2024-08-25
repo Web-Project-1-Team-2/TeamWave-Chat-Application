@@ -1,10 +1,17 @@
 import { Avatar, Box, Grid, Paper, Typography } from '@mui/material';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 
 const ChatBox = ({ text, avatar, username, timestamp, isCurrUser }) => {
 
     const flexDir = isCurrUser ? 'row-reverse' : 'row';
-    const options = { hour: '2-digit', minute: '2-digit', hour12: false };
+
+
+    const timeAgoUsingMoment = (date) => {
+        return moment(date).fromNow();
+    }
+    
+    const timeAgo = timeAgoUsingMoment(timestamp);
 
     return (
         <Box sx={{
@@ -36,7 +43,7 @@ const ChatBox = ({ text, avatar, username, timestamp, isCurrUser }) => {
                         <Grid item>
                             <Grid container justifyContent='flex-start' alignItems='center' sx={{ gap: '8px' }} >
                                 <Typography variant='h6'>{username}</Typography>
-                                <Typography component={'p'} variant='body2'>{new Date(timestamp).toLocaleTimeString([], options)}</Typography>
+                                <Typography component={'p'} variant='body2'>{timeAgo}</Typography>
                             </Grid>
                         </Grid>
                         <Grid item>
@@ -59,3 +66,6 @@ ChatBox.propTypes = {
 };
 
 export default ChatBox
+
+//const options = { hour: '2-digit', minute: '2-digit', hour12: false };
+//new Date(timestamp).toLocaleTimeString([], options)

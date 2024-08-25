@@ -11,7 +11,7 @@ import { ref } from 'firebase/database';
 import { db } from '../../config/firebase-config';
 import { useListVals, useObjectVal } from 'react-firebase-hooks/database';
 import { Button } from '@mui/material';
-import { editBoxStyle, editModalStyle, editTeamButtonSection } from './EditModalStyle';
+import { editBoxStyle, editModalStyle, editTeamButtonSection, editTeamScrollBox } from './EditModalStyle';
 import UserCardEditOwner from '../UserCardEditOwner/UserCardEditOwner';
 import { changeTeamName, changeTeamOwner } from '../../services/teams.service';
 
@@ -26,7 +26,7 @@ const EditTeamModal = ({ open, toggleModal, teamId }) => {
 
     const [newOwner, setNewOwner] = useState({});
     console.log(newOwner);
-    
+
     const [searchTeamMember, setSearchTeamMember] = useState('');
     const [newTeamName, setNewTeamName] = useState('');
 
@@ -86,16 +86,7 @@ const EditTeamModal = ({ open, toggleModal, teamId }) => {
                         sx={{ width: '80%' }}
                     />
 
-                    <Box sx={{
-                        width: '80%',
-                        height: '50vh',
-                        overflow: 'auto',
-                        bgcolor: '#CCC',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        mb: 2
-                    }}>
+                    <Box sx={editTeamScrollBox}>
                         <List sx={{ width: '80%' }}>
                             {teamUsers
                                 .filter((user) => user.username !== userData?.username && user.username.toLowerCase().includes(searchTeamMember.toLowerCase()))

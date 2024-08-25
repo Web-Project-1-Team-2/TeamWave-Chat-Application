@@ -15,7 +15,7 @@ import UserCard from '../UserCard/UserCard';
 import { boxStyle, buttonSectionStyle, modalStyle } from '../AddTeamMemberModal/AddMemberStyles';
 import { createChannel } from '../../services/channel.service';
 
-const AddChatModal = ({open, toggleModal, teamId}) => {
+const AddChatModal = ({ open, toggleModal, teamId }) => {
 
     const { userData } = useContext(AppContext);
 
@@ -36,11 +36,11 @@ const AddChatModal = ({open, toggleModal, teamId}) => {
 
 
     const handleCreateChannel = async () => {
-        if(!channelName) {
+        if (!channelName) {
             alert('Please enter a channel name');
             return;
         }
-        if(Object.keys(channelMembers).length === 0) {
+        if (Object.keys(channelMembers).length === 0) {
             alert('Please add at least one member to the channel');
             return;
         }
@@ -91,7 +91,7 @@ const AddChatModal = ({open, toggleModal, teamId}) => {
 
                     <Box sx={{
                         width: '80%',
-                        height: '50vh',
+                        maxHeight: '50vh',
                         overflow: 'auto',
                         bgcolor: '#CCC',
                         display: 'flex',

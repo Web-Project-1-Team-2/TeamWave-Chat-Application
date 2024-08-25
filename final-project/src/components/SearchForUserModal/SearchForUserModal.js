@@ -1,4 +1,4 @@
-export const editModalStyle = {
+export const searchUserModalStyle = {
     position: 'fixed',
     top: 0,
     left: 0,
@@ -10,7 +10,7 @@ export const editModalStyle = {
     alignItems: 'center',
 };
 
-export const editBoxStyle = {
+export const searchUserBoxStyle = {
     bgcolor: 'background.paper',
     padding: 2,
     borderRadius: 2,
@@ -22,14 +22,14 @@ export const editBoxStyle = {
     gap: 2,
 }
 
-export const editTeamButtonSection = {
-    width: '50%',
+export const searchUserButtonSection = {
+    width: '25%',
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
+    gridTemplateColumns: '1fr',
     gap: '10px',
 }
 
-export const editTeamScrollBox = {
+export const searchUserScrollBox = {
     width: '80%',
     maxHeight: '50vh',
     overflow: 'auto',

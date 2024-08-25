@@ -98,7 +98,7 @@ const CreateTeam = () => {
                     {userList
                         .filter((user) => user.username !== data.username && user.username.toLowerCase().includes(searchMember.toLowerCase()))
                         .map((member) => (
-                            <ListItem key={member.id} sx={{ p: 0, mb: 2 }}>
+                            <ListItem key={member.uid} sx={{ p: 0, mb: 2 }}>
                                 <UserCard
                                     username={member.username}
                                     firstName={member.firstName}

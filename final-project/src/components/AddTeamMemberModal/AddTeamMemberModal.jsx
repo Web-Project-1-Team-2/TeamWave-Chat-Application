@@ -15,18 +15,18 @@ import { Button } from '@mui/material';
 import { addTeamToUser, addUsersToTeam } from '../../services/teams.service';
 import { boxStyle, buttonSectionStyle, modalStyle } from './AddMemberStyles';
 
-const AddTeamMemberModal = ({ open, toggleModal, teamId}) => {
+const AddTeamMemberModal = ({ open, toggleModal, teamId }) => {
 
     const { userData } = useContext(AppContext);
     const [searchMember, setSearchMember] = useState('');
     const [newTeamMembers, setNewTeamMembers] = useState({});
     console.log(newTeamMembers);
-    
+
 
     const [addedTeamMembers] = useObjectVal(ref(db, `teams/${teamId}/members`));
     const [userList] = useListVals(ref(db, 'users'));
     const [notAddedMembers, setNotAddedMembers] = useState([]);
-    
+
     const [data, setData] = useState({});
 
     useEffect(() => {
@@ -38,8 +38,8 @@ const AddTeamMemberModal = ({ open, toggleModal, teamId}) => {
     }, [userData]);
 
     useEffect(() => {
-        if(!userList) return;
-        if(!addedTeamMembers) return;
+        if (!userList) return;
+        if (!addedTeamMembers) return;
         const notAdded = userList.filter(user => !addedTeamMembers[user.username]);
         setNotAddedMembers([...notAdded]);
     }, [addedTeamMembers]);
@@ -89,7 +89,7 @@ const AddTeamMemberModal = ({ open, toggleModal, teamId}) => {
                     />
                     <Box sx={{
                         width: '80%',
-                        height: '50vh',
+                        maxHeight: '50vh',
                         overflow: 'auto',
                         bgcolor: '#CCC',
                         display: 'flex',
@@ -101,7 +101,7 @@ const AddTeamMemberModal = ({ open, toggleModal, teamId}) => {
                             {notAddedMembers
                                 .filter((user) => user.username !== data.username && user.username.toLowerCase().includes(searchMember.toLowerCase()))
                                 .map((member) => (
-                                    <ListItem key={member.id} sx={{ p: 0, mb: 2 }}>
+                                    <ListItem key={member.uid} sx={{ p: 0, mb: 2 }}>
                                         <UserCard
                                             username={member.username}
                                             firstName={member.firstName}

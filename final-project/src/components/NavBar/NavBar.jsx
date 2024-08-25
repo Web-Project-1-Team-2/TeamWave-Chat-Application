@@ -20,17 +20,25 @@ import { useTheme } from '@mui/material/styles';
 import { useListVals } from 'react-firebase-hooks/database';
 import TeamCard from '../TeamCard/TeamCard';
 import { sideBarOpenStyles, sideBarStyles } from './NavBarStyling';
+import SearchIcon from '@mui/icons-material/Search';
+import SearchForUserModal from '../SearchForUserModal/SearchForUserModal';
 
 function NavBar({ children }) {
+
+    const theme = useTheme();
+    
+    const navigate = useNavigate();
 
     const { userData, setAppState } = useContext(AppContext);
     const [data, setData] = useState({
         username: '',
     });
 
-    const theme = useTheme();
-    const [open, setOpen] = useState(false);
+    const [searchModal, setSearchModal] = useState(false);
+    const toggleSearchModal = () => setSearchModal(!searchModal);
 
+
+    const [open, setOpen] = useState(false);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -42,18 +50,19 @@ function NavBar({ children }) {
 
     const [userTeams] = useListVals(ref(db, 'teams'));
 
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        if (!userData) return;
-        setData({ ...userData, username: userData.username });
-    }, [userData]);
 
     const logout = async () => {
         await logoutUser();
         navigate('/');
         setAppState({ user: null, userData: null });
     };
+
+
+    useEffect(() => {
+        if (!userData) return;
+        setData({ ...userData, username: userData.username });
+    }, [userData]);
+
 
     return (
         <div style={{ display: 'flex' }}>
@@ -69,6 +78,9 @@ function NavBar({ children }) {
                         </IconButton>
                         <IconButton onClick={() => navigate('/createTeam')} aria-label="createTeam" size="large" sx={{ margin: '0 auto 20px auto' }}>
                             <AddCircleOutlineRoundedIcon fontSize='inherit' />
+                        </IconButton>
+                        <IconButton onClick={toggleSearchModal} size="large" aria-label="searchUser" sx={{ margin: '0 auto 20px auto' }}>
+                            <SearchIcon fontSize='inherit' />
                         </IconButton>
                     </Box>
                     <Box>
@@ -96,6 +108,7 @@ function NavBar({ children }) {
             <div style={{ flex: 1 }}>
                 {children}
             </div>
+            <SearchForUserModal open={searchModal} toggleModal={toggleSearchModal} />
         </div>
     );
 }

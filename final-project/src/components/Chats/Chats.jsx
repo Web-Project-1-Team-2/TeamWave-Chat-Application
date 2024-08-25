@@ -1,12 +1,14 @@
-import { Box, Button, Grid, TextField, Typography } from '@mui/material';
-import { ref } from 'firebase/database';
 import PropTypes from 'prop-types';
+import ChatBox from '../ChatBox/ChatBox';
+import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
+import EmojiPicker from 'emoji-picker-react';
+import { Box, Button, Grid, IconButton, TextField, Typography } from '@mui/material';
+import { ref } from 'firebase/database';
 import { useContext, useEffect, useState, useRef } from 'react';
 import { useListVals } from 'react-firebase-hooks/database';
 import { db } from '../../config/firebase-config';
 import { AppContext } from '../../context/authContext';
 import { addMessageToChannel } from '../../services/channel.service';
-import ChatBox from '../ChatBox/ChatBox';
 
 const Chats = ({ id }) => {
 
@@ -19,8 +21,13 @@ const Chats = ({ id }) => {
         text: '',
         author: userData?.username,
         authorAvatar: userData.avatar,
-
     });
+
+    console.log(newMessage.text);
+    
+
+    const [emojiPickerState, setEmojiPickerState] = useState(false);
+    const toggleEmojiPicker = () => setEmojiPickerState(!emojiPickerState);
 
     const messagesEndRef = useRef(null);
 
@@ -48,7 +55,8 @@ const Chats = ({ id }) => {
         }, 100);
 
         return () => clearTimeout(scrollTimeout);
-    }, []);
+    }, [messagesData]);
+
 
     const sendMessage = async () => {
         if (newMessage.text.trim().length === 0) {
@@ -69,6 +77,11 @@ const Chats = ({ id }) => {
         }
     }
 
+    const handleEmojiClick = (e) => {
+        setNewMessage({ ...newMessage, text: newMessage.text + e.emoji });
+        toggleEmojiPicker();
+    }
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -83,7 +96,6 @@ const Chats = ({ id }) => {
                     width: '100%',
                     overflowY: 'auto',
                     wordWrap: 'break-word',
-                    // border: '2px solid black',
                     borderRadius: '5px',
                 }}>
                 <Grid container
@@ -108,7 +120,7 @@ const Chats = ({ id }) => {
                     <div ref={messagesEndRef}></div>
                 </Grid>
             </Box>
-            <Grid container justifyContent='center' spacing={2}>
+            <Grid container justifyContent='center' spacing={1}>
                 <Grid item xs={10}>
                     <TextField
                         value={newMessage.text}
@@ -118,7 +130,17 @@ const Chats = ({ id }) => {
                         sx={{ width: '100%' }}
                     />
                 </Grid>
-                <Grid item xs={2} >
+
+                <Grid item xs={1} position={'relative'}>
+                    <IconButton size='large' onClick={toggleEmojiPicker}>
+                        <EmojiEmotionsIcon fontSize='inherit'/>
+                    </IconButton>
+                    <EmojiPicker 
+                    open={emojiPickerState} 
+                    onEmojiClick={handleEmojiClick}
+                    style={{position: 'absolute', zIndex: 1200, bottom: 60}}/>
+                </Grid>
+                <Grid item xs={1} >
                     <Button variant={'contained'} size='large' onClick={sendMessage}>Send</Button>
                 </Grid>
             </Grid>
