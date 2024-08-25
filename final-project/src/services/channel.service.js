@@ -8,13 +8,22 @@ export const addMemberToChannel = async (channelId, username) => {
 
 export const addChannelToMember = async (channelId, username) => {
     const currChannels = await get(ref(db, `users/${username}/channels`));
-    await update(ref(db, `users/${username}/channels`), { ...currChannels.val(), [channelId]: true });
+    await update(ref(db, `users/${username}/channels`), { ...currChannels.val(), [channelId]: true },);
 }
 
-export const addChannelToTeam = async (channelId, teamId) => {
-    const currChannels = await get(ref(db, `teams/${teamId}/channels`));
-    await update(ref(db, `teams/${teamId}/channels`), { ...currChannels.val(), [channelId]: true });
-}
+export const addChannelToTeam = async (channelId, teamId, channelName) => {
+    const teamChannelsRef = ref(db, `teams/${teamId}/channels`);
+    const currChannelsSnapshot = await get(teamChannelsRef);
+    const currChannels = currChannelsSnapshot.val() || {};
+    const updatedChannels = {
+        ...currChannels,
+        [channelId]: {
+            id: channelId,
+            name: channelName
+        }
+    };
+    await update(teamChannelsRef, updatedChannels);
+};
 
 export const createChannel = async (teamId, channelName, channelMembers, channelCreator) => {
     const members = Object.keys(channelMembers);
@@ -31,7 +40,7 @@ export const createChannel = async (teamId, channelName, channelMembers, channel
     await update(ref(db), { [`channels/${id}/id`]: id });
     await addChannelToMember(id, channelCreator);
     await Promise.all(members.map(username => addChannelToMember(id, username)));
-    await addChannelToTeam(id, teamId);
+    await addChannelToTeam(id, teamId, channelName);
 }
 
 export const addMessageToChannel = async (channelId, message) => {
@@ -48,3 +57,9 @@ export const addMessageToChannel = async (channelId, message) => {
     const id = result.key;
     await update(ref(db), { [`channels/${channelId}/messages/${id}/id`]: id });
 }
+
+
+// export const addChannelToTeam = async (channelId, teamId,) => {
+//     const currChannels = await get(ref(db, `teams/${teamId}/channels`));
+//     await update(ref(db, `teams/${teamId}/channels`), { ...currChannels.val(), [channelId]: true });
+// }
