@@ -64,7 +64,7 @@ const Profile = () => {
       <Box width="100%" textAlign="center">
         <Typography variant="h3" mb={3}> Profile</Typography>
 
-    <Stack direction="row" gap={3}>
+    <Stack direction="row" gap={3} >
     <Box
       width="100%"
       display="flex"
@@ -72,7 +72,7 @@ const Profile = () => {
       alignItems="left"
       gap={3}
     >
-      <Box display="flex" alignItems="left" mb={2} gap={3}>
+      <Box display="flex" alignItems="center" mb={2} gap={3}>
         <Avatar
           src={profileState.avatar}
           sx={{ width: 150, height: 150, mr: 2, cursor: "pointer" }}
@@ -126,11 +126,11 @@ const Profile = () => {
         lastName={profileState.lastName}
       />
     </Box>
-    <Stack direction="column" spacing={2} width="100%" alignItems="center">
-    <Box width="100%" display="flex" textAlign="center" justifyContent="center">
+    <Stack direction="column" spacing={1} width="100%" alignItems="center" sx={{ marginTop: '-10px' }}>
+    <Box width="100%" display="flex" textAlign="center" justifyContent="center" >
       <Typography variant="h5" >My teams:</Typography>
     </Box>
-    <Box display="flex" flexDirection="column" sx={{height: "400px", overflow: "auto", width: "350px",} }>
+    <Box display="flex" flexDirection="column"  sx={{height: "400px", overflow: "auto", width: "350px",} }>
               {myTeams.map(team => <TeamOwnerCard 
               key={team.key}
               avatar={team.avatar}

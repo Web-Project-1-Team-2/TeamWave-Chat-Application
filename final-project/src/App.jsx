@@ -14,6 +14,7 @@ import Profile from './pages/Profile/Profile'
 import CreateTeam from './pages/CreateTeam/CreateTeam'
 import TeamPage from './pages/TeamPage/TeamPage'
 import ChannelChatPage from './pages/ChannelChatPage/ChannelChatPage'
+import { ToastContainer } from 'react-toastify'
 
 
 function App() {
@@ -59,6 +60,7 @@ function App() {
             <Route path='/' element={<SignIn />} />
             <Route path='/register' element={<Register />} />
           </Routes>
+          
         )}
     </AppContext.Provider>
   )

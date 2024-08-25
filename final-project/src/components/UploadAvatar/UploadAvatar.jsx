@@ -29,6 +29,7 @@ function UploadAvatar({ open, handleClose, avatar, uid, username }) {
       }
       const uploadedImage = await uploadImage(image, uid, username);
       await setImageUrl(username, uploadedImage);
+      console.log("sucess")
       notifySuccess("Avatar uploaded successfully.")
       handleClose();
     } catch (error) {
