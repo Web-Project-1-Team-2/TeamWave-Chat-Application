@@ -12,7 +12,7 @@ import { db } from '../../config/firebase-config';
 import { useListVals } from 'react-firebase-hooks/database';
 import { Button } from '@mui/material';
 import UserSearchCard from '../UserSearchCard/UserSearchCard';
-import { searchUserBoxStyle, searchUserButtonSection, searchUserModalStyle, searchUserScrollBox } from './SearchForUserModal';
+import { searchUserBoxStyle, searchUserButtonSection, searchUserModalStyle, searchUserScrollBox } from './SearchForUserModalStyle';
 
 
 const SearchForUserModal = ({ open, toggleModal }) => {

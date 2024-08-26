@@ -32,10 +32,10 @@ const Chats = ({ id }) => {
     const messagesEndRef = useRef(null);
 
     const scrollToBottom = () => {
-        if (messagesEndRef.current) {
-            messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
-        }
-        // messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        // if (messagesEndRef.current) {
+        //     messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+        // }
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
     useEffect(() => {
@@ -89,7 +89,6 @@ const Chats = ({ id }) => {
     return (
         <Box>
             <Box
-                ref={messagesEndRef}
                 sx={{
                     height: '65vh',
                     margin: '16px 0',
@@ -131,8 +130,8 @@ const Chats = ({ id }) => {
                     />
                 </Grid>
 
-                <Grid item xs={1} position={'relative'}>
-                    <IconButton size='large' onClick={toggleEmojiPicker}>
+                <Grid container item xs={0.5} alignItems={'center'} justifyContent={'center'} position={'relative'}>
+                    <IconButton onClick={toggleEmojiPicker} sx={{fontSize: 35}}>
                         <EmojiEmotionsIcon fontSize='inherit'/>
                     </IconButton>
                     <EmojiPicker 
@@ -140,7 +139,7 @@ const Chats = ({ id }) => {
                     onEmojiClick={handleEmojiClick}
                     style={{position: 'absolute', zIndex: 1200, bottom: 60}}/>
                 </Grid>
-                <Grid item xs={1} >
+                <Grid container item xs={1} alignItems={'center'} justifyContent={'center'} >
                     <Button variant={'contained'} size='large' onClick={sendMessage}>Send</Button>
                 </Grid>
             </Grid>

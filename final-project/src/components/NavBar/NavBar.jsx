@@ -23,6 +23,7 @@ import { sideBarOpenStyles, sideBarStyles } from './NavBarStyling';
 import SearchIcon from '@mui/icons-material/Search';
 import SearchForUserModal from '../SearchForUserModal/SearchForUserModal';
 
+
 function NavBar({ children }) {
 
     const theme = useTheme();
