@@ -20,7 +20,7 @@ const Chats = ({ id }) => {
     const [newMessage, setNewMessage] = useState({
         text: '',
         author: userData?.username,
-        authorAvatar: userData.avatar,
+        authorAvatar: userData?.avatar,
     });
 
     console.log(newMessage.text);
@@ -105,13 +105,13 @@ const Chats = ({ id }) => {
                 >
                     {messagesData.length > 0 ? messagesData.map(message => {
                         return (
-                            <Grid container item xs={12} key={message.id} justifyContent={userData.username === message.author ? 'flex-end' : 'flex-start'}>
+                            <Grid container item xs={12} key={message.id} justifyContent={userData?.username === message.author ? 'flex-end' : 'flex-start'}>
                                 <ChatBox
                                     text={message.text}
                                     avatar={message.authorAvatar}
                                     username={message.author}
                                     timestamp={message.timestamp}
-                                    isCurrUser={userData.username === message.author}
+                                    isCurrUser={userData?.username === message.author}
                                 />
                             </Grid>
                         )

@@ -5,6 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import { deleteTeamMember } from '../../../services/teams.service';
 import { useContext } from 'react';
 import { AppContext } from '../../../context/authContext';
+import { notifyError, notifySuccess } from '../../../services/notification.service';
 
 const TeamUserCard = ({ avatar, username, id, owner, teamId }) => {
 
@@ -15,9 +16,10 @@ const TeamUserCard = ({ avatar, username, id, owner, teamId }) => {
     const removeMember = async () => {
         try {
             await deleteTeamMember(username, teamId);
-            alert('Member removed successfully');
+            notifySuccess('Member removed successfully');
         } catch (error) {
             console.log(error);
+            notifyError('Failed to remove member');
         }
     };
 

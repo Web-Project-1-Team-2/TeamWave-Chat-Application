@@ -12,60 +12,83 @@ import { ref } from 'firebase/database';
 import { db } from '../../../config/firebase-config';
 import { useListVals, useObjectVal } from 'react-firebase-hooks/database';
 import { Button } from '@mui/material';
-import { addTeamToUser, addUsersToTeam } from '../../../services/teams.service';
-import { boxStyle, buttonSectionStyle, modalStyle } from './AddMemberStyles';
+import { boxStyle, buttonSectionStyle, modalStyle } from '../../Teams/AddTeamMemberModal/AddMemberStyles';
 import { notifyError, notifySuccess } from '../../../services/notification.service';
+import { addMemberToChannel, addChannelToMember } from '../../../services/channel.service';
 
-const AddTeamMemberModal = ({ open, toggleModal, teamId }) => {
+const AddChannelMembers = ({ open, toggleModal, channelId, teamId }) => {
 
     const { userData } = useContext(AppContext);
-    const [searchMember, setSearchMember] = useState('');
-    const [newTeamMembers, setNewTeamMembers] = useState({});
-    console.log(newTeamMembers);
 
-
-    const [addedTeamMembers] = useObjectVal(ref(db, `teams/${teamId}/members`));
+    const [teamMembers] = useObjectVal(ref(db, `teams/${teamId}/members`));
     const [userList] = useListVals(ref(db, 'users'));
-    const [notAddedMembers, setNotAddedMembers] = useState([]);
+    const [teamMembersState, setTeamMembersState] = useState([]);
 
-    const [data, setData] = useState({});
+    const [searchMember, setSearchMember] = useState('');
 
-    useEffect(() => {
-        if (!userData) return;
-        setData({
-            ...userData,
-            username: userData.username || '',
-        });
-    }, [userData]);
+    const [newChannelMembers, setNewChannelMembers] = useState({});
+    
 
     useEffect(() => {
-        if (!userList) return;
-        if (!addedTeamMembers) return;
-        const notAdded = userList.filter(user => !addedTeamMembers[user.username]);
-        setNotAddedMembers([...notAdded]);
-    }, [addedTeamMembers]);
+        if (!teamMembers) return;
+        if(!userList) return;
+
+        const members = Object.keys(teamMembers);
+        const teamMembersData = userList.filter((user) => {
+            // 'teams' in user ? 
+            // (teamId in user.teams && userData.username !== user.username && members.includes(user.username)) : 
+            // false
+
+            if(!('teams' in user)) {
+                console.log('no teams');
+                return false;
+            }
+
+            if(!(teamId in user.teams)) {
+                console.log('no team');
+                return false;
+            }
+
+            if(userData.username === user.username) {
+                console.log('same user');
+                return false;
+            }
+
+            if(!members.includes(user.username)) {
+                console.log('not in members');
+                return false;
+            }
+
+            if(channelId in user.channels) {
+                console.log('in channel');
+                return false;
+            }
+
+            return true;
+        })
+        console.log(teamMembersData);
+        
+        setTeamMembersState([...teamMembersData]);
+    }, [userList, teamMembers]);
 
 
-    const addUsers = async () => {
-        const users = Object.keys(newTeamMembers);
-        if (users.length === 0) {
-            throw new Error('No users selected');
-        }
+    const handleAddMembers = async () => {
 
-        console.log(users);
+        const newMembers = Object.keys(newChannelMembers);
 
         try {
-            await Promise.all(users.map(username => addTeamToUser(username, teamId)));
-            await Promise.all(users.map(username => addUsersToTeam(teamId, username)));
-            notifySuccess('Users added to team successfully');
-            setNewTeamMembers({});
-            setSearchMember('');
+            if(Object.keys(newMembers).length === 0) {
+                throw new Error('No users selected');
+            }
+
+            await Promise.all(newMembers.map(username => addMemberToChannel(channelId, username)));
+            await Promise.all(newMembers.map(username => addChannelToMember(channelId, username)));
             toggleModal();
+            notifySuccess('Users added to channel successfully');
         } catch (error) {
-            console.log(error);
-            notifyError('Failed to add users to team');
+            notifyError(error.message);
         }
-    };
+    }
 
     return (
         <div>
@@ -99,9 +122,11 @@ const AddTeamMemberModal = ({ open, toggleModal, teamId }) => {
                         alignItems: 'center',
                         mb: 2
                     }}>
-                        <List sx={{ width: '80%' }}>
-                            {notAddedMembers
-                                .filter((user) => user.username !== data.username && user.username.toLowerCase().includes(searchMember.toLowerCase()))
+                        {teamMembersState.length === 0 ? 
+                        <Typography variant='h6'>No members found</Typography> :
+                        (<List sx={{ width: '80%' }}>
+                            {teamMembersState
+                                .filter((user) => user.username.toLowerCase().includes(searchMember.toLowerCase()))
                                 .map((member) => (
                                     <ListItem key={member.uid} sx={{ p: 0, mb: 2 }}>
                                         <UserCard
@@ -109,30 +134,28 @@ const AddTeamMemberModal = ({ open, toggleModal, teamId }) => {
                                             firstName={member.firstName}
                                             lastName={member.lastName}
                                             email={member.email}
-                                            teamMembers={newTeamMembers}
-                                            setTeamMembers={setNewTeamMembers}
+                                            teamMembers={newChannelMembers}
+                                            setTeamMembers={setNewChannelMembers}
                                         />
                                     </ListItem>
                                 ))}
-                        </List>
+                        </List>)}
                     </Box>
                     <Box sx={buttonSectionStyle}>
-                        <Button variant='contained' onClick={addUsers}>Add</Button>
+                        <Button variant='contained' onClick={handleAddMembers}>Add</Button>
                         <Button variant='contained' onClick={toggleModal}>Close</Button>
                     </Box>
                 </Box>
             </Modal>
         </div>
-    );
+    )
 }
 
-AddTeamMemberModal.propTypes = {
+AddChannelMembers.propTypes = {
     open: PropTypes.bool,
     toggleModal: PropTypes.func,
+    channelId: PropTypes.string,
     teamId: PropTypes.string,
 };
 
-export default AddTeamMemberModal
-
-
-
+export default AddChannelMembers

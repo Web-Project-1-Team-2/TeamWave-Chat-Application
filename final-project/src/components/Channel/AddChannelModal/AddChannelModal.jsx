@@ -14,6 +14,7 @@ import { Button } from '@mui/material';
 import UserCard from '../../User/UserCard/UserCard';
 import { boxStyle, buttonSectionStyle, modalStyle } from '../../Teams/AddTeamMemberModal/AddMemberStyles';
 import { createChannel } from '../../../services/channel.service';
+import { notifyError, notifySuccess } from '../../../services/notification.service';
 
 const AddChatModal = ({ open, toggleModal, teamId }) => {
 
@@ -37,19 +38,21 @@ const AddChatModal = ({ open, toggleModal, teamId }) => {
 
     const handleCreateChannel = async () => {
         if (!channelName) {
-            alert('Please enter a channel name');
+            notifyError('Please enter a channel name');
             return;
         }
         if (Object.keys(channelMembers).length === 0) {
-            alert('Please add at least one member to the channel');
+            notifyError('Please add at least one member to the channel');
             return;
         }
 
         try {
             await createChannel(teamId, channelName, channelMembers, userData.username);
+            notifySuccess('Channel created successfully');
             toggleModal();
         } catch (error) {
             console.error(error);
+            notifyError('Failed to create channel');
         }
     }
 

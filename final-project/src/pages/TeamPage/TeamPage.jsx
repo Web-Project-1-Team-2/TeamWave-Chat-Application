@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ref, onValue } from 'firebase/database';
 import { db } from '../../config/firebase-config';
 import { Typography, Avatar, Box, Grid, IconButton } from '@mui/material';
@@ -18,11 +18,15 @@ import AddChatModal from '../../components/Channel/AddChannelModal/AddChannelMod
 import { changeTeamAvatar } from './TeamPageStyle.js';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import EditTeamAvatarModal from '../../components/Teams/EditTeamAvatarModal/EditTeamAvatarModal.jsx';
+import { notifyError, notifySuccess } from '../../services/notification.service.js';
+import { deleteTeamMember } from '../../services/teams.service.js';
 
 const TeamPage = () => {
 
     const { userData } = useContext(AppContext);
     const { teamId } = useParams();
+
+    const navigate = useNavigate();
 
     const [teamData, setTeamData] = useState(null);
 
@@ -63,12 +67,35 @@ const TeamPage = () => {
         setTeamMembers(includedMembers);
     }, [teamData, teamMembers]);
 
+    const leaveTeam = async () => {
+
+        if(!userData || !teamData) return;
+
+        try{
+            if(userData?.username === teamData.owner){
+                notifyError('You must transfer ownership before leaving the team');
+                toggleEditModal();
+                return;
+            }
+
+            if(teamMembersData.length <= 2){
+                notifyError('You must have at least 2 members in the team');
+                toggleAddModal();
+                return;
+            }
+
+            await deleteTeamMember(userData.username, teamId);
+            notifySuccess('Successfully left team');
+            navigate('/')
+        } catch (error) {
+            console.log(error);
+            notifyError('Failed to leave team');
+        }
+    }
+
     if (!teamData) {
         return <div>Loading...</div>;
     }
-
-    console.log(teamData);
-    
 
     return (
         <>
@@ -118,7 +145,7 @@ const TeamPage = () => {
                                         </Grid>
                                     }
                                     <Grid item xs={12}>
-                                        <IconButton sx={iconStyling}>
+                                        <IconButton onClick={leaveTeam} sx={iconStyling}>
                                             <RemoveCircleOutlinedIcon fontSize='inherit' />
                                         </IconButton>
                                     </Grid>

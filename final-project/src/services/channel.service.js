@@ -1,4 +1,4 @@
-import { get, ref, update, push } from 'firebase/database';
+import { get, ref, update, push, remove } from 'firebase/database';
 import { db } from '../config/firebase-config.js';
 
 export const addMemberToChannel = async (channelId, username) => {
@@ -56,6 +56,13 @@ export const addMessageToChannel = async (channelId, message) => {
     const result = await push(ref(db, `channels/${channelId}/messages`), newMessage);
     const id = result.key;
     await update(ref(db), { [`channels/${channelId}/messages/${id}/id`]: id });
+}
+
+export const leaveChannel = async (channelId, username) => {
+    const channelMember = ref(db, `channels/${channelId}/members/${username}`);
+    const userRef = ref(db, `users/${username}/channels/${channelId}`);
+    await remove(channelMember);
+    await remove(userRef);
 }
 
 
