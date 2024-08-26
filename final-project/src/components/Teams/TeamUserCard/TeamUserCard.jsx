@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import { Avatar, Card, CardActionArea, Grid, Typography } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import IconButton from '@mui/material/IconButton';
-import { deleteTeamMember } from '../../services/teams.service';
+import { deleteTeamMember } from '../../../services/teams.service';
 import { useContext } from 'react';
-import { AppContext } from '../../context/authContext';
+import { AppContext } from '../../../context/authContext';
 
 const TeamUserCard = ({ avatar, username, id, owner, teamId }) => {
 

@@ -4,17 +4,20 @@ import { ref, onValue } from 'firebase/database';
 import { db } from '../../config/firebase-config';
 import { Typography, Avatar, Box, Grid, IconButton } from '@mui/material';
 import { useListVals } from 'react-firebase-hooks/database';
-import TeamUserCard from '../../components/TeamUserCard/TeamUserCard';
+import TeamUserCard from '../../components/Teams/TeamUserCard/TeamUserCard';
 import { AppContext } from '../../context/authContext';
-import AddTeamMemberModal from '../../components/AddTeamMemberModal/AddTeamMemberModal';
+import AddTeamMemberModal from '../../components/Teams/AddTeamMemberModal/AddTeamMemberModal';
 import PeopleIcon from '@mui/icons-material/People';
 import AddCommentIcon from '@mui/icons-material/AddComment';
 import EditIcon from '@mui/icons-material/Edit';
 import RemoveCircleOutlinedIcon from '@mui/icons-material/RemoveCircleOutlined';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import { iconStyling } from './TeamPageStyle';
-import EditTeamModal from '../../components/EditTeamModal/EditTeamModal';
-import AddChatModal from '../../components/AddChannelModal/AddChannelModal';
+import EditTeamModal from '../../components/Teams/EditTeamModal/EditTeamModal';
+import AddChatModal from '../../components/Channel/AddChannelModal/AddChannelModal.jsx';
+import { changeTeamAvatar } from './TeamPageStyle.js';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import EditTeamAvatarModal from '../../components/Teams/EditTeamAvatarModal/EditTeamAvatarModal.jsx';
 
 const TeamPage = () => {
 
@@ -35,7 +38,13 @@ const TeamPage = () => {
 
     const [addChannelModal, setAddChannelModal] = useState(false);
     const toggleAddChannelModal = () => setAddChannelModal(!addChannelModal);
-    
+
+    const [isHovering, setIsHovering] = useState(false);
+    const toggleIsHovering = () => setIsHovering(!isHovering);
+
+    const [changeTeamAvatarModal, setChangeTeamAvatarModal] = useState(false);
+    const toggleChangeTeamAvatarModal = () => setChangeTeamAvatarModal(!changeTeamAvatarModal);
+
 
     useEffect(() => {
         const teamRef = ref(db, `teams/${teamId}`);
@@ -58,17 +67,27 @@ const TeamPage = () => {
         return <div>Loading...</div>;
     }
 
+    console.log(teamData);
+    
+
     return (
         <>
             <Box sx={{ flexGrow: 1, padding: 2 }}>
                 <Typography variant="h2" gutterBottom>{teamData.name}</Typography>
-                <Grid container spacing={2} direction={'row'} sx={{marginTop: '20px'}}>
+                <Grid container spacing={2} direction={'row'} sx={{ marginTop: '20px' }}>
                     <Grid item xs={8}>
-                        <Grid container spacing={2} sx={{marginTop: '20px'}}>
+                        <Grid container spacing={2} sx={{ marginTop: '20px' }}>
                             <Grid item xs={5}>
-                                <Grid container direction={'column'} spacing={2} alignItems={'center'} justifyContent={'center'} sx={{borderRight: '2px solid black' }}>
-                                    <Grid item xs={12}>
-                                        <Avatar alt={teamData.name} src={teamData.avatar} sx={{ width: 200, height: 200 }} />
+                                <Grid container direction={'column'} spacing={2} alignItems={'center'} justifyContent={'center'} sx={{ borderRight: '2px solid black' }}>
+                                    <Grid container item xs={12} justifyContent={'center'} alignItems={'center'} position={'relative'}>
+                                        <Avatar onMouseEnter={toggleIsHovering} alt={teamData.name} src={teamData.avatar} sx={{ width: 200, height: 200 }} />
+                                        {isHovering &&
+                                            <div
+                                                style={changeTeamAvatar}
+                                                onMouseLeave={toggleIsHovering}
+                                                onClick={toggleChangeTeamAvatarModal}>
+                                                <AddPhotoAlternateIcon sx={{ fontSize: 50 }} />
+                                            </div>}
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Typography component="h5" variant="h4">
@@ -139,6 +158,9 @@ const TeamPage = () => {
             }
             {addChannelModal &&
                 <AddChatModal open={addChannelModal} toggleModal={toggleAddChannelModal} teamId={teamId} />
+            }
+            {changeTeamAvatarModal &&
+                <EditTeamAvatarModal open={changeTeamAvatarModal} toggle={toggleChangeTeamAvatarModal} teamId={teamId} teamName={teamData.name}/>
             }
         </>
     );

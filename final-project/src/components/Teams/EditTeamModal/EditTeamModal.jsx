@@ -6,14 +6,14 @@ import { useContext, useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import { AppContext } from '../../context/authContext';
+import { AppContext } from '../../../context/authContext';
 import { ref } from 'firebase/database';
-import { db } from '../../config/firebase-config';
+import { db } from '../../../config/firebase-config';
 import { useListVals, useObjectVal } from 'react-firebase-hooks/database';
 import { Button } from '@mui/material';
 import { editBoxStyle, editModalStyle, editTeamButtonSection, editTeamScrollBox } from './EditModalStyle';
-import UserCardEditOwner from '../UserCardEditOwner/UserCardEditOwner';
-import { changeTeamName, changeTeamOwner } from '../../services/teams.service';
+import UserCardEditOwner from '../../User/UserCardEditOwner/UserCardEditOwner';
+import { changeTeamName, changeTeamOwner } from '../../../services/teams.service';
 
 
 const EditTeamModal = ({ open, toggleModal, teamId }) => {

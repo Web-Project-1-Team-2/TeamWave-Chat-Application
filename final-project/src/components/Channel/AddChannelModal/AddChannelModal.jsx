@@ -6,64 +6,52 @@ import { useContext, useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import UserCard from '../UserCard/UserCard';
-import { AppContext } from '../../context/authContext';
+import { AppContext } from '../../../context/authContext';
 import { ref } from 'firebase/database';
-import { db } from '../../config/firebase-config';
+import { db } from '../../../config/firebase-config';
 import { useListVals, useObjectVal } from 'react-firebase-hooks/database';
 import { Button } from '@mui/material';
-import { addTeamToUser, addUsersToTeam } from '../../services/teams.service';
-import { boxStyle, buttonSectionStyle, modalStyle } from './AddMemberStyles';
+import UserCard from '../../User/UserCard/UserCard';
+import { boxStyle, buttonSectionStyle, modalStyle } from '../../Teams/AddTeamMemberModal/AddMemberStyles';
+import { createChannel } from '../../../services/channel.service';
 
-const AddTeamMemberModal = ({ open, toggleModal, teamId }) => {
+const AddChatModal = ({ open, toggleModal, teamId }) => {
 
     const { userData } = useContext(AppContext);
-    const [searchMember, setSearchMember] = useState('');
-    const [newTeamMembers, setNewTeamMembers] = useState({});
-    console.log(newTeamMembers);
 
+    const [teamMembers] = useObjectVal(ref(db, `teams/${teamId}/members`));
+    const [users] = useListVals(ref(db, 'users'));
+    const [teamUsers, setTeamUsers] = useState([]);
 
-    const [addedTeamMembers] = useObjectVal(ref(db, `teams/${teamId}/members`));
-    const [userList] = useListVals(ref(db, 'users'));
-    const [notAddedMembers, setNotAddedMembers] = useState([]);
+    const [channelMembers, setChannelMembers] = useState({});
 
-    const [data, setData] = useState({});
-
-    useEffect(() => {
-        if (!userData) return;
-        setData({
-            ...userData,
-            username: userData.username || '',
-        });
-    }, [userData]);
+    const [searchTeamMember, setSearchTeamMember] = useState('');
+    const [channelName, setChannelName] = useState('');
 
     useEffect(() => {
-        if (!userList) return;
-        if (!addedTeamMembers) return;
-        const notAdded = userList.filter(user => !addedTeamMembers[user.username]);
-        setNotAddedMembers([...notAdded]);
-    }, [addedTeamMembers]);
+        if (!teamMembers) return;
+        if (!users) return;
+        setTeamUsers(users.filter(user => teamMembers[user.username]));
+    }, [teamMembers]);
 
 
-    const addUsers = async () => {
-        const users = Object.keys(newTeamMembers);
-        if (users.length === 0) {
-            throw new Error('No users selected');
+    const handleCreateChannel = async () => {
+        if (!channelName) {
+            alert('Please enter a channel name');
+            return;
         }
-
-        console.log(users);
+        if (Object.keys(channelMembers).length === 0) {
+            alert('Please add at least one member to the channel');
+            return;
+        }
 
         try {
-            await Promise.all(users.map(username => addTeamToUser(username, teamId)));
-            await Promise.all(users.map(username => addUsersToTeam(teamId, username)));
-            alert('Users added to team successfully');
-            setNewTeamMembers({});
-            setSearchMember('');
+            await createChannel(teamId, channelName, channelMembers, userData.username);
             toggleModal();
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
-    };
+    }
 
     return (
         <div>
@@ -76,17 +64,31 @@ const AddTeamMemberModal = ({ open, toggleModal, teamId }) => {
             >
                 <Box sx={boxStyle}>
                     <Typography id="modal-modal-title" variant="h5" component="h2">
-                        Add Team Member
+                        Channel Name:
+                    </Typography>
+
+                    <TextField
+                        id="changeTeamName"
+                        label="Change Team Name..."
+                        variant="outlined"
+                        value={channelName}
+                        onChange={(e) => setChannelName(e.target.value)}
+                        sx={{ width: '80%' }}
+                    />
+
+                    <Typography id="modal-modal-title" variant="h5" component="h2">
+                        Choose Members
                     </Typography>
 
                     <TextField
                         id="searchMember"
                         label="Search for members..."
                         variant="outlined"
-                        value={searchMember}
-                        onChange={(e) => setSearchMember(e.target.value)}
+                        value={searchTeamMember}
+                        onChange={(e) => setSearchTeamMember(e.target.value)}
                         sx={{ width: '80%' }}
                     />
+
                     <Box sx={{
                         width: '80%',
                         maxHeight: '50vh',
@@ -98,39 +100,36 @@ const AddTeamMemberModal = ({ open, toggleModal, teamId }) => {
                         mb: 2
                     }}>
                         <List sx={{ width: '80%' }}>
-                            {notAddedMembers
-                                .filter((user) => user.username !== data.username && user.username.toLowerCase().includes(searchMember.toLowerCase()))
+                            {teamUsers
+                                .filter((user) => user.username !== userData?.username && user.username.toLowerCase().includes(searchTeamMember.toLowerCase()))
                                 .map((member) => (
-                                    <ListItem key={member.uid} sx={{ p: 0, mb: 2 }}>
+                                    <ListItem key={member.id} sx={{ p: 0, mb: 2 }}>
                                         <UserCard
                                             username={member.username}
                                             firstName={member.firstName}
                                             lastName={member.lastName}
                                             email={member.email}
-                                            teamMembers={newTeamMembers}
-                                            setTeamMembers={setNewTeamMembers}
+                                            teamMembers={channelMembers}
+                                            setTeamMembers={setChannelMembers}
                                         />
                                     </ListItem>
                                 ))}
                         </List>
                     </Box>
                     <Box sx={buttonSectionStyle}>
-                        <Button variant='contained' onClick={addUsers}>Add</Button>
+                        <Button variant='contained' onClick={handleCreateChannel}>Create</Button>
                         <Button variant='contained' onClick={toggleModal}>Close</Button>
                     </Box>
                 </Box>
             </Modal>
         </div>
-    );
+    )
 }
 
-AddTeamMemberModal.propTypes = {
+AddChatModal.propTypes = {
     open: PropTypes.bool,
     toggleModal: PropTypes.func,
     teamId: PropTypes.string,
 };
 
-export default AddTeamMemberModal
-
-
-
+export default AddChatModal

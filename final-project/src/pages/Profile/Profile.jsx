@@ -1,19 +1,20 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/authContext";
 import { Avatar, Box, IconButton, Stack, Typography } from "@mui/material";
-import UploadAvatar from "../../components/UploadAvatar/UploadAvatar";
-import UpdateLastName from "../../components/UpdateLastName/UpdateLastName";
+import UploadAvatar from "../../components/User/UploadAvatar/UploadAvatar";
+import UpdateLastName from "../../components/User/UpdateLastName/UpdateLastName";
 import { useListVals, useObjectVal } from "react-firebase-hooks/database";
 import { ref } from "firebase/database";
 import { db } from "../../config/firebase-config";
-import UpdateFirstName from "../../components/UpdateFirstName/UpdateFirstName";
+import UpdateFirstName from "../../components/User/UpdateFirstName/UpdateFirstName";
 import EditIcon from "@mui/icons-material/Edit";
-import TeamOwnerCard from "../../components/TeamOwnerCard/TeamOwnerCard";
+import TeamOwnerCard from "../../components/Teams/TeamOwnerCard/TeamOwnerCard";
 
 const Profile = () => {
-  const { userData } = useContext(AppContext);
-  const [teams] = useListVals(ref(db, `teams`));
 
+  const { userData } = useContext(AppContext);
+
+  const [teams] = useListVals(ref(db, `teams`));
   const [myTeams, setMyTeams] = useState([]);
 
   useEffect(() => {
@@ -88,7 +89,7 @@ const Profile = () => {
               {!profileState.avatar &&
                 (profileState.firstName
                   ? profileState.firstName[0].toUpperCase() +
-                    profileState.lastName[0].toUpperCase()
+                  profileState.lastName[0].toUpperCase()
                   : "A")}
             </Avatar>
 

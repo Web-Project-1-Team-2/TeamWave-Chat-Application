@@ -4,11 +4,10 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import IconButton from '@mui/material/IconButton';
 import PropTypes from 'prop-types';
 import { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { AppContext } from '../../context/authContext';
+import { AppContext } from '../../../context/authContext';
 import { useObjectVal } from 'react-firebase-hooks/database';
 import { ref } from 'firebase/database';
-import { db } from '../../config/firebase-config';
+import { db } from '../../../config/firebase-config';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;

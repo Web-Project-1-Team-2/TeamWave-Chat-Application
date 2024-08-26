@@ -8,20 +8,20 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import { logoutUser } from '../../services/auth.service';
-import { AppContext } from '../../context/authContext';
+import { logoutUser } from '../../../services/auth.service';
+import { AppContext } from '../../../context/authContext';
 import { useNavigate } from 'react-router-dom';
 import { ref } from 'firebase/database';
-import { db } from '../../config/firebase-config';
+import { db } from '../../../config/firebase-config';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useTheme } from '@mui/material/styles';
 import { useListVals } from 'react-firebase-hooks/database';
-import TeamCard from '../TeamCard/TeamCard';
+import TeamCard from '../../Teams/TeamCard/TeamCard';
 import { sideBarOpenStyles, sideBarStyles } from './NavBarStyling';
 import SearchIcon from '@mui/icons-material/Search';
-import SearchForUserModal from '../SearchForUserModal/SearchForUserModal';
+import SearchForUserModal from '../../Navigation/SearchForUserModal/SearchForUserModal';
 
 
 function NavBar({ children }) {
@@ -96,7 +96,7 @@ function NavBar({ children }) {
                 <Drawer sx={sideBarOpenStyles(open)} variant="persistent" anchor="left" open={open}>
                     <Box style={{ width: '100%', textAlign: '-webkit-center' }} mt={2}>
                         {userTeams
-                            .filter(team => data.username in team.members)
+                            .filter(team => data.username in team.members && 'id' in team)
                             .map(team => <TeamCard avatar={team.avatar} teamName={team.name} id={team.id} key={team.id} />)
                         }
                     </Box>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { updateLastName } from "../../services/user.service";
+import { updateFirstName } from "../../../services/user.service";
 import {
   Box,
   Button,
@@ -9,19 +9,16 @@ import {
   Typography,
 } from "@mui/material";
 import PropTypes from "prop-types";
-import { styleModal } from "../UpdateFirstName/UpdateFirstNameStyling";
+import { styleModal } from "./UpdateFirstNameStyling";
 
-function UpdateLastName({lastName, username, handleClose, open}) {
-  console.log(lastName);
+function UpdateFirstName({ open, handleClose, username, firstName }) {
+  const [newFirstName, setNewFirstName] = useState("");
 
-  const [newLastName, setNewLastName] = useState('');
-  
-
-  const updateNewLastName = async () => {
-    if (!lastName) return;
+  const updateNewFirstName = async () => {
+    if (!firstName) return;
 
     try {
-      await updateLastName(username, newLastName);
+      await updateFirstName(username, newFirstName);
       alert("Success");
       handleClose();
     } catch (error) {
@@ -37,13 +34,13 @@ function UpdateLastName({lastName, username, handleClose, open}) {
     >
       <Box sx={styleModal}>
         <Typography id="modal-modal-title" variant="h6">
-          Change your Last Name
+          Change your First Name
         </Typography>
         <TextField
-          label="Last Name"
-          value={newLastName}
+          label="First Name"
+          value={newFirstName}
           onChange={(e) => {
-            setNewLastName(e.target.value);
+            setNewFirstName(e.target.value);
           }}
         />
         <Stack direction="row" spacing={4} mt={3}>
@@ -51,7 +48,7 @@ function UpdateLastName({lastName, username, handleClose, open}) {
             <Button
               variant="contained"
               color="primary"
-              onClick={updateNewLastName}
+              onClick={updateNewFirstName}
             >
               Save
             </Button>
@@ -66,12 +63,11 @@ function UpdateLastName({lastName, username, handleClose, open}) {
     </Modal>
   );
 }
-
-UpdateLastName.propTypes = {
+UpdateFirstName.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   username: PropTypes.string.isRequired,
-  lastName: PropTypes.string,
+  firstName: PropTypes.string,
 };
 
-export default UpdateLastName;
+export default UpdateFirstName;

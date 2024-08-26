@@ -6,15 +6,14 @@ import { useEffect, useState } from 'react'
 import { getUserData } from './services/user.service'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { auth } from './config/firebase-config'
-import NavBar from './components/NavBar/NavBar';
+import NavBar from './components/Navigation/NavBar/NavBar';
 import UserBoard from './pages/UserBoard/UserBoard';
 import Register from './pages/Register/Register';
-import ContentContainer from './components/contentContainer/ContentContainer';
+import ContentContainer from './components/Base/contentContainer/ContentContainer';
 import Profile from './pages/Profile/Profile'
 import CreateTeam from './pages/CreateTeam/CreateTeam'
 import TeamPage from './pages/TeamPage/TeamPage'
 import ChannelChatPage from './pages/ChannelChatPage/ChannelChatPage'
-import { ToastContainer } from 'react-toastify'
 
 
 function App() {

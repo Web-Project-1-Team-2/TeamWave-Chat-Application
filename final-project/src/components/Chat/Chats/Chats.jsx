@@ -6,9 +6,9 @@ import { Box, Button, Grid, IconButton, TextField, Typography } from '@mui/mater
 import { ref } from 'firebase/database';
 import { useContext, useEffect, useState, useRef } from 'react';
 import { useListVals } from 'react-firebase-hooks/database';
-import { db } from '../../config/firebase-config';
-import { AppContext } from '../../context/authContext';
-import { addMessageToChannel } from '../../services/channel.service';
+import { db } from '../../../config/firebase-config';
+import { AppContext } from '../../../context/authContext';
+import { addMessageToChannel } from '../../../services/channel.service';
 
 const Chats = ({ id }) => {
 

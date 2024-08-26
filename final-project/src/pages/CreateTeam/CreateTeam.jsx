@@ -4,18 +4,28 @@ import { Box, Typography, TextField, Button, List, ListItem, Avatar } from "@mui
 import { useListVals } from 'react-firebase-hooks/database';
 import { ref } from "firebase/database";
 import { db } from "../../config/firebase-config";
-import UserCard from "../../components/UserCard/UserCard";
+import UserCard from "../../components/User/UserCard/UserCard";
 import { createTeam } from "../../services/teams.service";
 import { constrains } from "../../common/constraints";
+import { notifyError, notifySuccess } from "../../services/notification.service";
 
 const CreateTeam = () => {
     const { userData } = useContext(AppContext);
+
     const [data, setData] = useState({});
+
     const [teamName, setTeamName] = useState('');
     const [searchMember, setSearchMember] = useState('');
+
     const [teamMembers, setTeamMembers] = useState({});
+
     const [userList] = useListVals(ref(db, 'users'));
+
     const [teamAvatar, setTeamAvatar] = useState(null);
+    const [currAvatar, setCurrAvatar] = useState(null);
+
+    console.log(teamMembers);
+    
 
     useEffect(() => {
         if (!userData) return;
@@ -31,12 +41,14 @@ const CreateTeam = () => {
         }
         try {
             await createTeam(teamName, teamMembers, data.username, teamAvatar);
-            alert('Team created successfully');
+            notifySuccess('Team created successfully');
             setTeamName('');
             setTeamMembers({});
             setTeamAvatar(null);
+            setCurrAvatar(null);
         } catch (error) {
             console.log(error);
+            notifyError('Failed to create team');
         }
     }
 
@@ -45,10 +57,12 @@ const CreateTeam = () => {
         if (file) {
             const reader = new FileReader();
             reader.onload = (e) => {
-                setTeamAvatar(e.target.result);
+                setCurrAvatar(e.target.result);
             };
             reader.readAsDataURL(file);
         }
+
+        setTeamAvatar(file);
     };
 
     return (
@@ -57,7 +71,7 @@ const CreateTeam = () => {
 
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                 <Avatar
-                    src={teamAvatar}
+                    src={currAvatar}
                     sx={{ width: 100, height: 100, mr: 2 }}
                 >
                     {!teamAvatar && (teamName ? teamName[0].toUpperCase() : 'T')}

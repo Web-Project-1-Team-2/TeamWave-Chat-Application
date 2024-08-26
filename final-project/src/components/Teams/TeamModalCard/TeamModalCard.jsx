@@ -1,21 +1,14 @@
 import {
-  Avatar,
   Box,
   Card,
-  CardContent,
-  CardHeader,
   Modal,
   Stack,
   Typography,
 } from "@mui/material";
 import { styleModal } from "./TeamModalCardStyling";
 import PropTypes from 'prop-types';
-import { useListVals } from "react-firebase-hooks/database";
-import { ref } from "firebase/database";
-import { db } from "../../config/firebase-config";
-import { useEffect, useState } from "react";
 
-function TeamModalCard({ open, handleClose, avatar, teamNames, teamMembers, teamChannels }) {
+function TeamModalCard({ open, handleClose, teamMembers, teamChannels }) {
 
 
   return (
@@ -67,12 +60,12 @@ function TeamModalCard({ open, handleClose, avatar, teamNames, teamMembers, team
 }
 
 TeamModalCard.propTypes = {
+    open: PropTypes.bool,
+    handleClose: PropTypes.func,
     avatar: PropTypes.string,
     teamNames: PropTypes.string,
     teamMembers: PropTypes.object,
     teamChannels:PropTypes.object
-    
-    
 };
 
 export default TeamModalCard;

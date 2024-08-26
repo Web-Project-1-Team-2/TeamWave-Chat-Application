@@ -3,11 +3,11 @@ import { useParams } from 'react-router-dom';
 import { AppContext } from '../../context/authContext';
 import { Box, Grid, Typography } from '@mui/material';
 import Divider from '@mui/material/Divider';
-import Chats from '../../components/Chats/Chats';
+import Chats from '../../components/Chat/Chats/Chats';
 import { useObjectVal } from 'react-firebase-hooks/database';
 import { ref } from 'firebase/database';
 import { db } from '../../config/firebase-config';
-import ChatDetailsMembers from '../../components/ChatDetailsMembers/ChatDetailsMembers';
+import ChatDetailsMembers from '../../components/Chat/ChatDetailsMembers/ChatDetailsMembers';
 
 const ChannelChatPage = () => {
 
