@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/authContext";
-import { Avatar, Box, Button, IconButton, Stack, Typography } from "@mui/material";
+import { Avatar, Box, IconButton, Stack, Typography } from "@mui/material";
 import UploadAvatar from "../../components/User/UploadAvatar/UploadAvatar";
 import UpdateLastName from "../../components/User/UpdateLastName/UpdateLastName";
 import { useListVals, useObjectVal } from "react-firebase-hooks/database";
@@ -9,6 +9,8 @@ import { db } from "../../config/firebase-config";
 import UpdateFirstName from "../../components/User/UpdateFirstName/UpdateFirstName";
 import EditIcon from "@mui/icons-material/Edit";
 import TeamOwnerCard from "../../components/Teams/TeamOwnerCard/TeamOwnerCard";
+import { changeTeamAvatar } from "./ProfilePageStyling";
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 
 const Profile = () => {
 
@@ -34,6 +36,9 @@ const Profile = () => {
   const [openLastName, setOpenLastName] = useState(false);
   const handleOpenLastName = () => setOpenLastName(true);
   const handleCloseLastName = () => setOpenLastName(false);
+
+  const [isHovering, setIsHovering] = useState(false);
+  const toggleIsHovering = () => setIsHovering(!isHovering);
 
   const [profile, loadingProfile] = useObjectVal(
     ref(db, `users/${userData?.username}`)
@@ -82,9 +87,9 @@ const Profile = () => {
             sx={{ mb: "150px" }}
           >
             <Avatar
+              onMouseEnter={toggleIsHovering}
               src={profileState.avatar}
-              sx={{ width: 150, height: 150, mr: 2, cursor: "pointer" }}
-              onClick={handleOpen}
+              sx={{ width: 200, height: 200 }}
             >
               {!profileState.avatar &&
                 (profileState.firstName
@@ -92,6 +97,14 @@ const Profile = () => {
                   profileState.lastName[0].toUpperCase()
                   : "A")}
             </Avatar>
+            {isHovering &&
+              <div
+                style={changeTeamAvatar}
+                onMouseLeave={toggleIsHovering}
+                onClick={handleOpen}>
+                <AddPhotoAlternateIcon sx={{ fontSize: 50 }} />
+              </div>
+            }
 
             <Box
               display="flex"
