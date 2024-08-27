@@ -52,6 +52,8 @@ function App() {
               <Route path='/createTeam' element={<CreateTeam />} />
               <Route path="/team/:teamId" element={<TeamPage />} />
               <Route path='/channel/:channelId' element={<ChannelChatPage />} />
+
+              <Route path='/teams/:teamId' element={<TeamPage />} />
             </Routes>
           </ContentContainer>
         </NavBar>) : (

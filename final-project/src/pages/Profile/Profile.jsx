@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/authContext";
-import { Avatar, Box, IconButton, Stack, Typography } from "@mui/material";
+import { Avatar, Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import UploadAvatar from "../../components/User/UploadAvatar/UploadAvatar";
 import UpdateLastName from "../../components/User/UpdateLastName/UpdateLastName";
 import { useListVals, useObjectVal } from "react-firebase-hooks/database";
@@ -160,6 +160,7 @@ const Profile = () => {
                 teamName={team.name}
                 teamMembers={team.members}
                 teamChannels={team.channels}
+                teamId={team.id}
               />
             ))}
           </Box>

@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 
-import { Avatar, Card, CardActionArea, Grid, Typography } from "@mui/material";
+import { Avatar, Button, Card, CardActionArea, Grid, Typography } from "@mui/material";
 import { useState } from 'react';
 import TeamModalCard from '../TeamModalCard/TeamModalCard';
 
-function TeamOwnerCard({avatar,teamName, teamMembers, teamChannels}) {
+function TeamOwnerCard({avatar,teamName, teamMembers, teamChannels, teamId}) {
     const [open, setOpen] = useState(false);
     const handleOpenModal = () => setOpen(true);
     const handleCloseModal =() => setOpen(false);
@@ -48,6 +48,7 @@ function TeamOwnerCard({avatar,teamName, teamMembers, teamChannels}) {
             teamNames={teamName}
             teamMembers={teamMembers}
             teamChannels={teamChannels}
+            teamId={teamId}
             />
         </Card >
     )
@@ -58,9 +59,8 @@ TeamOwnerCard.propTypes = {
     avatar: PropTypes.string,
     teamName: PropTypes.string,
     teamMembers: PropTypes.object,
-    teamChannels:PropTypes.object
-    
-    
+    teamChannels:PropTypes.object,
+    teamId:PropTypes.string, 
 };
 
 export default TeamOwnerCard
