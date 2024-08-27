@@ -6,8 +6,11 @@ import { deleteTeamMember } from '../../../services/teams.service';
 import { useContext } from 'react';
 import { AppContext } from '../../../context/authContext';
 import { notifyError, notifySuccess } from '../../../services/notification.service';
+import { useNavigate } from 'react-router-dom';
 
 const TeamUserCard = ({ avatar, username, id, owner, teamId }) => {
+
+    const navigate = useNavigate();
 
     const { userData } = useContext(AppContext);
 
@@ -23,6 +26,14 @@ const TeamUserCard = ({ avatar, username, id, owner, teamId }) => {
         }
     };
 
+    const handleGoToProfile = () => {
+        if(username === userData?.username) {
+            navigate('/profile');
+            return;
+        }
+        navigate(`/user/${username}`);
+    }
+
     return (
         <Card sx={{ margin: '0 0 16px 0', width: '100%', maxHeight: 100, p: 2 }}>
             <Grid container
@@ -33,7 +44,7 @@ const TeamUserCard = ({ avatar, username, id, owner, teamId }) => {
                 }>
 
                 <Grid item xs={10} sx={{ width: '100%' }}>
-                    <CardActionArea >
+                    <CardActionArea  onClick={handleGoToProfile}>
                         <Grid container
                             direction={'row'}
                             justifyContent={'space-around'}

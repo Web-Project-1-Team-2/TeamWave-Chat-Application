@@ -100,7 +100,7 @@ const CreateTeam = () => {
             />
             <Box sx={{
                 width: '50%',
-                height: '50vh',
+                height: '40vh',
                 overflow: 'auto',
                 bgcolor: '#CCC',
                 display: 'flex',

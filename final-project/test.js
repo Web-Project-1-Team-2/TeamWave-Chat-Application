@@ -20,3 +20,6 @@ const chats = {
 
     }
 }
+
+
+console.log(isNaN('hello'))

@@ -14,6 +14,7 @@ import Profile from './pages/Profile/Profile'
 import CreateTeam from './pages/CreateTeam/CreateTeam'
 import TeamPage from './pages/TeamPage/TeamPage'
 import ChannelChatPage from './pages/ChannelChatPage/ChannelChatPage'
+import UserProfile from './pages/UserProfile/UserProfile'
 
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
               <Route path='/createTeam' element={<CreateTeam />} />
               <Route path="/team/:teamId" element={<TeamPage />} />
               <Route path='/channel/:channelId' element={<ChannelChatPage />} />
+              <Route path='/user/:username' element={<UserProfile />} />
             </Routes>
           </ContentContainer>
         </NavBar>) : (

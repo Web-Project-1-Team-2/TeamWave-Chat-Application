@@ -10,7 +10,7 @@ function TeamOwnerCard({avatar,teamName, teamMembers, teamChannels}) {
     const handleCloseModal =() => setOpen(false);
 
     return (
-    <Card sx={{ margin: '0 0 16px 0', width: '100%', maxHeight: 100, p: 2 }}>
+    <Card sx={{ margin: '0 0 16px 0', width: '100%', maxHeight: 100}}>
             <Grid container
                 direction={'row'}
                 justifyContent={'center'}
@@ -18,7 +18,7 @@ function TeamOwnerCard({avatar,teamName, teamMembers, teamChannels}) {
                 sx={{ width: '100%', height: '100%' }
                 }>
 
-                <Grid item xs={10} sx={{ width: '100%' }}>
+                <Grid item xs={10} sx={{ width: '100%', padding: '16px 0'}}>
                     <CardActionArea onClick={handleOpenModal}>
                         <Grid container
                             direction={'row'}

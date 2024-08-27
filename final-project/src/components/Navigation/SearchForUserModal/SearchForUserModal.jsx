@@ -68,7 +68,8 @@ const SearchForUserModal = ({ open, toggleModal }) => {
                                                 firstName={user.firstName} 
                                                 lastName={user.lastName} 
                                                 email={user.email} 
-                                                id={user.uid} />
+                                                id={user.uid} 
+                                                toggleModal={toggleModal}/>
                                             </ListItem>
                                         ))}
                                 </List>
