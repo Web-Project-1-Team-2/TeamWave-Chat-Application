@@ -1,10 +1,15 @@
 import { Avatar, Box, Grid, Paper, Typography } from '@mui/material';
+import { ref } from 'firebase/database';
 import moment from 'moment';
 import PropTypes from 'prop-types';
+import { useObjectVal } from 'react-firebase-hooks/database';
+import { db } from '../../../config/firebase-config';
 
-const ChatBox = ({ text, avatar, username, timestamp, isCurrUser }) => {
+const ChatBox = ({ text, username, timestamp, isCurrUser }) => {
 
     const flexDir = isCurrUser ? 'row-reverse' : 'row';
+
+    const [userInformation, loading] = useObjectVal(ref(db, `users/${username}`));
 
 
     const timeAgoUsingMoment = (date) => {
@@ -12,6 +17,8 @@ const ChatBox = ({ text, avatar, username, timestamp, isCurrUser }) => {
     }
     
     const timeAgo = timeAgoUsingMoment(timestamp);
+
+    if (loading) return <div>Loading...</div>;
 
     return (
         <Box sx={{
@@ -27,7 +34,7 @@ const ChatBox = ({ text, avatar, username, timestamp, isCurrUser }) => {
         }}>
             <Avatar
                 alt="Sender Avatar"
-                src={avatar}
+                src={userInformation?.avatar}
                 sx={{
                     width: 45,
                     height: 45,
@@ -59,7 +66,6 @@ const ChatBox = ({ text, avatar, username, timestamp, isCurrUser }) => {
 
 ChatBox.propTypes = {
     text: PropTypes.string,
-    avatar: PropTypes.string,
     username: PropTypes.string,
     timestamp: PropTypes.number,
     isCurrUser: PropTypes.bool

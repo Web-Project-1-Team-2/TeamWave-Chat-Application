@@ -48,7 +48,6 @@ export const addMessageToChannel = async (channelId, message) => {
 
     const newMessage = {
         author: message.author,
-        authorAvatar: message.authorAvatar || '',
         text: trimmedMessage,
         timestamp: Date.now(),
     }
