@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Card,
   Modal,
   Stack,
@@ -7,9 +8,11 @@ import {
 } from "@mui/material";
 import { styleModal } from "./TeamModalCardStyling";
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 
-function TeamModalCard({ open, handleClose, teamMembers, teamChannels }) {
+function TeamModalCard({ open, handleClose, teamMembers, teamChannels, teamId }) {
 
+  const navigate = useNavigate()
 
   return (
     <Modal 
@@ -54,6 +57,7 @@ function TeamModalCard({ open, handleClose, teamMembers, teamChannels }) {
           </Box>
           </Box>
           </Stack>
+          <Button onClick={()=> navigate(`/teams/${teamId}`)}>Go to Team Page</Button>
         </Card>
     </Modal>
   );
@@ -65,7 +69,8 @@ TeamModalCard.propTypes = {
     avatar: PropTypes.string,
     teamNames: PropTypes.string,
     teamMembers: PropTypes.object,
-    teamChannels:PropTypes.object
+    teamChannels:PropTypes.object,
+    teamId:PropTypes.string,
 };
 
 export default TeamModalCard;

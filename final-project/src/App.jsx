@@ -53,6 +53,8 @@ function App() {
               <Route path='/createTeam' element={<CreateTeam />} />
               <Route path="/team/:teamId" element={<TeamPage />} />
               <Route path='/channel/:channelId' element={<ChannelChatPage />} />
+
+              <Route path='/teams/:teamId' element={<TeamPage />} />
               <Route path='/user/:username' element={<UserProfile />} />
             </Routes>
           </ContentContainer>
