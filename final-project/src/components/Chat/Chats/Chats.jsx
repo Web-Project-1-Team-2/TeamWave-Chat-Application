@@ -14,7 +14,7 @@ import {
   DialogContent,
   Badge,
 } from "@mui/material";
-import { ref } from "firebase/database";
+import { ref, set } from "firebase/database";
 import { useContext, useEffect, useState, useRef } from "react";
 import { useListVals } from "react-firebase-hooks/database";
 import { db } from "../../../config/firebase-config";
@@ -22,6 +22,7 @@ import { AppContext } from "../../../context/authContext";
 import { addMessageToChannel } from "../../../services/channel.service";
 import ImageIcon from "@mui/icons-material/Image";
 import CloseIcon from "@mui/icons-material/Close";
+import { notifyError } from "../../../services/notification.service";
 
 const Chats = ({ id }) => {
   const { userData } = useContext(AppContext);
@@ -32,7 +33,11 @@ const Chats = ({ id }) => {
   const [newMessage, setNewMessage] = useState({
     text: "",
     author: userData?.username,
+    image: '',
   });
+  
+  console.log(newMessage);
+  
 
   const [currImage, setCurrImage] = useState(null);
 
@@ -45,7 +50,7 @@ const Chats = ({ id }) => {
   };
   const handleRemoveImage = () => {
     setCurrImage(null);
-    setNewMessage({ ...newMessage, image: null });
+    setNewMessage({ ...newMessage, image: '' });
   };
 
   const handleImage = (event) => {
@@ -58,7 +63,7 @@ const Chats = ({ id }) => {
       reader.readAsDataURL(file);
     }
 
-    // setImage(file);
+    setNewMessage({ ...newMessage, image: file });
   };
 
   const [emojiPickerState, setEmojiPickerState] = useState(false);
@@ -78,7 +83,6 @@ const Chats = ({ id }) => {
     setNewMessage({
       ...newMessage,
       author: userData.username,
-      authorAvatar: userData.avatar,
     });
   }, [userData]);
 
@@ -97,15 +101,18 @@ const Chats = ({ id }) => {
   }, [messagesData]);
 
   const sendMessage = async () => {
-    if (newMessage.text.trim().length === 0) {
-      alert("Message cannot be empty");
+    if (newMessage.text.trim().length === 0 && !newMessage.image) {
+      notifyError("Message cannot be empty");
+      return;
     }
 
     try {
       await addMessageToChannel(id, newMessage);
-      setNewMessage({ ...newMessage, text: "" });
+      setNewMessage({ ...newMessage, text: "", image: '' });
+      setCurrImage(null);
     } catch (error) {
       console.error(error);
+      notifyError("Failed to send message");      
     }
   };
 
@@ -120,7 +127,7 @@ const Chats = ({ id }) => {
     toggleEmojiPicker();
   };
 
-  
+
 
   if (loading) {
     return <div>Loading...</div>;
@@ -165,6 +172,7 @@ const Chats = ({ id }) => {
                       username={message.author}
                       timestamp={message.timestamp}
                       isCurrUser={userData?.username === message.author}
+                      image={message.image || null}
                     />
                   </Grid>
                 );
@@ -189,19 +197,15 @@ const Chats = ({ id }) => {
                 InputProps={{
                   startAdornment: currImage && (
                     <InputAdornment position="start">
-                      <Badge
-                        badgeContent={
-                          <IconButton
-                            size="small"
-                            onClick={handleRemoveImage}
+                      <Badge badgeContent={
+                          <IconButton size="small" onClick={handleRemoveImage}
                             sx={{
                               fontSize: "10px",
                               color: "white",
                               backgroundColor: "red",
                               "&:hover": { backgroundColor: "darkred" },
-                            }}
-                          >
-                            <CloseIcon fontSize="inherit"  />
+                            }}>
+                            <CloseIcon fontSize="inherit" />
                           </IconButton>
                         }
                         overlap="circular"
@@ -210,9 +214,7 @@ const Chats = ({ id }) => {
                           horizontal: "right",
                         }}
                       ></Badge>
-                      <img
-                        src={currImage}
-                        alt="Selected"
+                      <img src={currImage} alt="Selected"
                         style={{
                           width: 40,
                           height: 40,

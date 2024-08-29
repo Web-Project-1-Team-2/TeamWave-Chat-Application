@@ -22,7 +22,6 @@ function TeamModalCard({ open, handleClose, teamMembers, teamChannels, teamId })
         <Card sx={styleModal }>
           <Stack direction="row" spacing={12}>
             <Box alignItems="flex-start">
-                {console.log(teamChannels)}
           <Typography variant="h6">Team channels:</Typography>
           {teamChannels ? (
             <ul>

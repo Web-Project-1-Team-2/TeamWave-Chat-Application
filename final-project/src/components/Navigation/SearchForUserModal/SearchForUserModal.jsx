@@ -24,10 +24,12 @@ const SearchForUserModal = ({ open, toggleModal }) => {
     const [users, loadingUsers] = useListVals(ref(db, 'users'));
     const [allOtherUsers, setAllOtherUsers] = useState([]);
 
+    
+
     useEffect(() => {
         if (!users) return;
-        const allOtherUsers = users.filter(user => user.username !== userData?.username);
-        setAllOtherUsers(allOtherUsers);
+        const allOtherUsersArr = users.filter(user => user.username !== userData?.username);
+        setAllOtherUsers(allOtherUsersArr);
     }, [users]);
 
     if (loadingUsers) return <div>Loading...</div>;

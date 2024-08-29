@@ -6,7 +6,7 @@ import SignIn from './pages/SingIn/SignIn'
 import { useEffect, useState } from 'react'
 import { getUserData } from './services/user.service'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { auth} from './config/firebase-config'
+import { auth, db} from './config/firebase-config'
 import NavBar from './components/Navigation/NavBar/NavBar';
 import UserBoard from './pages/UserBoard/UserBoard';
 import Register from './pages/Register/Register';
@@ -16,6 +16,8 @@ import CreateTeam from './pages/CreateTeam/CreateTeam'
 import TeamPage from './pages/TeamPage/TeamPage'
 import ChannelChatPage from './pages/ChannelChatPage/ChannelChatPage'
 import UserProfile from './pages/UserProfile/UserProfile'
+import { ref } from 'firebase/database'
+import { onDisconnect, onValue, set } from 'firebase/database'
 
 
 function App() {
@@ -43,7 +45,16 @@ function App() {
     }, 100)
   }, [user])
 
+//   const userStatusDatabaseRef = ref(db, `users/${state.userData?.username}/status`);
+//   const connectedRef = ref(db, ".info/connected");
 
+//   onValue(connectedRef, (snapshot) => {
+//     if (!state.userData) return;
+//     if (snapshot.val() === true) {
+//         set(userStatusDatabaseRef, "online")
+//     }
+//     onDisconnect(userStatusDatabaseRef).set("offline")
+// })
 
   return (
     <AppContext.Provider value={{ ...state, setAppState: setAppState }}>

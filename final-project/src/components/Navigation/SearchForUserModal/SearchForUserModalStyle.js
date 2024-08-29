@@ -8,6 +8,7 @@ export const searchUserModalStyle = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: 1800,
 };
 
 export const searchUserBoxStyle = {
@@ -20,6 +21,7 @@ export const searchUserBoxStyle = {
     justifyContent: 'space-between',
     alignItems: 'center',
     gap: 2,
+
 }
 
 export const searchUserButtonSection = {

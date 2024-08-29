@@ -43,7 +43,7 @@ function NavBar({ children }) {
 
 
     const [messages] = useListVals(ref(db, 'channels'));
-    const [undreadMessages, setUnreadMessages] = useState(false);
+    const [unreadMessages, setUnreadMessages] = useState(false);
 
 
     const [open, setOpen] = useState(false);
@@ -72,8 +72,8 @@ function NavBar({ children }) {
 
         const userChannels = messages.filter(channel => channel.members[userData?.username] && 'id' in channel);
         const isUnread = userChannels.some(channel => {
-            if(channel.messages === undefined) return false;
-    
+            if (channel.messages === undefined) return false;
+
             const lastSeenUser = channel.members[userData?.username];
             const channelMessages = Object.values(channel.messages);
 
@@ -89,16 +89,19 @@ function NavBar({ children }) {
         setData({ ...userData, username: userData.username });
     }, [userData]);
 
-
-    onValue(connectedRef, (snapshot) => {
+    useEffect(() => {
         if (!userData) return;
-        setTimeout(()=>{
-      if (snapshot.val() === true) {
-        set(userStatusDatabaseRef, "online")
-      }
-      onDisconnect(userStatusDatabaseRef).set("offline")
-      })
-    },100)
+
+        onValue(connectedRef, (snapshot) => {
+            if (!userData) return;
+            if (snapshot.val() === true) {
+                set(userStatusDatabaseRef, "online")
+            }
+            onDisconnect(userStatusDatabaseRef).set("offline")
+        })
+        
+    }, [userData])
+
 
 
     return (
@@ -108,12 +111,12 @@ function NavBar({ children }) {
                 <Drawer sx={sideBarStyles} variant="permanent" anchor="left">
                     <Box>
                         <IconButton onClick={!open ? handleDrawerOpen : handleDrawerClose} aria-label="open-drawer" size="large" sx={{ margin: '20px auto 20px auto', }}>
-                            {undreadMessages ? (
+                            {unreadMessages ? (
                                 <Box sx={{ position: 'relative', width: '30px', height: '30px' }}>
                                     <MenuIcon fontSize='inherit' sx={{ zIndex: 1000 }} />
                                     <Box sx={{ borderRadius: '50%', bgcolor: '#d32f2f', width: '10px', height: '10px', position: 'absolute', right: '1px', bottom: '6px', zIndex: 1500 }} />
                                 </Box>
-                            ) : <MenuIcon fontSize='inherit' sx={{ zIndex: 1000 }} /> }
+                            ) : <MenuIcon fontSize='inherit' sx={{ zIndex: 1000 }} />}
 
                         </IconButton>
                         <IconButton onClick={() => navigate('/')} aria-label="home" size="large" sx={{ margin: '0 auto 20px auto' }}>

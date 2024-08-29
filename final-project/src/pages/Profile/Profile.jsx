@@ -4,7 +4,7 @@ import { Avatar, Box, IconButton, Stack, Typography } from "@mui/material";
 import UploadAvatar from "../../components/User/UploadAvatar/UploadAvatar";
 import UpdateLastName from "../../components/User/UpdateLastName/UpdateLastName";
 import { useListVals, useObjectVal } from "react-firebase-hooks/database";
-import {ref} from "firebase/database";
+import { ref } from "firebase/database";
 import { db } from "../../config/firebase-config";
 import UpdateFirstName from "../../components/User/UpdateFirstName/UpdateFirstName";
 import EditIcon from "@mui/icons-material/Edit";
@@ -16,6 +16,8 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 const Profile = () => {
 
   const { userData } = useContext(AppContext);
+  console.log(userData);
+  
 
   const [teams] = useListVals(ref(db, `teams`));
   const [myTeams, setMyTeams] = useState([]);
@@ -51,8 +53,10 @@ const Profile = () => {
     username: "",
     firstName: "",
     lastName: "",
-    status: "online"
+    status: "",
   });
+
+
 
 
   useEffect(() => {
@@ -86,15 +90,16 @@ const Profile = () => {
           <Box
             display="flex"
             alignItems="center"
+            position={'relative'}
             mb={2}
             gap={3}
             sx={{ mb: "150px" }}
           >
- 
+
             <Avatar
               onMouseEnter={toggleIsHovering}
               src={profileState.avatar}
-              sx={{ width: 200, height: 200 }}
+              sx={{ width: 200, height: 200, zIndex: 1000, position: 'relative' }}
             >
               {!profileState.avatar &&
                 (profileState.firstName
@@ -110,6 +115,13 @@ const Profile = () => {
                 <AddPhotoAlternateIcon sx={{ fontSize: 50 }} />
               </div>
             }
+            {profile.status === "online" &&
+              <Box
+                position={'absolute'}
+                bgcolor={'green'}
+                borderRadius={'50%'}
+                sx={{ zIndex: 1500, width: '40px', height: '40px', right: '225px', bottom: '10px' }} />
+            }
 
             <Box
               display="flex"
@@ -121,16 +133,16 @@ const Profile = () => {
               <Stack>
                 <Typography>
                   First Name: {profileState.firstName}
-                  <IconButton>
-                    <EditIcon cursor="pointer" onClick={handleOpenFirstName} />
+                  <IconButton onClick={handleOpenFirstName} >
+                    <EditIcon cursor="pointer" />
                   </IconButton>
                 </Typography>
               </Stack>
               <Stack>
                 <Typography>
                   Last Name: {profileState.lastName}
-                  <IconButton>
-                    <EditIcon cursor="pointer" onClick={handleOpenLastName} />
+                  <IconButton onClick={handleOpenLastName}>
+                    <EditIcon cursor="pointer" />
                   </IconButton>
                 </Typography>
               </Stack>
@@ -140,21 +152,21 @@ const Profile = () => {
           <UploadAvatar
             open={open}
             handleClose={handleClose}
-            avatar={profileState.avatar}
-            username={profileState.username}
-            uid={profileState.uid}
+            avatar={userData?.avatar}
+            username={userData?.username}
+            uid={userData?.uid}
           />
           <UpdateFirstName
             open={openFirstName}
             handleClose={handleCloseFirstName}
-            username={profileState.username}
-            firstName={profileState.firstName}
+            username={userData?.username}
+            firstName={userData.firstName}
           />
           <UpdateLastName
             open={openLastName}
             handleClose={handleCloseLastName}
-            username={profileState.username}
-            lastName={profileState.lastName}
+            username={userData?.username}
+            lastName={userData?.lastName}
           />
         </Box>
         <Stack direction="column" spacing={1} width="100%" alignItems="center">
@@ -173,7 +185,7 @@ const Profile = () => {
           >
             {myTeams.map((team) => (
               <TeamOwnerCard
-                key={team.key}
+                key={team.id}
                 avatar={team.avatar}
                 teamName={team.name}
                 teamMembers={team.members}

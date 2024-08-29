@@ -1,3 +1,5 @@
+
+
 export const changeTeamAvatar = {
     position: 'absolute',
     width: '200px',
@@ -11,4 +13,5 @@ export const changeTeamAvatar = {
     transition: 'opacity 0.3s',
     borderRadius: '50%',
     cursor: 'pointer',
+    zIndex: 1200,
 }

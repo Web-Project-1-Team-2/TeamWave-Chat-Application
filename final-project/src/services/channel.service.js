@@ -1,5 +1,6 @@
 import { get, ref, update, push, remove } from 'firebase/database';
 import { db } from '../config/firebase-config.js';
+import { uploadChannelImage } from './storage.service.js';
 
 export const addMemberToChannel = async (channelId, username) => {
     const currMembers = await get(ref(db, `channels/${channelId}/members`));
@@ -46,11 +47,17 @@ export const createChannel = async (teamId, channelName, channelMembers, channel
 export const addMessageToChannel = async (channelId, message) => {
     const trimmedMessage = message.text.trim();
 
+    const imageRef = await uploadChannelImage(message.image, channelId);
+    console.log(imageRef);
+
     const newMessage = {
         author: message.author,
         text: trimmedMessage,
+        image: {...imageRef} || 'no image',
         timestamp: Date.now(),
     }
+
+    console.log(newMessage);
 
     const result = await push(ref(db, `channels/${channelId}/messages`), newMessage);
     const id = result.key;

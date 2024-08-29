@@ -12,7 +12,6 @@ import PropTypes from "prop-types";
 import { styleModal } from "../UpdateFirstName/UpdateFirstNameStyling";
 
 function UpdateLastName({lastName, username, handleClose, open}) {
-  console.log(lastName);
 
   const [newLastName, setNewLastName] = useState('');
   
