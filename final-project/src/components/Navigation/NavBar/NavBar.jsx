@@ -11,7 +11,7 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import { logoutUser } from '../../../services/auth.service';
 import { AppContext } from '../../../context/authContext';
 import { useNavigate } from 'react-router-dom';
-import { ref } from 'firebase/database';
+import { onDisconnect, onValue, ref, set } from 'firebase/database';
 import { db } from '../../../config/firebase-config';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -35,6 +35,9 @@ function NavBar({ children }) {
         username: '',
     });
 
+    const userStatusDatabaseRef = ref(db, `users/${userData?.username}/status`);
+    const connectedRef = ref(db, ".info/connected");
+
     const [searchModal, setSearchModal] = useState(false);
     const toggleSearchModal = () => setSearchModal(!searchModal);
 
@@ -54,6 +57,7 @@ function NavBar({ children }) {
 
     const logout = async () => {
         await logoutUser();
+        await set(userStatusDatabaseRef, "offline");
         navigate('/');
         setAppState({ user: null, userData: null });
     };
@@ -63,6 +67,17 @@ function NavBar({ children }) {
         if (!userData) return;
         setData({ ...userData, username: userData.username });
     }, [userData]);
+
+
+    onValue(connectedRef, (snapshot) => {
+        if (!userData) return;
+        setTimeout(()=>{
+      if (snapshot.val() === true) {
+        set(userStatusDatabaseRef, "online")
+      }
+      onDisconnect(userStatusDatabaseRef).set("offline")
+      })
+    },100)
 
 
     return (

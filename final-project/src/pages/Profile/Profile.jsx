@@ -4,13 +4,14 @@ import { Avatar, Box, IconButton, Stack, Typography } from "@mui/material";
 import UploadAvatar from "../../components/User/UploadAvatar/UploadAvatar";
 import UpdateLastName from "../../components/User/UpdateLastName/UpdateLastName";
 import { useListVals, useObjectVal } from "react-firebase-hooks/database";
-import { ref } from "firebase/database";
+import {ref} from "firebase/database";
 import { db } from "../../config/firebase-config";
 import UpdateFirstName from "../../components/User/UpdateFirstName/UpdateFirstName";
 import EditIcon from "@mui/icons-material/Edit";
 import TeamOwnerCard from "../../components/Teams/TeamOwnerCard/TeamOwnerCard";
 import { changeTeamAvatar } from "./ProfilePageStyling";
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+
 
 const Profile = () => {
 
@@ -50,7 +51,9 @@ const Profile = () => {
     username: "",
     firstName: "",
     lastName: "",
+    status: "online"
   });
+
 
   useEffect(() => {
     if (!profile) return;
@@ -61,6 +64,7 @@ const Profile = () => {
       lastName: profile.lastName || "",
     });
   }, [profile]);
+
 
   if (loadingProfile) return <div>Loading...</div>;
 
@@ -86,6 +90,7 @@ const Profile = () => {
             gap={3}
             sx={{ mb: "150px" }}
           >
+ 
             <Avatar
               onMouseEnter={toggleIsHovering}
               src={profileState.avatar}

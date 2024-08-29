@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import './App.css'
 import { Route, Routes } from 'react-router-dom'
 import { AppContext } from './context/authContext'
@@ -5,7 +6,7 @@ import SignIn from './pages/SingIn/SignIn'
 import { useEffect, useState } from 'react'
 import { getUserData } from './services/user.service'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { auth } from './config/firebase-config'
+import { auth} from './config/firebase-config'
 import NavBar from './components/Navigation/NavBar/NavBar';
 import UserBoard from './pages/UserBoard/UserBoard';
 import Register from './pages/Register/Register';
@@ -41,6 +42,8 @@ function App() {
         })
     }, 100)
   }, [user])
+
+
 
   return (
     <AppContext.Provider value={{ ...state, setAppState: setAppState }}>

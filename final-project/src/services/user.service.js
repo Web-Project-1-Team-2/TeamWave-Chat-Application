@@ -8,7 +8,7 @@ export const getUserByUsername = async (username) => {
 
 export const createUser = async (firstName, lastName, username, uid, email) => {
     return await set(ref(db, `users/${username}`), 
-        { firstName, lastName, username, uid, email, createdOn: new Date().toLocaleDateString()}
+        { firstName, lastName, username, uid, email, createdOn: new Date().toLocaleDateString(), status: 'online'}
     );
 };
 
