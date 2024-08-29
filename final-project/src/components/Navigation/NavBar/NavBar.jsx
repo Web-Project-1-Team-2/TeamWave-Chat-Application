@@ -27,7 +27,7 @@ import SearchForUserModal from '../../Navigation/SearchForUserModal/SearchForUse
 function NavBar({ children }) {
 
     const theme = useTheme();
-    
+
     const navigate = useNavigate();
 
     const { userData, setAppState } = useContext(AppContext);
@@ -37,6 +37,10 @@ function NavBar({ children }) {
 
     const [searchModal, setSearchModal] = useState(false);
     const toggleSearchModal = () => setSearchModal(!searchModal);
+
+
+    const [messages] = useListVals(ref(db, 'channels'));
+    const [undreadMessages, setUnreadMessages] = useState(false);
 
 
     const [open, setOpen] = useState(false);
@@ -58,6 +62,23 @@ function NavBar({ children }) {
         setAppState({ user: null, userData: null });
     };
 
+    useEffect(() => {
+        if (!messages) return;
+        if (!userData) return;
+
+        const userChannels = messages.filter(channel => channel.members[userData?.username] && 'id' in channel);
+        const isUnread = userChannels.some(channel => {
+            if(channel.messages === undefined) return false;
+    
+            const lastSeenUser = channel.members[userData?.username];
+            const channelMessages = Object.values(channel.messages);
+
+            return channelMessages.some(message => message.timestamp > lastSeenUser);
+        });
+
+        setUnreadMessages(isUnread);
+    }, [messages, userData])
+
 
     useEffect(() => {
         if (!userData) return;
@@ -71,8 +92,14 @@ function NavBar({ children }) {
                 <CssBaseline />
                 <Drawer sx={sideBarStyles} variant="permanent" anchor="left">
                     <Box>
-                        <IconButton onClick={!open ? handleDrawerOpen : handleDrawerClose} aria-label="open-drawer" size="large" sx={{ margin: '20px auto 20px auto' }}>
-                            <MenuIcon fontSize='inherit' />
+                        <IconButton onClick={!open ? handleDrawerOpen : handleDrawerClose} aria-label="open-drawer" size="large" sx={{ margin: '20px auto 20px auto', }}>
+                            {undreadMessages ? (
+                                <Box sx={{ position: 'relative', width: '30px', height: '30px' }}>
+                                    <MenuIcon fontSize='inherit' sx={{ zIndex: 1000 }} />
+                                    <Box sx={{ borderRadius: '50%', bgcolor: '#d32f2f', width: '10px', height: '10px', position: 'absolute', right: '1px', bottom: '6px', zIndex: 1500 }} />
+                                </Box>
+                            ) : <MenuIcon fontSize='inherit' sx={{ zIndex: 1000 }} /> }
+
                         </IconButton>
                         <IconButton onClick={() => navigate('/')} aria-label="home" size="large" sx={{ margin: '0 auto 20px auto' }}>
                             <HomeOutlinedIcon fontSize='inherit' />

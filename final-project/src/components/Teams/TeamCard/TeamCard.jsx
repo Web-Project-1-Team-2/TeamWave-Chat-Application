@@ -1,4 +1,6 @@
-import { Avatar, Card, CardActionArea, Collapse, Grid, Typography } from '@mui/material';
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
+import { Avatar, Box, Card, CardActionArea, Collapse, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import IconButton from '@mui/material/IconButton';
@@ -36,10 +38,29 @@ const TeamCard = ({ avatar, teamName, id }) => {
         setExpanded(!expanded);
     };
 
+    const [unreadMessages, setUnreadMessages] = useState(false);
+
     useEffect(() => {
         if (!userData) return;
         if (!channels) return;
-        const userChannels = channels.filter(channel => 
+        const userChannels = channels.filter(channel => channel.teamId === id && channel.members[userData?.username] && 'id' in channel);
+
+        const hasUnreadMessages = userChannels.some(channel => {
+
+            const lastSeenUser = channel.members[userData.username];
+            if (channel.messages === undefined) return false;
+            const channelMessages = Object.values(channel.messages);
+
+            return channelMessages.some(message => message.timestamp > lastSeenUser);
+        })
+
+        setUnreadMessages(hasUnreadMessages);
+    }, [userData, channels]);
+
+    useEffect(() => {
+        if (!userData) return;
+        if (!channels) return;
+        const userChannels = channels.filter(channel =>
             channel.teamId === id && channel.members[userData.username] && 'id' in channel);
         setTeamChannels(userChannels);
     }, [userData, channels]);
@@ -51,10 +72,14 @@ const TeamCard = ({ avatar, teamName, id }) => {
                 direction={'row'}
                 justifyContent={'center'}
                 alignItems='center'
-                sx={{ width: '100%', height: '100%' }
+                sx={{ width: '100%', height: '100%', gap: 0}
                 }>
-
-                <Grid item xs={10} sx={{ width: '100%' }}>
+                {unreadMessages &&
+                    <Grid item xs={1}>
+                        <Box sx={{ borderRadius: '50%', bgcolor: '#d32f2f', width: '15px', height: '15px' }} />
+                    </Grid>
+                }
+                <Grid item xs={unreadMessages ? 9 : 10} sx={{ width: '100%' }}>
                     <CardActionArea onClick={() => navigate(`/team/${id}`)}>
                         <Grid container
                             direction={'row'}
