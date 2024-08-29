@@ -195,12 +195,13 @@ const Chats = ({ id }) => {
                             size="small"
                             onClick={handleRemoveImage}
                             sx={{
+                              fontSize: "10px",
                               color: "white",
                               backgroundColor: "red",
                               "&:hover": { backgroundColor: "darkred" },
                             }}
                           >
-                            <CloseIcon fontSize="small" />
+                            <CloseIcon fontSize="inherit"  />
                           </IconButton>
                         }
                         overlap="circular"
