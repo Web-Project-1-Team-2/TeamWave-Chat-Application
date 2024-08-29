@@ -64,6 +64,10 @@ export const leaveChannel = async (channelId, username) => {
     await remove(userRef);
 }
 
+export const updateLastSeen = async (channelId, username) => {
+    await update(ref(db, `channels/${channelId}/members`), { [username]: Date.now() });
+}
+
 
 // export const addChannelToTeam = async (channelId, teamId,) => {
 //     const currChannels = await get(ref(db, `teams/${teamId}/channels`));

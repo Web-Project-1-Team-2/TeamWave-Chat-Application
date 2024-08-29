@@ -22,8 +22,6 @@ const Chats = ({ id }) => {
         author: userData?.username,
     });
 
-    console.log(newMessage.text);
-    
 
     const [emojiPickerState, setEmojiPickerState] = useState(false);
     const toggleEmojiPicker = () => setEmojiPickerState(!emojiPickerState);

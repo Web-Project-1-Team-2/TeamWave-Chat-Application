@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppContext } from '../../context/authContext';
 import { Box, Button, Grid, Typography } from '@mui/material';
@@ -9,7 +9,7 @@ import { ref } from 'firebase/database';
 import { db } from '../../config/firebase-config';
 import ChatDetailsMembers from '../../components/Chat/ChatDetailsMembers/ChatDetailsMembers';
 import { notifyError, notifySuccess } from '../../services/notification.service';
-import { leaveChannel } from '../../services/channel.service';
+import { leaveChannel, updateLastSeen } from '../../services/channel.service';
 import AddChannelMembers from '../../components/Channel/AddChannelMembers/AddChannelMembers';
 
 const ChannelChatPage = () => {
@@ -17,6 +17,7 @@ const ChannelChatPage = () => {
     const { channelId } = useParams();
     const { userData } = useContext(AppContext);
     const [channelData, loadingChannel] = useObjectVal(ref(db, `channels/${channelId}`));
+    const [messagesData] = useObjectVal(ref(db, `channels/${channelId}/messages`));
 
     const [addMembersModal, setAddMembersModal] = useState(false);
     const toggleAddMembersModal = () => setAddMembersModal(!addMembersModal);
@@ -41,6 +42,29 @@ const ChannelChatPage = () => {
             notifyError('Failed to leave channel');
         }
     }
+
+    useEffect(() => {
+        if (!messagesData) return;
+
+        (async () => {
+            try {
+                await updateLastSeen(channelId, userData?.username);
+            } catch (error) {
+                console.error(error)
+            }
+        })()
+
+        return () => {
+            (async () => {
+                try {
+                    await updateLastSeen(channelId, userData?.username);
+                } catch (error) {
+                    console.error(error)
+                }
+            })()
+        }
+
+    }, [messagesData])
 
     if (loadingChannel) {
         return <div>Loading...</div>
@@ -89,8 +113,8 @@ const ChannelChatPage = () => {
                     </Grid>
                 </Grid>
             </Box>
-            {addMembersModal && 
-                <AddChannelMembers 
+            {addMembersModal &&
+                <AddChannelMembers
                     open={addMembersModal}
                     toggleModal={toggleAddMembersModal}
                     channelId={channelId}
