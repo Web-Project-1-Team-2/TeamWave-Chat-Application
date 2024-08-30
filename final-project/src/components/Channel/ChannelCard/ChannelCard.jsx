@@ -24,7 +24,7 @@ const ChannelCard = ({ channelName, channelId }) => {
         if (!userData) return;
         if (!channelInfo) return;
 
-        const unreadMessages = channelMessages.filter(message => message.timestamp > channelInfo[userData.username] && 'id' in message);
+        const unreadMessages = channelMessages.filter(message => message.timestamp > channelInfo[userData.username].lastAtChannel && 'id' in message);
         setUnreadMessages(unreadMessages);
     }, [channelMessages, channelInfo, userData]);
 

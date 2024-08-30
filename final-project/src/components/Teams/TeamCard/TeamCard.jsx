@@ -47,7 +47,7 @@ const TeamCard = ({ avatar, teamName, id }) => {
 
         const hasUnreadMessages = userChannels.some(channel => {
 
-            const lastSeenUser = channel.members[userData.username];
+            const lastSeenUser = channel.members[userData.username].lastAtChannel;
             if (channel.messages === undefined) return false;
             const channelMessages = Object.values(channel.messages);
 

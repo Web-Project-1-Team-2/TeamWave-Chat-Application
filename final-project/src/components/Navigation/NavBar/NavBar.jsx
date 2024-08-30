@@ -74,7 +74,7 @@ function NavBar({ children }) {
         const isUnread = userChannels.some(channel => {
             if (channel.messages === undefined) return false;
 
-            const lastSeenUser = channel.members[userData?.username];
+            const lastSeenUser = channel.members[userData?.username].lastAtChannel;
             const channelMessages = Object.values(channel.messages);
 
             return channelMessages.some(message => message.timestamp > lastSeenUser);

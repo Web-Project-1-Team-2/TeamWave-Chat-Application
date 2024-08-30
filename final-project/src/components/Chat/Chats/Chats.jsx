@@ -14,7 +14,7 @@ import {
   DialogContent,
   Badge,
 } from "@mui/material";
-import { ref, set } from "firebase/database";
+import { ref } from "firebase/database";
 import { useContext, useEffect, useState, useRef } from "react";
 import { useListVals } from "react-firebase-hooks/database";
 import { db } from "../../../config/firebase-config";
@@ -30,14 +30,12 @@ const Chats = ({ id }) => {
   const [messages, loading] = useListVals(ref(db, `channels/${id}/messages`));
   const [messagesData, setMessagesData] = useState([]);
 
+
   const [newMessage, setNewMessage] = useState({
     text: "",
     author: userData?.username,
-    image: '',
+    image: null,
   });
-  
-  console.log(newMessage);
-  
 
   const [currImage, setCurrImage] = useState(null);
 
@@ -75,7 +73,10 @@ const Chats = ({ id }) => {
     // if (messagesEndRef.current) {
     //     messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
     // }
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+
+    }, 300)
   };
 
   useEffect(() => {
@@ -112,7 +113,7 @@ const Chats = ({ id }) => {
       setCurrImage(null);
     } catch (error) {
       console.error(error);
-      notifyError("Failed to send message");      
+      notifyError("Failed to send message");
     }
   };
 
@@ -172,7 +173,9 @@ const Chats = ({ id }) => {
                       username={message.author}
                       timestamp={message.timestamp}
                       isCurrUser={userData?.username === message.author}
-                      image={message.image || null}
+                      image={message?.image || null}
+                      messageId={message.id}
+                      chatId={id}
                     />
                   </Grid>
                 );
@@ -198,16 +201,16 @@ const Chats = ({ id }) => {
                   startAdornment: currImage && (
                     <InputAdornment position="start">
                       <Badge badgeContent={
-                          <IconButton size="small" onClick={handleRemoveImage}
-                            sx={{
-                              fontSize: "10px",
-                              color: "white",
-                              backgroundColor: "red",
-                              "&:hover": { backgroundColor: "darkred" },
-                            }}>
-                            <CloseIcon fontSize="inherit" />
-                          </IconButton>
-                        }
+                        <IconButton size="small" onClick={handleRemoveImage}
+                          sx={{
+                            fontSize: "10px",
+                            color: "white",
+                            backgroundColor: "red",
+                            "&:hover": { backgroundColor: "darkred" },
+                          }}>
+                          <CloseIcon fontSize="inherit" />
+                        </IconButton>
+                      }
                         overlap="circular"
                         anchorOrigin={{
                           vertical: "bottom",

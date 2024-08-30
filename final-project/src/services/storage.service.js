@@ -37,3 +37,8 @@ export const uploadChannelImage = async ( file, channelId ) => {
     const channelPhoto = {fileName: uniqueFilename, url: await getDownloadURL(storageRef)};
     return channelPhoto;
 }
+
+export const deleteChannelImage = async (channelId, fileName) => {
+    const storageRef = ref(storage, `channelImages/${channelId}/${fileName}`);
+    await deleteObject(storageRef)
+}

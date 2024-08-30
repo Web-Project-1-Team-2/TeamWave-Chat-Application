@@ -46,6 +46,7 @@ const ChannelChatPage = () => {
 
     useEffect(() => {
         if (!messagesData) return;
+        if (!userData) return;
 
         (async () => {
             try {

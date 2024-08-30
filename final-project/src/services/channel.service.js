@@ -44,24 +44,30 @@ export const createChannel = async (teamId, channelName, channelMembers, channel
     await addChannelToTeam(id, teamId, channelName);
 }
 
+export const updateUserLastSentMessage = async (channelId, username, messageId) => {
+    const channelMembers = await get(ref(db, `channels/${channelId}/members/${username}`));
+    await update(ref(db, `channels/${channelId}/members/${username}`), {...channelMembers.val(), lastSentMessage: messageId});
+}
+
 export const addMessageToChannel = async (channelId, message) => {
     const trimmedMessage = message.text.trim();
-
-    const imageRef = await uploadChannelImage(message.image, channelId);
-    console.log(imageRef);
+    
+    let imageRef = null;
+    if(message.image) {
+    imageRef = await uploadChannelImage(message.image, channelId);
+    }
 
     const newMessage = {
         author: message.author,
         text: trimmedMessage,
-        image: {...imageRef} || 'no image',
+        image: imageRef || null,
         timestamp: Date.now(),
     }
-
-    console.log(newMessage);
 
     const result = await push(ref(db, `channels/${channelId}/messages`), newMessage);
     const id = result.key;
     await update(ref(db), { [`channels/${channelId}/messages/${id}/id`]: id });
+    await updateUserLastSentMessage(channelId, message.author, id);
 }
 
 export const leaveChannel = async (channelId, username) => {
@@ -72,9 +78,17 @@ export const leaveChannel = async (channelId, username) => {
 }
 
 export const updateLastSeen = async (channelId, username) => {
-    await update(ref(db, `channels/${channelId}/members`), { [username]: Date.now() });
+    const channelMembers = await get(ref(db, `channels/${channelId}/members/${username}`));
+    await update(ref(db, `channels/${channelId}/members/${username}`), {...channelMembers.val(), lastAtChannel: Date.now()});
 }
 
+export const editChannelMessage = async (channelId, messageId, newText) => {
+    await update(ref(db, `channels/${channelId}/messages/${messageId}`), { text: newText });
+}
+
+export const deleteChannelMessage = async (channelId, messageId) => {
+    await remove(ref(db, `channels/${channelId}/messages/${messageId}`));
+}
 
 // export const addChannelToTeam = async (channelId, teamId,) => {
 //     const currChannels = await get(ref(db, `teams/${teamId}/channels`));
