@@ -42,3 +42,16 @@ export const deleteChannelImage = async (channelId, fileName) => {
     const storageRef = ref(storage, `channelImages/${channelId}/${fileName}`);
     await deleteObject(storageRef)
 }
+
+export const uploadDirectMessageImage = async (file, directMessageId) => {
+    const uniqueFilename = `${Date.now()}-${uuidv4()}`;
+    const storageRef = ref(storage, `directMessageImages/${directMessageId}/${uniqueFilename}`);
+    await uploadBytes(storageRef, file);
+    const directMessagePhoto = {fileName: uniqueFilename, url: await getDownloadURL(storageRef)};
+    return directMessagePhoto;
+}
+
+export const deleteDirectMessageImage = async (directMessageId, fileName) => {
+    const storageRef = ref(storage, `directMessageImages/${directMessageId}/${fileName}`);
+    await deleteObject(storageRef)
+}
