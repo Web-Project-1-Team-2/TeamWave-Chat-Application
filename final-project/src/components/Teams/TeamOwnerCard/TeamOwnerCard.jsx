@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
-
-import { Avatar, Button, Card, CardActionArea, Grid, Typography } from "@mui/material";
+import { Avatar, Card, CardActionArea, Grid, Typography } from "@mui/material";
 import { useState } from 'react';
 import TeamModalCard from '../TeamModalCard/TeamModalCard';
 

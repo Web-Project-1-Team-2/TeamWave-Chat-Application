@@ -115,7 +115,7 @@ const Profile = () => {
                 <AddPhotoAlternateIcon sx={{ fontSize: 50 }} />
               </div>
             }
-            {profile.status === "online" &&
+            {profileState.status === "online" &&
               <Box
                 position={'absolute'}
                 bgcolor={'green'}
