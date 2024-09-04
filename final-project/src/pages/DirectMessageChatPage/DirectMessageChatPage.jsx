@@ -14,9 +14,6 @@ const DirectMessageChatPage = () => {
     const { directMessagesId } = useParams();
     const { userData } = useContext(AppContext);
 
-    console.log(directMessagesId);
-
-
     const [directMessageInfo, loadingDirectMessage] = useObjectVal(ref(db, `directMessages/${directMessagesId}`));
 
     const [recipientUser, setRecipient] = useState('')
@@ -54,6 +51,7 @@ const DirectMessageChatPage = () => {
     useEffect(() => {
         if (!directMessageInfo) return;
         if (!userData) return;
+        if (!users) return;
 
         const currRecipient = users[Object.keys(directMessageInfo?.members).filter(member => member !== userData?.username)[0]];
         setRecipient(currRecipient);

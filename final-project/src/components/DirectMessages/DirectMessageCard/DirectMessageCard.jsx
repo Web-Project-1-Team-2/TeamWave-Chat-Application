@@ -12,7 +12,6 @@ const DirectMessageCard = ({ directMessageId }) => {
     const { userData } = useContext(AppContext);
 
     const [directMessageInfo] = useObjectVal(ref(db, `directMessages/${directMessageId}/members`));
-    console.log(directMessageInfo);
 
     const [directMessages] = useListVals(ref(db, `directMessages/${directMessageId}/messages`));
 

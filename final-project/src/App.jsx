@@ -17,6 +17,7 @@ import TeamPage from './pages/TeamPage/TeamPage'
 import ChannelChatPage from './pages/ChannelChatPage/ChannelChatPage'
 import UserProfile from './pages/UserProfile/UserProfile'
 import DirectMessageChatPage from './pages/DirectMessageChatPage/DirectMessageChatPage'
+import NotificationContainer from './components/NotificationContainer/NotificationContainer'
 
 
 function App() {
@@ -44,33 +45,25 @@ function App() {
     }, 100)
   }, [user])
 
-  //   const userStatusDatabaseRef = ref(db, `users/${state.userData?.username}/status`);
-  //   const connectedRef = ref(db, ".info/connected");
-
-  //   onValue(connectedRef, (snapshot) => {
-  //     if (!state.userData) return;
-  //     if (snapshot.val() === true) {
-  //         set(userStatusDatabaseRef, "online")
-  //     }
-  //     onDisconnect(userStatusDatabaseRef).set("offline")
-  // })
-
   return (
     <AppContext.Provider value={{ ...state, setAppState: setAppState }}>
       {user ?
         (<NavBar>
+
           <ContentContainer>
             <Routes>
               <Route path='/' element={<UserBoard />} />
               <Route path='/profile' element={<Profile />} />
               <Route path='/createTeam' element={<CreateTeam />} />
               <Route path="/team/:teamId" element={<TeamPage />} />
+              <Route path='/user/:username' element={<UserProfile />} />
+              <Route path='/teams/:teamId' element={<TeamPage />} />
               <Route path='/channel/:channelId' element={<ChannelChatPage />} />
               <Route path='/dm/:directMessagesId' element={<DirectMessageChatPage />} />
-              <Route path='/teams/:teamId' element={<TeamPage />} />
-              <Route path='/user/:username' element={<UserProfile />} />
             </Routes>
+            <NotificationContainer />
           </ContentContainer>
+
         </NavBar>) : (
           <Routes>
             <Route path='/' element={<SignIn />} />
