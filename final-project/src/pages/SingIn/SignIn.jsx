@@ -1,6 +1,5 @@
 import { forwardRef, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -8,23 +7,22 @@ import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link as RouterLink } from "react-router-dom";
 import { Alert, IconButton, InputAdornment, Snackbar } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { loginUser } from "../../services/auth.service";
 import { AppContext } from "../../context/authContext";
+import { notifySuccess } from "../../services/notification.service";
 
-const defaultTheme = createTheme();
+
 const SnackbarAlert = forwardRef(function SnackbarAlert(props, ref) {
   return <Alert elevation={6} ref={ref} {...props} />;
 });
 
 export default function SignIn() {
-  const { setAppState } = useContext(AppContext);
+  const { setAppState} = useContext(AppContext);
   const navigate = useNavigate();
 
   const [view, setView] = useState(false);
@@ -71,13 +69,7 @@ export default function SignIn() {
         user: credential.user,
         userData: null,
       });
-      console.log("Snackbar should open with success message");
-      setSnackbar({
-        open: true,
-        message: "Login Successfull!",
-        severity: "success",
-      });
-
+      notifySuccess("Successful Login");
       setTimeout(() => {
         navigate("/");
       }, 4000);
@@ -92,7 +84,6 @@ export default function SignIn() {
 
   return (
     <>
-      <ThemeProvider theme={defaultTheme}>
         <Grid container component="main" sx={{ height: "100vh" }}>
           <CssBaseline />
           <Grid
@@ -103,10 +94,7 @@ export default function SignIn() {
             sx={{
               backgroundImage:
                 'url("/static/images/templates/templates-images/sign-in-side-bg.png")',
-              backgroundColor: (t) =>
-                t.palette.mode === "light"
-                  ? t.palette.grey[50]
-                  : t.palette.grey[900],
+              backgroundColor: "primary",
               backgroundSize: "cover",
               backgroundPosition: "left",
             }}
@@ -129,14 +117,8 @@ export default function SignIn() {
                 alignItems: "center",
               }}
             >
-              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                <LockOutlinedIcon />
-              </Avatar>
               <Typography component="h1" variant="p">
                 Welcome back!
-              </Typography>
-              <Typography component="h2" variant="h6">
-                We're glad to see you again!
               </Typography>
               <Box component="form" sx={{ mt: 1 }}>
                 <TextField
@@ -205,7 +187,6 @@ export default function SignIn() {
             </Box>
           </Grid>
         </Grid>
-      </ThemeProvider>
       <Snackbar
         open={snackbar.open}
         autoHideDuration={4000}

@@ -1,5 +1,3 @@
-import { height } from "@mui/system";
-
 export const styleModal = {
     position: "absolute",
     top: "50%",
@@ -10,5 +8,4 @@ export const styleModal = {
     border: "2px solid #000",
     boxShadow: 24,
     p: 4,
-    
   };

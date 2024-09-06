@@ -1,15 +1,16 @@
 import PropTypes from 'prop-types';
-import { Avatar, Card, CardActionArea, Grid, Typography } from "@mui/material";
+import { Avatar, Box, CardActionArea, Grid, Typography } from "@mui/material";
 import { useState } from 'react';
 import TeamModalCard from '../TeamModalCard/TeamModalCard';
 
 function TeamOwnerCard({avatar,teamName, teamMembers, teamChannels, teamId}) {
+    
     const [open, setOpen] = useState(false);
     const handleOpenModal = () => setOpen(true);
     const handleCloseModal =() => setOpen(false);
 
     return (
-    <Card sx={{ margin: '0 0 16px 0', width: '100%', maxHeight: 100}}>
+    <CardActionArea sx={{ margin: '0 0 16px 0', width: '100%', maxHeight: 100}} onClick={!open?handleOpenModal:handleCloseModal}>
             <Grid container
                 direction={'row'}
                 justifyContent={'center'}
@@ -18,7 +19,7 @@ function TeamOwnerCard({avatar,teamName, teamMembers, teamChannels, teamId}) {
                 }>
 
                 <Grid item xs={10} sx={{ width: '100%', padding: '16px 0'}}>
-                    <CardActionArea onClick={handleOpenModal}>
+                    <Box >
                         <Grid container
                             direction={'row'}
                             justifyContent={'space-around'}
@@ -37,7 +38,7 @@ function TeamOwnerCard({avatar,teamName, teamMembers, teamChannels, teamId}) {
                                 <Typography variant='h6'>{teamName}</Typography>
                             </Grid>
                         </Grid>
-                    </CardActionArea >
+                    </Box>
                 </Grid>
             </Grid>
             <TeamModalCard 
@@ -49,7 +50,7 @@ function TeamOwnerCard({avatar,teamName, teamMembers, teamChannels, teamId}) {
             teamChannels={teamChannels}
             teamId={teamId}
             />
-        </Card >
+        </CardActionArea>
     )
     
 }

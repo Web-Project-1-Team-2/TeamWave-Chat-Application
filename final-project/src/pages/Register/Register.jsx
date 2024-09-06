@@ -17,8 +17,8 @@ import { createUser, getUserByUsername } from "../../services/user.service";
 import { registerUser } from "../../services/auth.service";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import HowToRegIcon from "@mui/icons-material/HowToReg";
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import { AppContext } from "../../context/authContext";
 
 const SnackbarAlert = forwardRef(function SnackbarAlert(props, ref) {
@@ -32,7 +32,9 @@ function Register() {
   };
 
   const { setAppState } = useContext(AppContext);
+
   const navigate = useNavigate();
+
   const location = useLocation();
 
   const [user, setUser] = useState({
@@ -149,11 +151,11 @@ function Register() {
         justifyContent="center"
         sx={{ height: "100vh" }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <LockOutlinedIcon />
+        <Avatar sx={{ bgcolor: 'primary.main' }}>
+          <AppRegistrationIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
-          Register
+        <Typography variant="h5">
+          Get Started with your Account
         </Typography>
         <Stack direction="column" spacing={6} sx={{ width: "400px" }}>
           <TextField
@@ -234,11 +236,11 @@ function Register() {
             Register
           </Button>
         </Stack>
-        <Box sx={{mt: 4, textAlign: "center"}}>
-            <Typography variant="body2" color="text.secondary">
+        <Box sx={{ mt: 4, textAlign: "center" }}>
+          <Typography variant="body2" color="text.secondary">
             {"Copyright © "}
             WebsiteName {new Date().getFullYear()}
-            </Typography>
+          </Typography>
         </Box>
       </Stack>
       <Snackbar

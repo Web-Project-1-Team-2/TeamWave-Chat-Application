@@ -14,14 +14,17 @@ function TeamModalCard({ open, handleClose, teamMembers, teamChannels, teamId })
 
   const navigate = useNavigate()
 
+  console.log(teamChannels);
+
   return (
     <Modal 
     open={open} 
     onClose={handleClose} 
     aria-labelledby="modal-title">
-        <Card sx={styleModal }>
-          <Stack direction="row" spacing={12}>
-            <Box alignItems="flex-start">
+    
+        <Card sx={styleModal } >
+          <Stack direction="row" justifyContent="space-between">
+            <Box >
           <Typography variant="h6">Team channels:</Typography>
           {teamChannels ? (
             <ul>
@@ -37,7 +40,7 @@ function TeamModalCard({ open, handleClose, teamMembers, teamChannels, teamId })
           )}
           </Box>
 
-          <Box alignItems="flex-end">
+          <Box >
           <Typography variant="h6">Team Members:</Typography>
           <Box
           display="flex"

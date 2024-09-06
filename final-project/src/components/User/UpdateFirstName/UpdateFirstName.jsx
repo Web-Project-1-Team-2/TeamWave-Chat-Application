@@ -12,6 +12,7 @@ import PropTypes from "prop-types";
 import { styleModal } from "./UpdateFirstNameStyling";
 
 function UpdateFirstName({ open, handleClose, username, firstName }) {
+  
   const [newFirstName, setNewFirstName] = useState("");
 
   const updateNewFirstName = async () => {
@@ -33,7 +34,7 @@ function UpdateFirstName({ open, handleClose, username, firstName }) {
       aria-labelledby="modal-modal-title"
     >
       <Box sx={styleModal}>
-        <Typography id="modal-modal-title" variant="h6">
+        <Typography id="modal-modal-title" variant="h6" marginBottom={2}>
           Change your First Name
         </Typography>
         <TextField
@@ -43,21 +44,22 @@ function UpdateFirstName({ open, handleClose, username, firstName }) {
             setNewFirstName(e.target.value);
           }}
         />
-        <Stack direction="row" spacing={4} mt={3}>
-          <Box mt={2}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={updateNewFirstName}
-            >
-              Save
-            </Button>
-          </Box>
-          <Box mt={2}>
-            <Button variant="contained" color="primary" onClick={handleClose}>
-              Cancel
-            </Button>
-          </Box>
+        <Stack
+          direction="row"
+          spacing={4}
+          justifyContent="center"
+          marginTop={2}
+        >
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={updateNewFirstName}
+          >
+            Save
+          </Button>
+          <Button variant="contained" color="primary" onClick={handleClose}>
+            Cancel
+          </Button>
         </Stack>
       </Box>
     </Modal>

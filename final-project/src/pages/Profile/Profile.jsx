@@ -9,44 +9,37 @@ import { db } from "../../config/firebase-config";
 import UpdateFirstName from "../../components/User/UpdateFirstName/UpdateFirstName";
 import EditIcon from "@mui/icons-material/Edit";
 import TeamOwnerCard from "../../components/Teams/TeamOwnerCard/TeamOwnerCard";
-import { changeTeamAvatar } from "./ProfilePageStyling";
+import { addPhotoIconStyle, avatarStyle, changeTeamAvatar, myTeamsBoxStyle, profileStatusStyle } from "./ProfilePageStyling";
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 
 
 const Profile = () => {
 
-  const { userData } = useContext(AppContext);
-  console.log(userData);
-  
+  const { userData } = useContext(AppContext); 
 
   const [teams] = useListVals(ref(db, `teams`));
+
   const [myTeams, setMyTeams] = useState([]);
-
-  useEffect(() => {
-    if (!teams || !userData) return;
-    const ownerTeams = teams.filter((team) => team.owner === userData.username);
-    setMyTeams(ownerTeams);
-  }, [teams, userData]);
-
+ 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  
   const [openFirstName, setOpenFirstName] = useState(false);
   const handleOpenFirstName = () => setOpenFirstName(true);
   const handleCloseFirstName = () => setOpenFirstName(false);
-
+  
   const [openLastName, setOpenLastName] = useState(false);
   const handleOpenLastName = () => setOpenLastName(true);
   const handleCloseLastName = () => setOpenLastName(false);
-
+  
   const [isHovering, setIsHovering] = useState(false);
   const toggleIsHovering = () => setIsHovering(!isHovering);
-
+  
   const [profile, loadingProfile] = useObjectVal(
     ref(db, `users/${userData?.username}`)
   );
-
+  
   const [profileState, setProfileState] = useState({
     avatar: "",
     uid: "",
@@ -55,10 +48,14 @@ const Profile = () => {
     lastName: "",
     status: "",
   });
-
-
-
-
+  
+  useEffect(() => {
+    if (!teams || !userData) return;
+    const ownerTeams = teams.filter((team) => team.owner === userData.username);
+    setMyTeams(ownerTeams);
+  }, [teams, userData]);
+  
+  
   useEffect(() => {
     if (!profile) return;
     setProfileState({
@@ -99,7 +96,7 @@ const Profile = () => {
             <Avatar
               onMouseEnter={toggleIsHovering}
               src={profileState.avatar}
-              sx={{ width: 200, height: 200, zIndex: 1000, position: 'relative' }}
+              sx={avatarStyle}
             >
               {!profileState.avatar &&
                 (profileState.firstName
@@ -112,7 +109,7 @@ const Profile = () => {
                 style={changeTeamAvatar}
                 onMouseLeave={toggleIsHovering}
                 onClick={handleOpen}>
-                <AddPhotoAlternateIcon sx={{ fontSize: 50 }} />
+                <AddPhotoAlternateIcon sx={addPhotoIconStyle} />
               </div>
             }
             {profileState.status === "online" &&
@@ -120,7 +117,7 @@ const Profile = () => {
                 position={'absolute'}
                 bgcolor={'green'}
                 borderRadius={'50%'}
-                sx={{ zIndex: 1500, width: '40px', height: '40px', right: '225px', bottom: '10px' }} />
+                sx={profileStatusStyle} />
             }
 
             <Box
@@ -169,7 +166,7 @@ const Profile = () => {
             lastName={userData?.lastName}
           />
         </Box>
-        <Stack direction="column" spacing={1} width="100%" alignItems="center">
+        <Stack direction="column" spacing={1} width="100%" alignItems="center" marginTop="80px">
           <Box
             width="100%"
             display="flex"
@@ -181,7 +178,7 @@ const Profile = () => {
           <Box
             display="flex"
             flexDirection="column"
-            sx={{ height: "400px", overflow: "auto", width: "350px" }}
+            sx={myTeamsBoxStyle}
           >
             {myTeams.map((team) => (
               <TeamOwnerCard
