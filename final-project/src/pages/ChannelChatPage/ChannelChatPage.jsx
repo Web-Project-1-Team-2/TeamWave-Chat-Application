@@ -12,6 +12,7 @@ import ChatDetailsMembers from '../../components/Chat/ChatDetailsMembers/ChatDet
 import { notifyError, notifySuccess } from '../../services/notification.service';
 import { leaveChannel, updateLastSeen } from '../../services/channel.service';
 import AddChannelMembers from '../../components/Channel/AddChannelMembers/AddChannelMembers';
+import { createMeeting } from '../../services/meeting.service';
 
 const ChannelChatPage = () => {
 
@@ -24,6 +25,9 @@ const ChannelChatPage = () => {
     const toggleAddMembersModal = () => setAddMembersModal(!addMembersModal);
 
     const navigate = useNavigate();
+
+    const [meetingUrl, setMeetingUrl] = useState('');
+    console.log(meetingUrl);
 
 
     const leaveCurrChannel = async () => {
@@ -43,6 +47,37 @@ const ChannelChatPage = () => {
             notifyError('Failed to leave channel');
         }
     }
+
+    const handleMeet = async () => {
+        try {
+            if(!channelData) return;
+
+            if(!channelData.meetings) {
+                const newMeetingUrl = await createMeeting(channelId);
+                console.log(`Meeting created`);
+                setMeetingUrl(newMeetingUrl);
+                navigate(`/meet/${channelId}`);
+            } else {
+                setMeetingUrl(channelData.meetings.roomUrl);
+                navigate(`/meet/${channelId}`);
+            }
+
+        } catch (error) {
+            console.error(error)
+            notifyError('Failed to create meeting');
+        }
+
+    }
+
+    useEffect(() => {
+        if (!channelData) return;
+        if (!userData) return;
+
+        if (channelData.meetings) {
+            console.log(channelData.meetings.roomUrl);
+            setMeetingUrl(channelData.meetings.roomUrl);
+        }
+    }, [channelData, userData])
 
     useEffect(() => {
         if (!messagesData) return;
@@ -78,7 +113,10 @@ const ChannelChatPage = () => {
             <Box sx={{ width: '100%' }}>
                 <Grid container>
                     <Grid item xs={8.8}>
+                        <Box>
                         <Typography variant='h4'>{channelData.name}</Typography>
+                        <Button onClick={handleMeet} variant='contained'>Meet</Button>
+                        </Box>
                         <Divider />
                         <Chats id={channelId} />
                     </Grid>

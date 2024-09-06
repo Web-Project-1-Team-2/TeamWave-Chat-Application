@@ -2,7 +2,6 @@
 import PropTypes from 'prop-types';
 import { useContext, useEffect, useState } from 'react';
 import Drawer from '@mui/material/Drawer';
-import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
@@ -26,6 +25,7 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import ChatIcon from '@mui/icons-material/Chat';
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
 import DirectMessageCard from '../../DirectMessages/DirectMessageCard/DirectMessageCard';
+import ThemeModeSwitch from '../../Base/ThemeModeSwitch/ThemeModeSwitch';
 
 
 function NavBar({ children }) {
@@ -34,7 +34,7 @@ function NavBar({ children }) {
 
     const navigate = useNavigate();
 
-    const { userData, setAppState } = useContext(AppContext);
+    const { userData, setAppState, themeMode, toggleThemeMode } = useContext(AppContext);
     const [data, setData] = useState({
         username: '',
     });
@@ -143,7 +143,6 @@ function NavBar({ children }) {
     return (
         <div style={{ display: 'flex' }}>
             <Box sx={{ display: 'flex' }}>
-                <CssBaseline />
                 <Drawer sx={sideBarStyles} variant="permanent" anchor="left">
                     <Box>
                         <IconButton onClick={!teamOpen ? handleTeamDrawerOpen : handleTeamDrawerClose} aria-label="open-drawer" size="large" sx={{ margin: '20px auto 20px auto', }}>
@@ -176,6 +175,9 @@ function NavBar({ children }) {
                         <IconButton onClick={() => navigate('/profile')} aria-label="profile" size="large" sx={{ margin: '0 auto 20px auto' }}>
                             <AccountCircleOutlinedIcon fontSize='inherit' />
                         </IconButton>
+
+                        <ThemeModeSwitch themeMode={themeMode} toggleTheme={toggleThemeMode} />
+
                         <IconButton onClick={logout} aria-label="logout" size="large" sx={{ margin: '0 auto 20px auto' }}>
                             <LogoutRoundedIcon fontSize='inherit' />
                         </IconButton>
@@ -206,7 +208,9 @@ function NavBar({ children }) {
                     </IconButton>
                 </Drawer>
             </Box >
-            <div style={{ flex: 1 }}>
+            <div style={{ 
+                flex: 1,
+                }}>
                 {children}
             </div>
             <SearchForUserModal open={searchModal} toggleModal={toggleSearchModal} />

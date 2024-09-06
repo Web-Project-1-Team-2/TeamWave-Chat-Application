@@ -1,20 +1,21 @@
 import PropTypes from 'prop-types';
 import { Box, CardActionArea, Grid, Typography } from '@mui/material';
-import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
+import TagIcon from '@mui/icons-material/Tag';
 import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../../context/authContext';
 import { useListVals, useObjectVal } from 'react-firebase-hooks/database';
 import { ref } from 'firebase/database';
 import { db } from '../../../config/firebase-config';
+import { ChannelCardActionAreaStyle, ChannelCardUnreadIndicatorStyle } from './ChannelCardStyles';
 
 const ChannelCard = ({ channelName, channelId }) => {
 
     const { userData } = useContext(AppContext);
 
     const [channelInfo] = useObjectVal(ref(db, `channels/${channelId}/members`));
-    const [channelMessages] = useListVals(ref(db, `channels/${channelId}/messages`));
 
+    const [channelMessages] = useListVals(ref(db, `channels/${channelId}/messages`));
 
     const [unreadMessages, setUnreadMessages] = useState([]);
 
@@ -30,10 +31,17 @@ const ChannelCard = ({ channelName, channelId }) => {
 
     const navigate = useNavigate();
     return (
-        <CardActionArea onClick={() => navigate(`/channel/${channelId}`)} sx={{ mt: 1, p: 0.5 }}>
+        <CardActionArea 
+        component={'div'} 
+        onClick={() => navigate(`/channel/${channelId}`)} 
+        sx={ChannelCardActionAreaStyle}>
+
             <Grid container alignItems={'center'}>
-                <Grid container item xs={3} alignItems={'center'} justifyContent={'center'} >
-                    <LockOpenOutlinedIcon />
+                <Grid container 
+                item xs={3} 
+                alignItems={'center'} 
+                justifyContent={'center'} >
+                    <TagIcon />
                 </Grid>
                 <Grid item xs={6}>
                     <Typography variant='body2' >
@@ -42,8 +50,13 @@ const ChannelCard = ({ channelName, channelId }) => {
                 </Grid>
                 {unreadMessages.length > 0 &&
                     <Grid item xs={3}>
-                        <Box sx={{ borderRadius: '50%', bgcolor: '#d32f2f', width: '20px' }}>
-                            <Typography variant='body2' align='center' color={'white'}>{unreadMessages.length}</Typography>
+                        <Box sx={ChannelCardUnreadIndicatorStyle}>
+                            <Typography 
+                            variant='body2' 
+                            align='center' 
+                            color={'white'}>
+                                {unreadMessages.length}
+                            </Typography>
                         </Box>
                     </Grid>
                 }

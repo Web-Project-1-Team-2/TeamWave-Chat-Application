@@ -18,6 +18,10 @@ import ChannelChatPage from './pages/ChannelChatPage/ChannelChatPage'
 import UserProfile from './pages/UserProfile/UserProfile'
 import DirectMessageChatPage from './pages/DirectMessageChatPage/DirectMessageChatPage'
 import NotificationContainer from './components/NotificationContainer/NotificationContainer'
+import Meeting from './components/Meeting/Meeting'
+import { ThemeProvider } from '@emotion/react'
+import { CssBaseline } from '@mui/material'
+import { theme } from './common/themes'
 
 
 function App() {
@@ -26,6 +30,9 @@ function App() {
     user: null,
     userData: null,
   })
+
+  const [themeMode, setThemeMode] = useState('dark');
+  const toggleThemeMode = () => setThemeMode(themeMode === 'light' ? 'dark' : 'light');
 
   const [user] = useAuthState(auth);
 
@@ -46,32 +53,35 @@ function App() {
   }, [user])
 
   return (
-    <AppContext.Provider value={{ ...state, setAppState: setAppState }}>
-      {user ?
-        (<NavBar>
+    <ThemeProvider theme={theme(themeMode)}>
+      <CssBaseline />
+      <AppContext.Provider value={{ ...state, setAppState: setAppState, themeMode: themeMode, toggleThemeMode: toggleThemeMode }}>
+        {user ?
+          (<NavBar>
+            <ContentContainer>
+              <Routes>
+                <Route path='/' element={<UserBoard />} />
+                <Route path='/profile' element={<Profile />} />
+                <Route path='/createTeam' element={<CreateTeam />} />
+                <Route path="/team/:teamId" element={<TeamPage />} />
+                <Route path='/user/:username' element={<UserProfile />} />
+                <Route path='/teams/:teamId' element={<TeamPage />} />
+                <Route path='/channel/:channelId' element={<ChannelChatPage />} />
+                <Route path='/dm/:directMessagesId' element={<DirectMessageChatPage />} />
+                <Route path='/meet/:meetingId' element={<Meeting />} />
+              </Routes>
+              <NotificationContainer />
+            </ContentContainer>
 
-          <ContentContainer>
+          </NavBar>) : (
             <Routes>
-              <Route path='/' element={<UserBoard />} />
-              <Route path='/profile' element={<Profile />} />
-              <Route path='/createTeam' element={<CreateTeam />} />
-              <Route path="/team/:teamId" element={<TeamPage />} />
-              <Route path='/user/:username' element={<UserProfile />} />
-              <Route path='/teams/:teamId' element={<TeamPage />} />
-              <Route path='/channel/:channelId' element={<ChannelChatPage />} />
-              <Route path='/dm/:directMessagesId' element={<DirectMessageChatPage />} />
+              <Route path='/' element={<SignIn />} />
+              <Route path='/register' element={<Register />} />
             </Routes>
-            <NotificationContainer />
-          </ContentContainer>
 
-        </NavBar>) : (
-          <Routes>
-            <Route path='/' element={<SignIn />} />
-            <Route path='/register' element={<Register />} />
-          </Routes>
-
-        )}
-    </AppContext.Provider>
+          )}
+      </AppContext.Provider>
+    </ThemeProvider>
   )
 }
 

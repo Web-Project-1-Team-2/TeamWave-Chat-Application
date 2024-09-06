@@ -4,4 +4,6 @@ export const AppContext = createContext({
     user: null,
     userData: null,
     setAppState: () => {},
+    themeMode: null,
+    toggleThemeMode: () => {},
 });
