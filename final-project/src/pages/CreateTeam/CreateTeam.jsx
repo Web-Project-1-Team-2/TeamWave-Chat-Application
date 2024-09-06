@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/authContext";
-import { Box, Typography, TextField, Button, List, ListItem, Avatar } from "@mui/material";
+import { Box, Typography, TextField, Button, List, ListItem, Avatar, Divider } from "@mui/material";
 import { useListVals } from 'react-firebase-hooks/database';
 import { ref } from "firebase/database";
 import { db } from "../../config/firebase-config";
@@ -8,6 +8,7 @@ import UserCard from "../../components/User/UserCard/UserCard";
 import { createTeam } from "../../services/teams.service";
 import { constrains } from "../../common/constraints";
 import { notifyError, notifySuccess } from "../../services/notification.service";
+import { createTeamStyling, addMembersStyling } from "./CreateTeamStyling";
 
 const CreateTeam = () => {
     const { userData } = useContext(AppContext);
@@ -24,8 +25,6 @@ const CreateTeam = () => {
     const [teamAvatar, setTeamAvatar] = useState(null);
     const [currAvatar, setCurrAvatar] = useState(null);
 
-    console.log(teamMembers);
-    
 
     useEffect(() => {
         if (!userData) return;
@@ -34,6 +33,7 @@ const CreateTeam = () => {
             username: userData.username || '',
         });
     }, [userData]);
+
 
     const createTeamFunc = async () => {
         if (!teamName || teamName.length < constrains.TEAM_NAME_MIN_LENGTH || teamName.length > constrains.TEAM_NAME_MAX_LENGTH) {
@@ -66,14 +66,16 @@ const CreateTeam = () => {
     };
 
     return (
-        <Box sx={{ width: '100%', display: "flex", flexDirection: 'column', alignItems: 'center' }}>
-            <Typography variant='h2' mb={2}>Create Team</Typography>
+        <Box sx={createTeamStyling}>
+            <Box sx={{width: '100%', mb:2 }}>
+                <Typography variant='h2' alignSelf={'flex-start'}>Create Team</Typography>
+                <Divider variant="middle" flexItem />
+            </Box>
 
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Avatar
                     src={currAvatar}
-                    sx={{ width: 100, height: 100, mr: 2 }}
-                >
+                    sx={{ width: 130, height: 130, mr: 2 }}>
                     {!teamAvatar && (teamName ? teamName[0].toUpperCase() : 'T')}
                 </Avatar>
                 <Button variant="contained" component="label">
@@ -88,7 +90,7 @@ const CreateTeam = () => {
                 variant="outlined"
                 value={teamName}
                 onChange={(e) => setTeamName(e.target.value)}
-                sx={{ width: '50%', mb: 2 }}
+                sx={{ width: '50%' }}
             />
             <TextField
                 id="searchMember"
@@ -98,16 +100,7 @@ const CreateTeam = () => {
                 onChange={(e) => setSearchMember(e.target.value)}
                 sx={{ width: '50%' }}
             />
-            <Box sx={{
-                width: '50%',
-                height: '40vh',
-                overflow: 'auto',
-                bgcolor: '#CCC',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                mb: 2
-            }}>
+            <Box sx={addMembersStyling}>
                 <List sx={{ width: '80%' }}>
                     {userList
                         .filter((user) => user.username !== data.username && user.username.toLowerCase().includes(searchMember.toLowerCase()))

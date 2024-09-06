@@ -33,11 +33,13 @@ export const searchUserButtonSection = {
 
 export const searchUserScrollBox = {
     width: '80%',
-    maxHeight: '50vh',
+    maxHeight: '45vh',
     overflow: 'auto',
-    bgcolor: '#CCC',
+    border: 2,
+    borderColor: 'divider',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    borderRadius: 2,
     mb: 2
 }

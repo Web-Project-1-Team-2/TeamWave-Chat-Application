@@ -55,6 +55,12 @@ export const darkPalette = {
         default: '#000f1c',
         paper: '#1b293b',
     },
+    text: {
+        primary: '#ffffff',
+        secondary: 'rgba(255,255,255,0.7)',
+        disabled: 'rgba(255,255,255,0.5)',
+        hint: 'rgba(255,255,255,0.5)',
+    },
 };
 
 export const theme = (mode) =>
@@ -80,3 +86,4 @@ export const theme = (mode) =>
         },
 
     });
+

@@ -1,11 +1,11 @@
 export const iconStyling = {
-    fontSize: '35px'
+    fontSize: '40px'
 }
 
 export const changeTeamAvatar = {
     position: 'absolute',
-    width: '200px',
-    height: '200px',
+    width: '300px',
+    height: '300px',
     background: 'rgba(0, 0, 0, 0.4)',
     color: '#fff',
     display: 'flex',
@@ -15,4 +15,11 @@ export const changeTeamAvatar = {
     transition: 'opacity 0.3s',
     borderRadius: '50%',
     cursor: 'pointer',
+}
+
+export const teamPageAvatarStyling = { 
+    width: 300, 
+    height: 300, 
+    border: 8, 
+    borderColor: 'primary.main' 
 }
