@@ -113,8 +113,10 @@ const TeamPage = () => {
         <>
             <Box display={'flex'} flexDirection={'column'} width={'100%'} alignItems={'center'} gap={5}>
                 <Box width={'100%'}>
-                    <Typography variant="h2" gutterBottom>{teamData.name}</Typography>
-                    <Divider variant='middle' />
+
+                    <Divider variant='middle' textAlign='left'>
+                        <Typography variant="h2" gutterBottom>{teamData.name}</Typography>
+                    </Divider>
                     <Grid container spacing={2} direction={'row'} sx={{ marginTop: '20px' }}>
                         <Grid item xs={8}>
                             <Grid container spacing={2} sx={{ marginTop: '20px' }}>

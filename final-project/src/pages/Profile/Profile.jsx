@@ -72,7 +72,7 @@ const Profile = () => {
 
   return (
     <Box width="100%" textAlign="center">
-      <Divider variant="middle">
+      <Divider variant="middle" textAlign="left">
       <Typography variant="h3" mb={3}>
         Profile
       </Typography>
