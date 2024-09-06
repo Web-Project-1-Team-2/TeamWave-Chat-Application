@@ -9,8 +9,9 @@ import { db } from "../../config/firebase-config";
 import UpdateFirstName from "../../components/User/UpdateFirstName/UpdateFirstName";
 import EditIcon from "@mui/icons-material/Edit";
 import TeamOwnerCard from "../../components/Teams/TeamOwnerCard/TeamOwnerCard";
-import { addPhotoIconStyle, avatarStyle, changeTeamAvatar, myTeamsBoxStyle, profileStatusStyle } from "./ProfilePageStyling";
+import { addPhotoIconStyle, avatarStyle, changeTeamAvatar, myTeamsBoxStyle} from "./ProfilePageStyling";
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import PeopleIcon from '@mui/icons-material/People';
 
 
 const Profile = () => {
@@ -113,13 +114,13 @@ const Profile = () => {
                 <AddPhotoAlternateIcon sx={addPhotoIconStyle} />
               </div>
             }
-            {profileState.status === "online" &&
+            {/* {profileState.status === "online" &&
               <Box
                 position={'absolute'}
                 bgcolor={'green'}
                 borderRadius={'50%'}
                 sx={profileStatusStyle} />
-            }
+            } */}
 
             <Box
               display="flex"
@@ -138,7 +139,7 @@ const Profile = () => {
                   </Tooltip>
                 </Typography>
               </Stack>
-              <Stack>
+              <Stack alignItems="center" >
                 <Typography variant="h6">
                   Last Name: {profileState.lastName}
                   <Tooltip title='Change name' arrow>
@@ -177,7 +178,9 @@ const Profile = () => {
             display="flex"
             textAlign="center"
             justifyContent="center"
+            alignItems="center"
           >
+            <PeopleIcon fontSize="medium"/>
             <Typography variant="h5">My teams:</Typography>
           </Box>
           <Box

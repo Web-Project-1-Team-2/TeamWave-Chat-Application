@@ -9,3 +9,10 @@ export const styleModal = {
     boxShadow: 24,
     p: 4,
   };
+
+  export const editTeamButtonSection = {
+    width: '50%',
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr',
+    gap: '10px',
+  }

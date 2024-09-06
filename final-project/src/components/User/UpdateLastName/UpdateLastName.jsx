@@ -9,7 +9,8 @@ import {
   Typography,
 } from "@mui/material";
 import PropTypes from "prop-types";
-import { styleModal } from "../UpdateFirstName/UpdateFirstNameStyling";
+import { styleModal, editTeamButtonSection} from "../UpdateFirstName/UpdateFirstNameStyling";
+
 
 function UpdateLastName({ lastName, username, handleClose, open }) {
   
@@ -35,7 +36,11 @@ function UpdateLastName({ lastName, username, handleClose, open }) {
     >
       <Box sx={styleModal}>
         <Stack justifyContent="center">
-        <Typography id="modal-modal-title" variant="h6" marginBottom={2} textAlign="center">
+        <Typography 
+        id="modal-modal-title" 
+        variant="h6" 
+        marginBottom={2} 
+        textAlign="center">
           Change your Last Name
         </Typography>
         <TextField
@@ -52,6 +57,7 @@ function UpdateLastName({ lastName, username, handleClose, open }) {
           justifyContent="center"
           marginTop={2}
         >
+          <Box sx={editTeamButtonSection}>
           <Button
             variant="contained"
             color="primary"
@@ -59,9 +65,13 @@ function UpdateLastName({ lastName, username, handleClose, open }) {
           >
             Save
           </Button>
-          <Button variant="contained" color="primary" onClick={handleClose}>
+          <Button 
+          variant="contained" 
+          color="primary" 
+          onClick={handleClose}>
             Cancel
           </Button>
+          </Box>
         </Stack>
       </Box>
     </Modal>

@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import PropTypes from "prop-types";
-import { styleModal } from "./UpdateFirstNameStyling";
+import { editTeamButtonSection, styleModal } from "./UpdateFirstNameStyling";
 
 function UpdateFirstName({ open, handleClose, username, firstName }) {
   
@@ -32,18 +32,22 @@ function UpdateFirstName({ open, handleClose, username, firstName }) {
       open={open}
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
+      
     >
       <Box sx={styleModal} >
         <Stack justifyContent="center">
-        <Typography id="modal-modal-title" variant="h6" marginBottom={2} textAlign="center">
+        <Typography 
+            id="modal-modal-title" 
+            variant="h6" marginBottom={2} 
+            textAlign="center">
           Change your First Name
         </Typography>
         <TextField
-          label="First Name"
-          value={newFirstName}
-          onChange={(e) => {
-            setNewFirstName(e.target.value);
-          }}
+            label="First Name"
+            value={newFirstName}
+            onChange={(e) => {
+              setNewFirstName(e.target.value);
+            }}
         />
         </Stack>
         <Stack
@@ -52,16 +56,22 @@ function UpdateFirstName({ open, handleClose, username, firstName }) {
           justifyContent="center"
           marginTop={2}
         >
+          <Box sx={editTeamButtonSection}>
           <Button
             variant="contained"
             color="primary"
             onClick={updateNewFirstName}
+            
           >
             Save
           </Button>
-          <Button variant="contained" color="primary" onClick={handleClose}>
+          <Button 
+              variant="contained" 
+              color="primary" 
+              onClick={handleClose} >
             Cancel
           </Button>
+          </Box>
         </Stack>
       </Box>
     </Modal>

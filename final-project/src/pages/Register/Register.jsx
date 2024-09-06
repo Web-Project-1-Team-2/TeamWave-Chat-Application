@@ -157,7 +157,10 @@ function Register() {
         <Typography variant="h5">
           Get Started with your Account
         </Typography>
-        <Stack direction="column" spacing={6} sx={{ width: "400px" }}>
+        <Stack 
+            direction="column" 
+            spacing={6} 
+            sx={{ width: "400px" }}>
           <TextField
             label="Username:"
             variant="standard"
@@ -237,7 +240,9 @@ function Register() {
           </Button>
         </Stack>
         <Box sx={{ mt: 4, textAlign: "center" }}>
-          <Typography variant="body2" color="text.secondary">
+          <Typography 
+              variant="body2" 
+              color="text.secondary">
             {"Copyright © "}
             WebsiteName {new Date().getFullYear()}
           </Typography>
