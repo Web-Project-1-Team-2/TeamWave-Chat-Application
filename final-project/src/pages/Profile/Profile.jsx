@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/authContext";
-import { Avatar, Box, IconButton, Stack, Typography } from "@mui/material";
+import { Avatar, Box, Divider, IconButton, Stack, Tooltip, Typography } from "@mui/material";
 import UploadAvatar from "../../components/User/UploadAvatar/UploadAvatar";
 import UpdateLastName from "../../components/User/UpdateLastName/UpdateLastName";
 import { useListVals, useObjectVal } from "react-firebase-hooks/database";
@@ -71,10 +71,11 @@ const Profile = () => {
 
   return (
     <Box width="100%" textAlign="center">
+      <Divider variant="middle">
       <Typography variant="h3" mb={3}>
-        {" "}
         Profile
       </Typography>
+      </Divider>
 
       <Stack direction="row" gap={3} alignItems="center">
         <Box
@@ -126,24 +127,28 @@ const Profile = () => {
               alignItems="flex-start"
               gap={3}
             >
-              <Typography>Username: {profileState.username}</Typography>
+              <Typography variant="h6">Username: {profileState.username}</Typography>   
               <Stack>
-                <Typography>
+                <Typography variant="h6">
                   First Name: {profileState.firstName}
+                  <Tooltip title='Change name' arrow>
                   <IconButton onClick={handleOpenFirstName} >
                     <EditIcon cursor="pointer" />
                   </IconButton>
+                  </Tooltip>
                 </Typography>
               </Stack>
               <Stack>
-                <Typography>
+                <Typography variant="h6">
                   Last Name: {profileState.lastName}
+                  <Tooltip title='Change name' arrow>
                   <IconButton onClick={handleOpenLastName}>
                     <EditIcon cursor="pointer" />
                   </IconButton>
+                  </Tooltip>
                 </Typography>
               </Stack>
-              <Typography>Created on: {profileState.createdOn}</Typography>
+              
             </Box>
           </Box>
           <UploadAvatar
@@ -193,6 +198,8 @@ const Profile = () => {
           </Box>
         </Stack>
       </Stack>
+      <Divider></Divider> 
+      <Typography variant="h6">Created on: {profileState.createdOn}</Typography>
     </Box>
   );
 };

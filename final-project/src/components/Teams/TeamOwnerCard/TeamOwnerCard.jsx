@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Avatar, Box, CardActionArea, Grid, Typography } from "@mui/material";
+import { Avatar, Box, CardActionArea, Divider, Grid, Typography } from "@mui/material";
 import { useState } from 'react';
 import TeamModalCard from '../TeamModalCard/TeamModalCard';
 
@@ -50,6 +50,7 @@ function TeamOwnerCard({avatar,teamName, teamMembers, teamChannels, teamId}) {
             teamChannels={teamChannels}
             teamId={teamId}
             />
+            <Divider ></Divider>
         </CardActionArea>
     )
     

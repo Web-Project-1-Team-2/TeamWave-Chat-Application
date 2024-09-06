@@ -34,7 +34,8 @@ function UpdateLastName({ lastName, username, handleClose, open }) {
       aria-labelledby="modal-modal-title"
     >
       <Box sx={styleModal}>
-        <Typography id="modal-modal-title" variant="h6" marginBottom={2}>
+        <Stack justifyContent="center">
+        <Typography id="modal-modal-title" variant="h6" marginBottom={2} textAlign="center">
           Change your Last Name
         </Typography>
         <TextField
@@ -44,6 +45,7 @@ function UpdateLastName({ lastName, username, handleClose, open }) {
             setNewLastName(e.target.value);
           }}
         />
+        </Stack>
         <Stack
           direction="row"
           spacing={4}
