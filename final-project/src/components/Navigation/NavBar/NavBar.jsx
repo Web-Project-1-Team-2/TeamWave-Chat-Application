@@ -203,7 +203,7 @@ function NavBar({ children }) {
                         }
                     </Box>
 
-                    <IconButton aria-label="close-drawer" size="large" sx={{ margin: '0 auto 20px auto' }}>
+                    <IconButton onClick={handleDmsDrawerClose} aria-label="close-drawer" size="large" sx={{ margin: '0 auto 20px auto' }}>
                         {theme.direction === 'ltr' ? <ChevronLeftIcon fontSize='inherit' /> : <ChevronRightIcon fontSize='inherit' />}
                     </IconButton>
                 </Drawer>

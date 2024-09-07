@@ -23,9 +23,11 @@ import { addMessageToChannel } from "../../../services/channel.service";
 import ImageIcon from "@mui/icons-material/Image";
 import CloseIcon from "@mui/icons-material/Close";
 import { notifyError } from "../../../services/notification.service";
+import { chatBoxStyling } from "./chatStyling";
+import SendIcon from '@mui/icons-material/Send';
 
 const Chats = ({ id }) => {
-  const { userData } = useContext(AppContext);
+  const { userData, themeMode } = useContext(AppContext);
 
   const [messages, loading] = useListVals(ref(db, `channels/${id}/messages`));
   const [messagesData, setMessagesData] = useState([]);
@@ -128,7 +130,53 @@ const Chats = ({ id }) => {
     toggleEmojiPicker();
   };
 
-
+  const inputProps = {
+    startAdornment: currImage && (
+      <InputAdornment position="start">
+        <Badge badgeContent={
+          <IconButton size="small" onClick={handleRemoveImage}
+            sx={{
+              fontSize: "10px",
+              color: "white",
+              backgroundColor: "red",
+              "&:hover": { backgroundColor: "darkred" },
+            }}>
+            <CloseIcon fontSize="inherit" />
+          </IconButton>
+        }
+          overlap="circular"
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+        ></Badge>
+        <img src={currImage} alt="Selected"
+          style={{
+            width: 40,
+            height: 40,
+            objectFit: "cover",
+            borderRadius: 4,
+            marginRight: 8,
+            cursor: "pointer",
+          }}
+          onClick={handleClickImage}
+        />
+      </InputAdornment>
+    ),
+    endAdornment: (
+      <InputAdornment position="end">
+        <IconButton component="label">
+          <input
+            type="file"
+            hidden
+            accept="image/*"
+            onChange={handleImage}
+          />
+          <ImageIcon />
+        </IconButton>
+      </InputAdornment>
+    ),
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -137,23 +185,13 @@ const Chats = ({ id }) => {
   return (
     <>
       <Box>
-        <Box
-          sx={{
-            height: "65vh",
-            margin: "16px 0",
-            width: "100%",
-            overflowY: "auto",
-            wordWrap: "break-word",
-            borderRadius: "5px",
-          }}
-        >
+        <Box sx={chatBoxStyling}>
           <Grid
             container
             direction={"row-reverse"}
             justifyContent={"flex-end"}
             alignContent={"flex-end"}
-            spacing={1}
-          >
+            spacing={1}>
             {messagesData.length > 0 ? (
               messagesData.map((message) => {
                 return (
@@ -186,65 +224,16 @@ const Chats = ({ id }) => {
             <div ref={messagesEndRef}></div>
           </Grid>
         </Box>
-        <Grid container justifyContent="center" spacing={1}>
+        <Grid container justifyContent="center" sx={{gap: 1}}>
           <Grid item xs={10}>
             <Grid>
               <TextField
                 value={newMessage.text}
-                onChange={(e) =>
-                  setNewMessage({ ...newMessage, text: e.target.value })
-                }
+                onChange={(e) => setNewMessage({ ...newMessage, text: e.target.value })}
                 onKeyDown={handleKeyPress}
                 label="Type a message"
                 sx={{ width: "100%" }}
-                InputProps={{
-                  startAdornment: currImage && (
-                    <InputAdornment position="start">
-                      <Badge badgeContent={
-                        <IconButton size="small" onClick={handleRemoveImage}
-                          sx={{
-                            fontSize: "10px",
-                            color: "white",
-                            backgroundColor: "red",
-                            "&:hover": { backgroundColor: "darkred" },
-                          }}>
-                          <CloseIcon fontSize="inherit" />
-                        </IconButton>
-                      }
-                        overlap="circular"
-                        anchorOrigin={{
-                          vertical: "bottom",
-                          horizontal: "right",
-                        }}
-                      ></Badge>
-                      <img src={currImage} alt="Selected"
-                        style={{
-                          width: 40,
-                          height: 40,
-                          objectFit: "cover",
-                          borderRadius: 4,
-                          marginRight: 8,
-                          cursor: "pointer",
-                        }}
-                        onClick={handleClickImage}
-                      />
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton component="label">
-                        <input
-                          type="file"
-                          hidden
-                          accept="image/*"
-                          onChange={handleImage}
-                        />
-                        <ImageIcon />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              >
+                InputProps={inputProps}>
                 <ImageIcon />
               </TextField>
             </Grid>
@@ -264,7 +253,8 @@ const Chats = ({ id }) => {
             <EmojiPicker
               open={emojiPickerState}
               onEmojiClick={handleEmojiClick}
-              style={{ position: "absolute", zIndex: 1200, bottom: 60 }}
+              style={{ position: "absolute", zIndex: 3000, bottom: 60 }}
+              theme={themeMode === "light" ? "light" : "dark"}
             />
           </Grid>
           <Grid
@@ -274,8 +264,11 @@ const Chats = ({ id }) => {
             alignItems={"center"}
             justifyContent={"center"}
           >
-            <Button variant={"contained"} size="large" onClick={sendMessage}>
-              Send
+            <Button
+              variant={"contained"}
+              size="large"
+              onClick={sendMessage}>
+              <SendIcon />
             </Button>
           </Grid>
         </Grid>

@@ -1,13 +1,18 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { AppContext } from '../../context/authContext';
-import { Avatar, Box, Grid, Typography, Divider } from '@mui/material';
+import { Avatar, Box, Grid, Typography, Divider, Button } from '@mui/material';
 import { useObjectVal } from 'react-firebase-hooks/database';
 import { ref } from 'firebase/database';
 import { db } from '../../config/firebase-config';
 import { updateUserLastSeenDirectMessage } from '../../services/directMessages.service';
 import ChatsDirectMessages from '../../components/Chat/Chats/ChatsDirectMessages';
+import { createDmMeeting } from '../../services/meeting.service';
+import { notifyError } from '../../services/notification.service';
+import VideocamIcon from '@mui/icons-material/Videocam';
+import { channelChatBoxStyling, dmAvatarOnlineIndicator } from '../ChannelChatPage/ChannelChatStyling';
 
 const DirectMessageChatPage = () => {
 
@@ -21,8 +26,29 @@ const DirectMessageChatPage = () => {
 
     const [messagesData] = useObjectVal(ref(db, `directMessages/${directMessagesId}/messages`));
 
+    const [meetingUrl, setMeetingUrl] = useState('');
 
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
+
+    const handleMeet = async () => {
+        try {
+            if (!directMessageInfo) return;
+
+            if (!directMessageInfo.meetings) {
+                const newMeetingUrl = await createDmMeeting(directMessagesId);
+                console.log(`Meeting created`);
+                setMeetingUrl(newMeetingUrl);
+                navigate(`/meetDm/${directMessagesId}`);
+            } else {
+                setMeetingUrl(directMessageInfo.meetings.roomUrl);
+                navigate(`/meetDm/${directMessagesId}`);
+            }
+
+        } catch (error) {
+            console.error(error)
+            notifyError('Failed to create meeting');
+        }
+    }
 
     useEffect(() => {
         if (!userData) return;
@@ -65,10 +91,9 @@ const DirectMessageChatPage = () => {
     return (
         <>
 
-            <Box sx={{ width: '100%' }}>
+            <Box sx={channelChatBoxStyling}>
                 <Grid container>
                     <Grid item xs={8.8}>
-                        <Divider />
                         <ChatsDirectMessages id={directMessagesId} />
                     </Grid>
                     <Grid container item xs={0.2} justifyContent={'end'} sx={{ minWidth: 'fit-content' }}>
@@ -81,11 +106,7 @@ const DirectMessageChatPage = () => {
                         direction={'column'}
                         alignItems={'center'}
                         justifyContent={'space-between'}
-                        sx={{
-                            width: '100%',
-                            padding: 1,
-                            gap: 2,
-                        }}>
+                        sx={{ width: '100%', padding: 1, gap: 2 }}>
                         <Grid container sx={{ width: '100%', gap: '16px' }} direction={'column'} alignItems={'center'}>
                             <Box position={'relative'}>
                                 <Avatar
@@ -97,20 +118,20 @@ const DirectMessageChatPage = () => {
                                 {recipientUser?.status === "online" &&
                                     <Box position={'absolute'}
                                         bgcolor={'green'}
-                                        sx={{
-                                            borderRadius: '50%',
-                                            width: '30px',
-                                            height: '30px',
-                                            zIndex: 1500,
-                                            right: '17px',
-                                            bottom: '-2px',
-                                        }} />
+                                        sx={dmAvatarOnlineIndicator} />
                                 }
                             </Box>
                             <Box>
                                 <Typography variant='h4'>{recipientUser.username}</Typography>
                             </Box>
-                            <Divider sx={{width: '80%'}}  />
+                            <Divider sx={{ width: '80%' }} />
+                            <Button
+                                startIcon={<VideocamIcon />}
+                                onClick={handleMeet}
+                                variant='contained'
+                                color='primary'>
+                                Meet
+                            </Button>
                         </Grid>
                     </Grid>
                 </Grid>

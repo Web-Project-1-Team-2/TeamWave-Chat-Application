@@ -10,6 +10,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DirectMessagesEditMessages from '../../DirectMessages/DirectMessagesEditMessages';
 import DirectMessagesDeleteMessages from '../../DirectMessages/DirectMessagesDeleteMessages/DirectMessagesDeleteMessages';
+import { chatBoxAvatarIsOnlineStyling, chatBoxAvatarStyling, chatBoxMessageEditMenuStyling, chatBoxMessageStyling, chatBoxPaperStyling, chatBoxStyling } from './chatBox';
 
 const ChatBoxDirectMessages = ({ text, username, image, timestamp, isCurrUser, messageId, chatId }) => {
 
@@ -57,78 +58,47 @@ const ChatBoxDirectMessages = ({ text, username, image, timestamp, isCurrUser, m
             <Box
                 onMouseEnter={toggleEditSection}
                 onMouseLeave={toggleEditSection}
-                sx={{
-                    maxWidth: '75%',
-                    minWidth: '25%',
-                    // width: 'fit-content',
-                    padding: '8px',
-                    margin: '8px',
-                    borderRadius: '15px',
-                    display: 'flex',
-                    gap: '8px',
-                    flexDirection: flexDir,
-                }}>
+                sx={{ ...chatBoxStyling, flexDirection: flexDir }}>
                 <Box position={'relative'} sx={{ height: '45px', width: '45px' }}>
                     <Avatar
                         alt="Sender Avatar"
                         src={userInformation?.avatar}
-                        sx={{
-                            width: 45,
-                            height: 45,
-                            borderRadius: '50%',
-                        }}
-                    />
+                        sx={chatBoxAvatarStyling}/>
                     {userInformation?.status === 'online' &&
                         <Box
                             position={'absolute'}
                             bgcolor={'green'}
-                            sx={{
-                                borderRadius: '50%',
-                                width: '15px',
-                                height: '15px',
-                                zIndex: 1500,
-                                right: '1px',
-                                bottom: '-2px',
-                            }} />
+                            sx={chatBoxAvatarIsOnlineStyling} />
                     }
                 </Box>
-
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: flexAlign }}>
+                <Box sx={{ ...chatBoxMessageStyling, alignItems: flexAlign}}>
+                    <Typography variant='h6'>{username}</Typography>
                     {image &&
                         <img src={image?.url} alt='Sent Image' style={{ maxWidth: '40%', borderRadius: '15px' }} />
                     }
-                    <Box display={'flex'} flexDirection={flexDir} sx={{gap: 2}}>
+                    <Box display={'flex'} flexDirection={flexDir} sx={{ gap: 2 }}>
                         {text !== '' &&
-                            <Paper sx={{
-                                padding: '8px',
-                                borderRadius: '15px',
-                            }}>
+                            <Paper sx={{...chatBoxPaperStyling, bgcolor: isCurrUser ? 'primary.main' : 'background.paper'}}>
                                 <Grid item>
-                                    <Grid container justifyContent='flex-start' alignItems='center' sx={{ gap: '8px' }} >
-                                        <Typography variant='h6'>{username}</Typography>
-                                        <Typography component={'p'} variant='body2'>{timeAgo}</Typography>
-                                    </Grid>
-                                </Grid>
-                                <Grid item>
-                                    <Typography variant='body1'>{text}</Typography>
+                                    <Typography variant='subtitle1'>{text}</Typography>
                                 </Grid>
                             </Paper>
                         }
                         {(currUserInDirectMessage.lastSentMessage === messageId && editSection) &&
-                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <IconButton onClick={toggleDeleteModal}>
-                                <DeleteIcon />
-                            </IconButton>
-                            <IconButton onClick={toggleEditModal}>
-                                <EditIcon />
-                            </IconButton>
-                        </Box>
+                            <Box sx={chatBoxMessageEditMenuStyling}>
+                                <IconButton onClick={toggleDeleteModal}>
+                                    <DeleteIcon />
+                                </IconButton>
+                                <IconButton onClick={toggleEditModal}>
+                                    <EditIcon />
+                                </IconButton>
+                            </Box>
                         }
                     </Box>
+                    <Typography component={'p'} variant='body2'>{timeAgo}</Typography>
                 </Box>
-
-
             </Box >
+
             {editModal &&
                 <DirectMessagesEditMessages
                     open={editModal}

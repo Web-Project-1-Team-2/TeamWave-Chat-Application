@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Box, Card, Collapse, Divider, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -8,6 +9,7 @@ import { AppContext } from '../../../context/authContext';
 import { useObjectVal } from 'react-firebase-hooks/database';
 import { ref } from 'firebase/database';
 import { db } from '../../../config/firebase-config';
+import { chatDetailMembersStyling } from './ChatDetaileMembersStyling';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -45,14 +47,7 @@ const ChatDetailsMembers = ({ id }) => {
 
     return (
         <>
-            <Card sx={{
-                margin: '0 0 16px 0',
-                width: '90%',
-                minHeight: 60,
-                p: 1,
-                bgcolor: 'transparent',
-                boxShadow: 'none'
-            }}>
+            <Card sx={chatDetailMembersStyling}>
                 <Grid container
                     direction={'row'}
                     justifyContent={'flex-start'}
@@ -60,7 +55,7 @@ const ChatDetailsMembers = ({ id }) => {
                     sx={{ width: '100%', height: '100%' }
                     }>
                     <Grid item xs={10} sx={{ width: '100%' }}>
-                        <Typography variant='h6'>Members</Typography>
+                        <Typography variant='h6' sx={{ml: 1}} >Members</Typography>
                     </Grid>
                     <Grid item xs={2}>
                         <ExpandMore
@@ -86,7 +81,6 @@ const ChatDetailsMembers = ({ id }) => {
                         </Box>
                     </Collapse>
                 </Grid>
-                <Divider flexItem />
             </Card >
         </>
     )

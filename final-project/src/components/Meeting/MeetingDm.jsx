@@ -7,11 +7,11 @@ import { ref } from 'firebase/database';
 import { db } from '../../config/firebase-config';
 
 
-const Meeting = () => {
+const MeetingDm = () => {
 
     const { meetingId } = useParams();
 
-    const [meetingInfo] = useObjectVal(ref(db, `channels/${meetingId}/meetings`));
+    const [meetingInfo] = useObjectVal(ref(db, `directMessages/${meetingId}/meetings`));
 
     const videoRef = useRef(null);
     const callFrame = useRef(null);
@@ -53,7 +53,7 @@ const Meeting = () => {
     }, [meetingInfo]);
 
     return (
-        <Box sx={{width: '100%'}}>
+        <Box sx={{width: '100%', height: '80vh'}}>
             <div ref={videoRef} style={{
                 display: "flex",
                 justifyContent: "center",  
@@ -66,4 +66,4 @@ const Meeting = () => {
     )
 }
 
-export default Meeting
+export default MeetingDm

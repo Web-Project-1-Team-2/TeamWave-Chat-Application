@@ -22,6 +22,7 @@ import Meeting from './components/Meeting/Meeting'
 import { ThemeProvider } from '@emotion/react'
 import { CssBaseline } from '@mui/material'
 import { theme } from './common/themes'
+import MeetingDm from './components/Meeting/MeetingDm'
 
 
 function App() {
@@ -69,6 +70,7 @@ function App() {
                 <Route path='/channel/:channelId' element={<ChannelChatPage />} />
                 <Route path='/dm/:directMessagesId' element={<DirectMessageChatPage />} />
                 <Route path='/meet/:meetingId' element={<Meeting />} />
+                <Route path='/meetDm/:meetingId' element={<MeetingDm />} />
               </Routes>
               <NotificationContainer />
             </ContentContainer>

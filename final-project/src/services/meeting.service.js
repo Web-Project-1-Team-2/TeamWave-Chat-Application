@@ -9,7 +9,7 @@ export const createMeeting = async (chatId) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${VIDEO_API_KEY}`, // Replace with your Daily API key
+                Authorization: `Bearer ${VIDEO_API_KEY}`,
             },
             body: JSON.stringify({ properties: { enable_screenshare: true, enable_chat: true } }),
         });
@@ -25,5 +25,31 @@ export const createMeeting = async (chatId) => {
         return newRoomUrl;
     } catch (error) {
         console.log(error);
+    }
+}
+
+export const createDmMeeting = async (chatId) => {
+    try {
+        const response = await fetch('https://api.daily.co/v1/rooms', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${VIDEO_API_KEY}`,
+            },
+            body: JSON.stringify({ properties: { enable_screenshare: true, enable_chat: true } }),
+        });
+
+        const room = await response.json();
+        const newRoomUrl = room.url;
+
+        const roomId = room.url.split('/').pop();
+
+        await update(ref(db, `directMessages/${chatId}/meetings`), { roomId: roomId, roomUrl: newRoomUrl});
+
+        return newRoomUrl;
+        
+    } catch (error) {
+        console.log(error);
+        
     }
 }

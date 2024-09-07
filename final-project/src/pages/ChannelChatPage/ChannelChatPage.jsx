@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -13,6 +14,9 @@ import { notifyError, notifySuccess } from '../../services/notification.service'
 import { leaveChannel, updateLastSeen } from '../../services/channel.service';
 import AddChannelMembers from '../../components/Channel/AddChannelMembers/AddChannelMembers';
 import { createMeeting } from '../../services/meeting.service';
+import TagIcon from '@mui/icons-material/Tag';
+import VideocamIcon from '@mui/icons-material/Videocam';
+import { channelChatBoxStyling, channelChatDetailsSection, channelChatDetailStyling } from './ChannelChatStyling';
 
 const ChannelChatPage = () => {
 
@@ -27,7 +31,6 @@ const ChannelChatPage = () => {
     const navigate = useNavigate();
 
     const [meetingUrl, setMeetingUrl] = useState('');
-    console.log(meetingUrl);
 
 
     const leaveCurrChannel = async () => {
@@ -50,9 +53,9 @@ const ChannelChatPage = () => {
 
     const handleMeet = async () => {
         try {
-            if(!channelData) return;
+            if (!channelData) return;
 
-            if(!channelData.meetings) {
+            if (!channelData.meetings) {
                 const newMeetingUrl = await createMeeting(channelId);
                 console.log(`Meeting created`);
                 setMeetingUrl(newMeetingUrl);
@@ -109,36 +112,32 @@ const ChannelChatPage = () => {
 
     return (
         <>
-
-            <Box sx={{ width: '100%' }}>
+            <Box sx={channelChatBoxStyling}>
                 <Grid container>
                     <Grid item xs={8.8}>
-                        <Box>
-                        <Typography variant='h4'>{channelData.name}</Typography>
-                        <Button onClick={handleMeet} variant='contained'>Meet</Button>
-                        </Box>
-                        <Divider />
                         <Chats id={channelId} />
                     </Grid>
                     <Grid container item xs={0.2} justifyContent={'end'} sx={{ minWidth: 'fit-content' }}>
                         <Divider orientation='vertical' flexItem />
                     </Grid>
-                    <Grid
-                        container
-                        item
-                        xs={3}
+                    <Grid container item xs={3}
                         direction={'column'}
                         alignItems={'center'}
                         justifyContent={'space-between'}
-                        sx={{
-                            width: '100%',
-                            padding: 1,
-                            gap: 2,
-                        }}>
-                        <Grid container sx={{ width: '100%' }} justifyContent={'center'}>
-                            <Box>
+                        sx={channelChatDetailsSection}>
+                        <Grid container sx={{ width: '100%', gap: 2 }} justifyContent={'center'}>
+                            <Box sx={channelChatDetailStyling}>
+                                <TagIcon sx={{ width: '70px', height: '70px' }} />
                                 <Typography variant='h4'>{channelData.name}</Typography>
+                                <Divider variant='middle' flexItem />
                             </Box>
+                            <Button
+                                startIcon={<VideocamIcon />}
+                                onClick={handleMeet}
+                                variant='contained'
+                                sx={{ mb: 2 }}>
+                                Meet
+                            </Button>
                             <ChatDetailsMembers id={channelId} />
                         </Grid>
 
@@ -146,7 +145,7 @@ const ChannelChatPage = () => {
                             <Button onClick={toggleAddMembersModal} variant='contained' sx={{ width: 150 }}>
                                 Add Members
                             </Button>
-                            <Button onClick={leaveCurrChannel} color='error' variant='contained' sx={{ width: 150 }}>
+                            <Button onClick={leaveCurrChannel} color='error' variant='outlined' sx={{ width: 150 }}>
                                 Leave Channel
                             </Button>
                         </Grid>
