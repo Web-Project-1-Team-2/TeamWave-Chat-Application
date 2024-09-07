@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import ChatBox from "../ChatBox/ChatBox";
+import ChatBox from "../ChatBox/ChatBox.jsx";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import EmojiPicker from "emoji-picker-react";
 import {
