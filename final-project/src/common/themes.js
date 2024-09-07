@@ -3,37 +3,36 @@ import { createTheme } from '@mui/material/styles';
 export const lightPalette = {
     mode: 'light',
     primary: {
-        main: '#4882c1',
-        light: '#6c9bcd',
-        dark: '#325b87',
-        contrastText: '#ffffff',
-    },
-    secondary: {
-        main: '#fdc37e',
-    },
-    background: {
-        default: '#f4faff',
-        paper: '#ffffff',
-    },
-    error: {
-        main: '#ff1000',
-    },
-    success: {
-        main: '#4caf50',
-        light: '#6fbf74',
-        dark: '#357a38',
-    },
-    info: {
-        main: '#2196f3',
-        light: '#4dabf5',
-        dark: '#1769aa',
-        contrastText: '#ffffff',
-    },
-    warning: {
-        main: '#ff9800',
-        light: '#ffac33',
-        dark: '#b26a00',
-    },
+        main: '#0277bd',
+      },
+      secondary: {
+        main: '#795548',
+      },
+      background: {
+        default: '#a4adb7',
+        paper: '#c5cae9',
+      },
+      error: {
+        main: '#e83829',
+        light: '#d4594f',
+        dark: '#8e2016',
+      },
+      warning: {
+        main: '#f19207',
+        light: '#efa12f',
+        dark: '#bb7205',
+      },
+      info: {
+        main: '#208fe6',
+        light: '#53b0f9',
+        dark: '#10578e',
+      },
+      success: {
+        main: '#52b756',
+        light: '#70c173',
+        dark: '#367939',
+      },
+     
 };
 
 export const darkPalette = {
@@ -84,6 +83,16 @@ export const theme = (mode) =>
                 textTransform: 'none', // Avoid uppercase buttons
             },
         },
+        // components: {
+        //     MuiDivider: {
+        //       styleOverrides: {
+        //         root: {
+        //             borderColor: '#000000', 
+    
+        //         },
+        //       },
+        //     },
+        //   },
 
     });
 

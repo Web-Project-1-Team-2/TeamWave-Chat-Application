@@ -16,13 +16,14 @@ import { loginUser } from "../../services/auth.service";
 import { AppContext } from "../../context/authContext";
 import { notifySuccess } from "../../services/notification.service";
 
-
 const SnackbarAlert = forwardRef(function SnackbarAlert(props, ref) {
   return <Alert elevation={6} ref={ref} {...props} />;
 });
 
 export default function SignIn() {
-  const { setAppState} = useContext(AppContext);
+
+  const { setAppState } = useContext(AppContext);
+  
   const navigate = useNavigate();
 
   const [view, setView] = useState(false);
@@ -84,109 +85,97 @@ export default function SignIn() {
 
   return (
     <>
-        <Grid container component="main" sx={{ height: "100vh" }}>
-          <CssBaseline />
-          <Grid
-            item
-            xs={false}
-            sm={4}
-            md={7}
+      <Grid container component="main" sx={{ height: "100vh" }}>
+        <CssBaseline />
+        <Grid
+          item
+          xs={false}
+          sm={4}
+          md={7}
+          sx={{
+            backgroundImage:
+              'url("/static/images/templates/templates-images/sign-in-side-bg.png")',
+            backgroundColor: "primary",
+            backgroundSize: "cover",
+            backgroundPosition: "left",
+          }}
+        />
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <Box
             sx={{
-              backgroundImage:
-                'url("/static/images/templates/templates-images/sign-in-side-bg.png")',
-              backgroundColor: "primary",
-              backgroundSize: "cover",
-              backgroundPosition: "left",
+              my: 8,
+              mx: 4,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
             }}
-          />
-          <Grid
-            item
-            xs={12}
-            sm={8}
-            md={5}
-            component={Paper}
-            elevation={6}
-            square
           >
-            <Box
-              sx={{
-                my: 8,
-                mx: 4,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <Typography component="h1" variant="p">
-                Login to Your Account
-              </Typography>
-              <Box component="form" sx={{ mt: 1 }}>
-                <TextField
-                  margin="normal"
-                  variant="standard"
-                  value={user.email}
-                  onChange={updateUser("email")}
-                  required
-                  fullWidth
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  autoFocus
-                />
-                <TextField
-                  margin="normal"
-                  variant="standard"
-                  value={user.password}
-                  onChange={updateUser("password")}
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type={view ? "text" : "password"}
-                  autoComplete="current-password"
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton onClick={handleVisibility}>
-                          {view ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                  onClick={login}
-                >
-                  Sign In
-                </Button>
-                <Grid container>
-                  <Grid item>
-                    <Link
-                      component={RouterLink}
-                      to={"/register"}
-                      variant="body2"
-                    >
-                      {"Don't have an account? Sign Up"}
-                    </Link>
-                  </Grid>
+            <Typography component="h1" variant="p">
+              Login to Your Account
+            </Typography>
+            <Box component="form" sx={{ mt: 1 }}>
+              <TextField
+                margin="normal"
+                variant="standard"
+                value={user.email}
+                onChange={updateUser("email")}
+                required
+                fullWidth
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                variant="standard"
+                value={user.password}
+                onChange={updateUser("password")}
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type={view ? "text" : "password"}
+                autoComplete="current-password"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={handleVisibility}>
+                        {view ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                onClick={login}
+              >
+                Sign In
+              </Button>
+              <Grid container>
+                <Grid item>
+                  <Link component={RouterLink} to={"/register"} variant="body2">
+                    {"Don't have an account? Sign Up"}
+                  </Link>
                 </Grid>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  align="center"
-                  mt={5}
-                >
-                  {"Copyright © "}
-                  Name {new Date().getFullYear()}
-                </Typography>
-              </Box>
+              </Grid>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                align="center"
+                mt={5}
+              >
+                {"Copyright © "}
+                Name {new Date().getFullYear()}
+              </Typography>
             </Box>
-          </Grid>
+          </Box>
         </Grid>
+      </Grid>
       <Snackbar
         open={snackbar.open}
         autoHideDuration={4000}

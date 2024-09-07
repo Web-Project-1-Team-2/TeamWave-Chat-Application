@@ -18,7 +18,7 @@ import { registerUser } from "../../services/auth.service";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
-import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
+import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import { AppContext } from "../../context/authContext";
 
 const SnackbarAlert = forwardRef(function SnackbarAlert(props, ref) {
@@ -151,16 +151,11 @@ function Register() {
         justifyContent="center"
         sx={{ height: "100vh" }}
       >
-        <Avatar sx={{ bgcolor: 'primary.main' }}>
+        <Avatar sx={{ bgcolor: "primary.main" }}>
           <AppRegistrationIcon />
         </Avatar>
-        <Typography variant="h5">
-          Get Started with your Account
-        </Typography>
-        <Stack 
-            direction="column" 
-            spacing={6} 
-            sx={{ width: "400px" }}>
+        <Typography variant="h5">Get Started with your Account</Typography>
+        <Stack direction="column" spacing={6} sx={{ width: "400px" }}>
           <TextField
             label="Username:"
             variant="standard"
@@ -240,9 +235,7 @@ function Register() {
           </Button>
         </Stack>
         <Box sx={{ mt: 4, textAlign: "center" }}>
-          <Typography 
-              variant="body2" 
-              color="text.secondary">
+          <Typography variant="body2" color="text.secondary">
             {"Copyright © "}
             WebsiteName {new Date().getFullYear()}
           </Typography>

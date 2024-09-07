@@ -6,7 +6,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { styleModal } from "./TeamModalCardStyling";
+import { boxStyling, styleModal } from "./TeamModalCardStyling";
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
@@ -18,48 +18,55 @@ function TeamModalCard({ open, handleClose, teamMembers, teamChannels, teamId })
 
   return (
     <Modal 
-    open={open} 
-    onClose={handleClose} 
-    aria-labelledby="modal-title">
-    
-        <Card sx={styleModal } >
-          <Stack direction="row" justifyContent="space-between">
+      open={open} 
+      onClose={handleClose} 
+      aria-labelledby="modal-title"
+      >
+        <Card sx={styleModal }>
+          <Stack
+           direction="row" 
+           justifyContent="space-between"
+           >
             <Box >
-          <Typography variant="h6">Team channels:</Typography>
-          {teamChannels ? (
-            <ul>
-              {Object.keys(teamChannels).map((channelId) => {
-                const channel = teamChannels[channelId];
-                return(
-                <li key={channel}>{channel.name}</li>
-                )
-                })}
-            </ul>
-          ) : (
+              <Typography variant="h6">Team channels:</Typography>
+                {teamChannels ? (
+                  <ul>
+                    {Object.keys(teamChannels).map((channelId) => {
+                      const channel = teamChannels[channelId];
+                      return(
+                      <li key={channel}>{channel.name}</li>
+                      )
+                      })}
+                  </ul>
+                ) : (
             <Typography>No channels found</Typography>
           )}
           </Box>
 
           <Box >
-          <Typography variant="h6">Team Members:</Typography>
-          <Box
-          display="flex"
-          flexDirection="column"
-          sx={{ height: "150px", overflow: "auto", width: "180px" }}
-          >
-          {Object.keys(teamMembers).length > 0 ? (
-            <ul>
-              {Object.keys(teamMembers).map((memberKey) => (
-                <li key={memberKey}>{memberKey}</li>
-              ))}
-            </ul>
-          ) : (
-            <Typography>No members found.</Typography>
-          )}
+            <Typography variant="h6">Team Members:</Typography>
+              <Box
+              display="flex"
+              flexDirection="column"
+              sx={boxStyling}
+              >
+              {Object.keys(teamMembers).length > 0 ? (
+                <ul>
+                  {Object.keys(teamMembers).map((memberKey) => (
+                    <li key={memberKey}>{memberKey}</li>
+                  ))}
+                </ul>
+              ) : (
+                <Typography>No members found.</Typography>
+              )}
+              </Box>
           </Box>
-          </Box>
-          </Stack>
-          <Button onClick={()=> navigate(`/teams/${teamId}`)}>Go to Team Page</Button>
+        </Stack>
+          <Button 
+            variant="contained" 
+            onClick={()=> navigate(`/teams/${teamId}`)}
+            >
+            Go to Team Page</Button>
         </Card>
     </Modal>
   );

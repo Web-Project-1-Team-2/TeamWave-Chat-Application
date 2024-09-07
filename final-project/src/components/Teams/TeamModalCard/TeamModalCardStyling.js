@@ -9,3 +9,9 @@ export const styleModal = {
     boxShadow: 24,
     p: 4,
   };
+
+  export const boxStyling = {
+    height: "150px",
+    verflow: "auto",
+    width: "180px" 
+  }
