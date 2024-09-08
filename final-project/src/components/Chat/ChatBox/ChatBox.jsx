@@ -11,6 +11,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ChannelEditMessages from '../../Channel/ChannelEditMessages/ChannelEditMessages';
 import DeleteChannelMessageModal from '../../Channel/DeleteChannelMessage/DeleteChannelMessage';
 import { chatBoxAvatarIsOnlineStyling, chatBoxAvatarStyling, chatBoxMessageEditMenuStyling, chatBoxMessageStyling, chatBoxPaperStyling, chatBoxStyling } from './chatBox';
+import ChatImageModal from '../ChatImageModal/ChatImageModal';
 
 const ChatBox = ({ text, username, image, timestamp, isCurrUser, messageId, chatId }) => {
 
@@ -34,6 +35,13 @@ const ChatBox = ({ text, username, image, timestamp, isCurrUser, messageId, chat
 
     const [deleteModal, setDeleteModal] = useState(false);
     const toggleDeleteModal = () => setDeleteModal(!deleteModal);
+
+    const [imageModal, setImageModal] = useState(false);
+    const toggleImageModal = (imageUrl) => {
+        setCurrImageModalUrl(imageUrl);
+        setImageModal(!imageModal);
+    }
+    const [currImageModalUrl, setCurrImageModalUrl] = useState('');
 
     useEffect(() => {
         if (!currChannel) return;
@@ -72,14 +80,21 @@ const ChatBox = ({ text, username, image, timestamp, isCurrUser, messageId, chat
                     }
                 </Box>
 
-                <Box sx={{ ...chatBoxMessageStyling, alignItems: flexAlign}}>
+                <Box sx={{ ...chatBoxMessageStyling, alignItems: flexAlign }}>
                     <Typography variant='h6'>{username}</Typography>
                     {image &&
-                        <img src={image?.url} alt='Sent Image' style={{ maxWidth: '40%', borderRadius: '15px' }} />
+                        <img
+                            onClick={() => toggleImageModal(image.url)}
+                            src={image?.url} alt='Sent Image'
+                            style={{
+                                maxWidth: '40%',
+                                borderRadius: '15px',
+                                cursor: 'pointer'
+                            }} />
                     }
                     <Box display={'flex'} flexDirection={flexDir} sx={{ gap: 2 }}>
                         {text !== '' &&
-                            <Paper sx={{...chatBoxPaperStyling, bgcolor: isCurrUser ? 'primary.main' : 'background.paper'}}>
+                            <Paper sx={{ ...chatBoxPaperStyling, bgcolor: isCurrUser ? 'primary.main' : 'background.paper' }}>
                                 <Grid item>
                                     <Typography variant='subtitle1'>{text}</Typography>
                                 </Grid>
@@ -114,6 +129,12 @@ const ChatBox = ({ text, username, image, timestamp, isCurrUser, messageId, chat
                     messageId={messageId}
                     channelId={chatId}
                     imageInfo={image} />
+            }
+            {imageModal &&
+                <ChatImageModal
+                    imageUrl={currImageModalUrl}
+                    open={imageModal}
+                    toggleModal={toggleImageModal} />
             }
         </>
 

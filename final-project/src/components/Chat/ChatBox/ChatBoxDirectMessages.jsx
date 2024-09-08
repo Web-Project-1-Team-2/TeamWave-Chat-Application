@@ -11,6 +11,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import DirectMessagesEditMessages from '../../DirectMessages/DirectMessagesEditMessages';
 import DirectMessagesDeleteMessages from '../../DirectMessages/DirectMessagesDeleteMessages/DirectMessagesDeleteMessages';
 import { chatBoxAvatarIsOnlineStyling, chatBoxAvatarStyling, chatBoxMessageEditMenuStyling, chatBoxMessageStyling, chatBoxPaperStyling, chatBoxStyling } from './chatBox';
+import ChatImageModal from '../ChatImageModal/ChatImageModal';
 
 const ChatBoxDirectMessages = ({ text, username, image, timestamp, isCurrUser, messageId, chatId }) => {
 
@@ -34,6 +35,13 @@ const ChatBoxDirectMessages = ({ text, username, image, timestamp, isCurrUser, m
 
     const [deleteModal, setDeleteModal] = useState(false);
     const toggleDeleteModal = () => setDeleteModal(!deleteModal);
+
+    const [imageModal, setImageModal] = useState(false);
+    const toggleImageModal = (imageUrl) => {
+        setCurrImageModalUrl(imageUrl);
+        setImageModal(!imageModal);
+    }
+    const [currImageModalUrl, setCurrImageModalUrl] = useState('');
 
     useEffect(() => {
         if (!currDirectMessage) return;
@@ -63,7 +71,7 @@ const ChatBoxDirectMessages = ({ text, username, image, timestamp, isCurrUser, m
                     <Avatar
                         alt="Sender Avatar"
                         src={userInformation?.avatar}
-                        sx={chatBoxAvatarStyling}/>
+                        sx={chatBoxAvatarStyling} />
                     {userInformation?.status === 'online' &&
                         <Box
                             position={'absolute'}
@@ -71,14 +79,21 @@ const ChatBoxDirectMessages = ({ text, username, image, timestamp, isCurrUser, m
                             sx={chatBoxAvatarIsOnlineStyling} />
                     }
                 </Box>
-                <Box sx={{ ...chatBoxMessageStyling, alignItems: flexAlign}}>
+                <Box sx={{ ...chatBoxMessageStyling, alignItems: flexAlign }}>
                     <Typography variant='h6'>{username}</Typography>
                     {image &&
-                        <img src={image?.url} alt='Sent Image' style={{ maxWidth: '40%', borderRadius: '15px' }} />
-                    }
+                        <img
+                        onClick={() => toggleImageModal(image.url)}
+                        src={image?.url} alt='Sent Image'
+                        style={{
+                            maxWidth: '40%',
+                            borderRadius: '15px',
+                            cursor: 'pointer'
+                        }} />
+                }
                     <Box display={'flex'} flexDirection={flexDir} sx={{ gap: 2 }}>
                         {text !== '' &&
-                            <Paper sx={{...chatBoxPaperStyling, bgcolor: isCurrUser ? 'primary.main' : 'background.paper'}}>
+                            <Paper sx={{ ...chatBoxPaperStyling, bgcolor: isCurrUser ? 'primary.main' : 'background.paper' }}>
                                 <Grid item>
                                     <Typography variant='subtitle1'>{text}</Typography>
                                 </Grid>
@@ -114,6 +129,12 @@ const ChatBoxDirectMessages = ({ text, username, image, timestamp, isCurrUser, m
                     messageId={messageId}
                     chatId={chatId}
                     imageInfo={image} />
+            }
+            {imageModal &&
+                <ChatImageModal
+                    imageUrl={currImageModalUrl}
+                    open={imageModal}
+                    toggleModal={toggleImageModal} />
             }
         </>
 

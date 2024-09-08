@@ -17,6 +17,7 @@ import { createMeeting } from '../../services/meeting.service';
 import TagIcon from '@mui/icons-material/Tag';
 import VideocamIcon from '@mui/icons-material/Videocam';
 import { channelChatBoxStyling, channelChatDetailsSection, channelChatDetailStyling } from './ChannelChatStyling';
+import ChatMedia from '../../components/Chat/ChatMedia/ChatMedia';
 
 const ChannelChatPage = () => {
 
@@ -139,6 +140,7 @@ const ChannelChatPage = () => {
                                 Meet
                             </Button>
                             <ChatDetailsMembers id={channelId} />
+                            <ChatMedia chatId={channelId} chatType={'channels'} />
                         </Grid>
 
                         <Grid container direction={'column'} alignItems={'center'} sx={{ width: '100%', gap: 2 }}>

@@ -44,7 +44,11 @@ const UserBoard = () => {
     }, [])
 
     if (unreadChannelMessages.length > 0) {
-      setUnreadChannelMessages(unreadChannelMessages.sort((a, b) => b.timestamp - a.timestamp));
+      setUnreadChannelMessages(
+        unreadChannelMessages
+        .sort((a, b) => b.timestamp - a.timestamp)
+        .slice(0, Math.min(unreadChannelMessages.length, 3))
+      );
     }
 
   }, [channelMessages, userData])
@@ -71,7 +75,11 @@ const UserBoard = () => {
     }, [])
 
     if (unreadDirectMessages.length > 0) {
-      setUnreadDirectMessages(unreadDirectMessages.sort((a, b) => b.timestamp - a.timestamp));
+      setUnreadDirectMessages(
+        unreadDirectMessages
+        .sort((a, b) => b.timestamp - a.timestamp)
+        .slice(0, Math.min(unreadDirectMessages.length, 3))
+      );
     }
 
   }, [userDirectMessages, userData])
@@ -158,83 +166,8 @@ const UserBoard = () => {
       {(unreadDirectMessages.length === 0 && unreadChannelMessages.length === 0) &&
         <UserBoardNoMessages />
       }
-
-
     </Box>
   );
 };
 
 export default UserBoard;
-
-{/* <Stack direction="column" textAlign="center" gap={3} sx={{width: '100%'}}>
-
-<Stack
-  direction="column"
-  gap={6}
-  alignItems="center"
-  alignContent="center"
->
-  
-
-  <Stack direction="row" gap={12} justifyContent="center">
-    <Stack direction="column" gap={2} alignItems="center">
-      <Box
-        width="100%"
-        display="flex"
-        textAlign="center"
-        justifyContent="center"
-      >
-        <Typography variant="h5">Unread Personal Messages:</Typography>
-      </Box>
-      {unreadDirectMessages.length > 0 ? (
-        <Box
-          display="flex"
-          flexDirection="column"
-          sx={unreadBoxStyle}
-        >
-          {unreadDirectMessages.map((message) => (
-            <DirectMessageCard
-              key={message.id}
-              directMessageId={message.id}
-            />
-          ))}
-        </Box>
-      ) : (
-        <Typography>You dont have any Personal messages</Typography>
-      )}
-    </Stack>
-
-    <Box display="flex" alignItems="center">
-      <Divider orientation="vertical"  sx={{ height: '70%', borderRightWidth: 2 }}/>
-    </Box>
-
-    <Stack direction="column" gap={2} alignItems="center">
-      <Box
-        width="100%"
-        display="flex"
-        textAlign="center"
-        justifyContent="center"
-      >
-        <Typography variant="h5">Unread Channel Messages:</Typography>
-      </Box>
-      {unreadChannelMessages.length > 0 ? (
-        <Box
-          display="flex"
-          flexDirection="column"
-          sx={unreadBoxStyle}
-        >
-          {unreadChannelMessages.map((channel) => (
-            <ChannelCard
-              key={channel.id}
-              channelName={channel.name}
-              channelId={channel.id}
-            />
-          ))}
-        </Box>
-      ) : (
-        <Typography>You don`t have any new messages</Typography>
-      )}
-    </Stack>
-  </Stack>
-</Stack>
-</Stack> */}

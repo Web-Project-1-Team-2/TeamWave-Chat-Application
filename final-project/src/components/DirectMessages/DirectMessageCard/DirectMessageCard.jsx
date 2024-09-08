@@ -6,6 +6,7 @@ import { AppContext } from '../../../context/authContext';
 import { useListVals, useObjectVal } from 'react-firebase-hooks/database';
 import { ref } from 'firebase/database';
 import { db } from '../../../config/firebase-config';
+import { directMessagesCardAvatarOnline, directMessagesCardStyling, dmCardMessageStyling, dmUnreadIndicator } from './directMessagesCardStyling';
 
 const DirectMessageCard = ({ directMessageId }) => {
 
@@ -47,7 +48,7 @@ const DirectMessageCard = ({ directMessageId }) => {
 
     return (
         <>
-            <CardActionArea onClick={() => navigate(`/dm/${directMessageId}`)} sx={{ margin: '8px 0', p: 1 }}>
+            <CardActionArea onClick={() => navigate(`/dm/${directMessageId}`)} sx={directMessagesCardStyling}>
                 <Grid container alignItems={'center'}>
                     <Grid container item xs={3} alignItems={'center'} justifyContent={'center'} >
                         <Box position={'relative'}>
@@ -60,33 +61,25 @@ const DirectMessageCard = ({ directMessageId }) => {
                             {recipientUser?.status === "online" &&
                                 <Box position={'absolute'}
                                     bgcolor={'green'}
-                                    sx={{
-                                        borderRadius: '50%',
-                                        width: '18px',
-                                        height: '18px',
-                                        zIndex: 1500,
-                                        right: '17px',
-                                        bottom: '-2px',
-                                    }} />
+                                    sx={directMessagesCardAvatarOnline} />
                             }
                         </Box>
                     </Grid>
-                    <Grid item xs={unreadMessages.length > 0 ? 6 : 9} container direction={'column'} alignItems={'flex-start'}>
+                    <Grid item
+                        xs={unreadMessages.length > 0 ? 6 : 9}
+                        container
+                        direction={'column'}
+                        alignItems={'flex-start'}>
                         <Typography variant='h6' >
                             {recipientUser.username}
                         </Typography>
-                        <Typography variant='body2' sx={{
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                            display: 'inline-block'
-                        }} >
+                        <Typography variant='body2' sx={dmCardMessageStyling} >
                             {lastMessage?.author === userData?.username ? 'You' : lastMessage?.author}: {lastMessage?.text}
                         </Typography>
                     </Grid>
                     {unreadMessages.length > 0 &&
                         <Grid item xs={3}>
-                            <Box sx={{ borderRadius: '50%', bgcolor: '#d32f2f', width: '20px' }}>
+                            <Box sx={dmUnreadIndicator}>
                                 <Typography variant='body2' align='center' color={'white'}>{unreadMessages.length}</Typography>
                             </Box>
                         </Grid>

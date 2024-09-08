@@ -19,7 +19,7 @@ const UserProfile = () => {
     const navigate = useNavigate();
 
     const [userProfile, loadingUser] = useObjectVal(ref(db, `users/${username}`));
-    const [teams, loadingTeams] = useListVals(ref(db, `teams`));
+    const [teams] = useListVals(ref(db, `teams`));
     const [directMessages] = useListVals(ref(db, `directMessages`));
 
 
@@ -29,7 +29,7 @@ const UserProfile = () => {
         const existingDirectMessage = directMessages.find(dm => username in dm.members && userData?.username in dm.members);
 
         try {
-            if(existingDirectMessage) {
+            if (existingDirectMessage) {
                 navigate(`/dm/${existingDirectMessage.id}`);
             } else {
                 const newDirectMessageChat = await createNewDirectMessage(userData?.username, username);
@@ -67,45 +67,45 @@ const UserProfile = () => {
                         <Typography variant="h4">{userProfile?.firstName} {userProfile?.lastName}</Typography>
                         <Typography variant="h5">{userProfile?.email}</Typography>
                         <Box flexDirection="start">
-                        <Button
-                        endIcon={<SendIcon />}
-                        variant='contained'
-                        onClick={handleGoToDirectMessage}
-                        >
-                            Send Message
-                        </Button>
+                            <Button
+                                endIcon={<SendIcon />}
+                                variant='contained'
+                                onClick={handleGoToDirectMessage}
+                            >
+                                Send Message
+                            </Button>
                         </Box>
                     </Box>
                 </Grid>
-                <Grid 
-                    item xs={6} 
-                    container direction={'column'} 
-                    sx={{gap: 2}} 
+                <Grid
+                    item xs={6}
+                    container direction={'column'}
+                    sx={{ gap: 2 }}
                     alignItems="center"
-                    >
-                <Box
+                >
+                    <Box
                         width="100%"
                         display="flex"
                         textAlign="center"
                         justifyContent="center"
                         alignItems="center"
-                       
                     >
                         <PeopleIcon fontSize="medium" />
                         <Typography variant="h5">My teams:</Typography>
                     </Box>
-                    <Box container 
-                    spacing={2} 
-                    sx={boxStyle}>
-                            {mutualTeams.map(team => (
-                                <TeamOwnerCard 
-                                    key={team.id} 
-                                    avatar={team.avatar}
-                                    teamName={team.name}
-                                    teamMembers={team.members}
-                                    teamChannels={team.channels}/>
-                            ))}
-                        </Box>
+                    <Box container
+                        spacing={2}
+                        sx={boxStyle}>
+                        {mutualTeams.map(team => (
+                            <TeamOwnerCard
+                                key={team.id}
+                                teamId={team.id}
+                                avatar={team.avatar}
+                                teamName={team.name}
+                                teamMembers={team.members}
+                                teamChannels={team.channels} />
+                        ))}
+                    </Box>
                 </Grid>
             </Grid>
         </Box>

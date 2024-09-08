@@ -39,4 +39,6 @@ export const chatBoxMessageEditMenuStyling = {
 export const chatBoxPaperStyling = {
     padding: '10px 15px',
     borderRadius: '15px',
+    minWidth: 'fit-content',
+    maxWidth: '80%',
 }

@@ -13,6 +13,7 @@ import { createDmMeeting } from '../../services/meeting.service';
 import { notifyError } from '../../services/notification.service';
 import VideocamIcon from '@mui/icons-material/Videocam';
 import { channelChatBoxStyling, dmAvatarOnlineIndicator } from '../ChannelChatPage/ChannelChatStyling';
+import ChatMedia from '../../components/Chat/ChatMedia/ChatMedia';
 
 const DirectMessageChatPage = () => {
 
@@ -132,6 +133,7 @@ const DirectMessageChatPage = () => {
                                 color='primary'>
                                 Meet
                             </Button>
+                            <ChatMedia chatId={directMessagesId} chatType={'directMessages'} />
                         </Grid>
                     </Grid>
                 </Grid>

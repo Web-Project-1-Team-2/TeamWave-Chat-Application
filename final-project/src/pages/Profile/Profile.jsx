@@ -127,7 +127,7 @@ const Profile = () => {
               display="flex"
               flexDirection="column"
               alignItems="flex-start"
-              gap={3}
+              gap={4}
             >
               <Typography variant="h6">
                 Username: {profileState.username}
@@ -184,9 +184,9 @@ const Profile = () => {
           <Box
             width="100%"
             display="flex"
-            textAlign="center"
-            justifyContent="center"
+            justifyContent="flex-start"
             alignItems="center"
+            gap={1}
           >
             <PeopleIcon fontSize="medium" />
             <Typography variant="h5">My teams:</Typography>

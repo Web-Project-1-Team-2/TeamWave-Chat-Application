@@ -3,37 +3,32 @@ import { createTheme } from '@mui/material/styles';
 export const lightPalette = {
     mode: 'light',
     primary: {
-        main: '#0277bd',
-      },
-      secondary: {
-        main: '#795548',
-      },
-      background: {
-        default: '#a4adb7',
-        paper: '#c5cae9',
-      },
-      error: {
-        main: '#e83829',
-        light: '#d4594f',
-        dark: '#8e2016',
-      },
-      warning: {
-        main: '#f19207',
-        light: '#efa12f',
-        dark: '#bb7205',
-      },
-      info: {
-        main: '#208fe6',
-        light: '#53b0f9',
-        dark: '#10578e',
-      },
-      success: {
-        main: '#52b756',
-        light: '#70c173',
-        dark: '#367939',
-      },
-     
+        main: '#4090a8', // Keeping the same primary color for consistency
+        light: '#527d8d', // Darker light shade for primary
+        dark: '#2d6b7d', // Slightly darkened dark shade
+        contrastText: '#ffffff', // White text to maintain readability on primary
+    },
+    secondary: {
+        main: '#4672b3', // Retaining the secondary color for consistency
+    },
+    error: {
+        main: '#c13737', // Darkened red for error
+    },
+    divider: 'rgba(0, 0, 0, 0.24)', // Darkened divider for softer contrast
+    background: {
+        default: '#cfd6db', // Darker, muted gray background for reduced brightness
+        paper: '#e3e6ea', // Slightly darker paper background than before
+    },
+    text: {
+        primary: '#2c2c2c', // Darker gray (soft black) for primary text
+        secondary: 'rgba(44, 44, 44, 0.7)', // Softer dark gray for secondary text
+        disabled: 'rgba(44, 44, 44, 0.5)', // Medium-dark gray for disabled text
+        hint: 'rgba(44, 44, 44, 0.5)', // Same tone for hints
+    },
 };
+
+
+
 
 export const darkPalette = {
     mode: 'dark',
@@ -88,7 +83,7 @@ export const theme = (mode) =>
         //       styleOverrides: {
         //         root: {
         //             borderColor: '#000000', 
-    
+
         //         },
         //       },
         //     },

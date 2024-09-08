@@ -3,6 +3,6 @@ export const chatDetailMembersStyling = {
     width: '90%',
     minHeight: 60,
     p: 1,
-    bgcolor: 'transparent',
+    bgcolor: 'background.paper',
     boxShadow: 'none'
 }

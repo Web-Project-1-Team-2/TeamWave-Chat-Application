@@ -1,7 +1,7 @@
 export const changeTeamAvatar = {
     position: 'absolute',
-    width: '200px',
-    height: '200px',
+    width: '250px',
+    height: '250px',
     background: 'rgba(0, 0, 0, 0.4)',
     color: '#fff',
     display: 'flex',
@@ -35,7 +35,8 @@ export const profileStatusStyle = {
 export const myTeamsBoxStyle = {
     height: "420px", 
     overflow: "auto", 
-    width: "350px" 
+    width: "70%",
+    alignItems: "flex-start", 
 }
 
 export const addPhotoIconStyle = {

@@ -178,7 +178,7 @@ const TeamPage = () => {
                         <Grid item xs={4}>
                             <Grid container direction={'column'} spacing={2} sx={{ width: '100%' }}>
                                 <Grid item xs={12}>
-                                    <Grid container justifyContent='flex-start' alignItems='center'>
+                                    <Grid container justifyContent='flex-start' alignItems='center' sx={{gap: 1}}>
                                         <PeopleIcon fontSize='medium' />
                                         <Typography variant="h5">Team Members</Typography>
                                     </Grid>
