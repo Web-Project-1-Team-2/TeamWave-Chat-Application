@@ -9,7 +9,8 @@ import { AppContext } from '../../../context/authContext';
 import { useObjectVal } from 'react-firebase-hooks/database';
 import { ref } from 'firebase/database';
 import { db } from '../../../config/firebase-config';
-import { chatDetailMembersStyling } from './ChatDetaileMembersStyling';
+import { chatDetailMembersCollapseBox, chatDetailMembersStyling } from './ChatDetaileMembersStyling';
+import ChatMember from './ChatMember/ChatMember';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -26,8 +27,6 @@ const ExpandMore = styled((props) => {
 const ChatDetailsMembers = ({ id }) => {
 
     const { userData } = useContext(AppContext);
-
-    // const navigate = useNavigate();
 
     const [channelMembers] = useObjectVal(ref(db, `channels/${id}/members`));
 
@@ -55,7 +54,7 @@ const ChatDetailsMembers = ({ id }) => {
                     sx={{ width: '100%', height: '100%' }
                     }>
                     <Grid item xs={10} sx={{ width: '100%' }}>
-                        <Typography variant='h6' sx={{ml: 1}} >Members</Typography>
+                        <Typography variant='h6' sx={{ ml: 1 }} >Members</Typography>
                     </Grid>
                     <Grid item xs={2}>
                         <ExpandMore
@@ -67,14 +66,12 @@ const ChatDetailsMembers = ({ id }) => {
                             <ExpandMoreIcon />
                         </ExpandMore>
                     </Grid>
-                    <Collapse in={expanded} timeout="auto" unmountOnExit>
-                        <Box>
-                            <Grid container direction={'column'} alignItems='flex-start' sx={{ width: '100%' }}>
-                                {membersState.map(member =>
-                                    <Grid item container key={member}>
-                                        <Typography variant='body1'>
-                                            {member} {userData?.username === member ? '(You)' : null}
-                                        </Typography>
+                    <Collapse in={expanded} timeout="auto" unmountOnExit sx={{ width: '100%' }}>
+                        <Box sx={chatDetailMembersCollapseBox}>
+                            <Grid container direction={'column'} alignItems='flex-start' sx={{ width: '100%', gap: 0.5 }}>
+                                {membersState.map((member) =>
+                                    <Grid item container key={member} sx={{ width: '100%' }}>
+                                        <ChatMember key={member} username={member} />
                                     </Grid>
                                 )}
                             </Grid>

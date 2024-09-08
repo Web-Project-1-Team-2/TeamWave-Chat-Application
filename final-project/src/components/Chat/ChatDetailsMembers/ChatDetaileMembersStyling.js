@@ -6,3 +6,9 @@ export const chatDetailMembersStyling = {
     bgcolor: 'background.paper',
     boxShadow: 'none'
 }
+
+export const chatDetailMembersCollapseBox = {
+    maxHeight: '200px',
+    overflow: 'auto',
+    width: '100%',
+}

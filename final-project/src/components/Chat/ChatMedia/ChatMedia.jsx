@@ -78,7 +78,7 @@ const ChatMedia = ({ chatId, chatType }) => {
                                 maxHeight: '300px',
                                 overflow: 'auto',
                         }}>
-                            <ImageList variant="masonry" cols={3} gap={2}>
+                            <ImageList variant="masonry" cols={3} gap={5}>
                                 {images.length > 0 ? images.map( message => (
                                     <ImageListItem key={message.image.fileName}>
                                         <img
@@ -87,7 +87,7 @@ const ChatMedia = ({ chatId, chatType }) => {
                                             src={`${message.image.url}`}
                                             alt='image'
                                             loading="lazy"
-                                            style={{ cursor: 'pointer' }}
+                                            style={{ cursor: 'pointer', borderRadius: '8px' }}
                                         />
                                     </ImageListItem>
                                 )) : <Typography variant='body1'>No images</Typography>}
