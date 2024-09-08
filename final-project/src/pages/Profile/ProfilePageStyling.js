@@ -15,8 +15,8 @@ export const changeTeamAvatar = {
 }
 
 export const avatarStyle = {
-    width: 200, 
-    height: 200, 
+    width: 250, 
+    height: 250, 
     // zIndex:  1000, 
     // position: 'relative',
     borderColor: 'primary.main',
@@ -33,7 +33,7 @@ export const profileStatusStyle = {
 }
 
 export const myTeamsBoxStyle = {
-    height: "400px", 
+    height: "420px", 
     overflow: "auto", 
     width: "350px" 
 }

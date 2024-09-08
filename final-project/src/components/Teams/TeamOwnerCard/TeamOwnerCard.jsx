@@ -1,19 +1,17 @@
 import PropTypes from 'prop-types';
 import { Avatar, Box, CardActionArea, Divider, Grid, Tooltip, Typography } from "@mui/material";
-import { useState } from 'react';
-import TeamModalCard from '../TeamModalCard/TeamModalCard';
+import { useNavigate } from 'react-router-dom';
 
-function TeamOwnerCard({avatar,teamName, teamMembers, teamChannels, teamId}) {
+function TeamOwnerCard({avatar,teamName, teamId}) {
+
+    const navigate = useNavigate();
     
-    const [open, setOpen] = useState(false);
-    const handleOpenModal = () => setOpen(true);
-    const handleCloseModal =() => setOpen(false);
 
     return (
         <Tooltip title="Show Team" arrow>
             <CardActionArea 
              sx={{ margin: '0 0 16px 0', width: '100%', maxHeight: 100}} 
-             onClick={!open?handleOpenModal:handleCloseModal}
+             onClick={() => navigate(`/teams/${teamId}`)}
              >     
             <Grid container
                 direction={'row'}
@@ -49,15 +47,6 @@ function TeamOwnerCard({avatar,teamName, teamMembers, teamChannels, teamId}) {
                     </Box>
                 </Grid>
             </Grid>
-            <TeamModalCard 
-            open={open}
-            handleClose={handleCloseModal}
-            avatar={avatar}
-            teamNames={teamName}
-            teamMembers={teamMembers}
-            teamChannels={teamChannels}
-            teamId={teamId}
-            />
             <Divider ></Divider>
         </CardActionArea>
      </Tooltip>
