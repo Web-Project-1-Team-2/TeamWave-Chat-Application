@@ -8,7 +8,7 @@ const ChannelMessageNotification = ({ author, channelName, text, channelId }) =>
     const navigate = useNavigate();
 
     return (
-        <Box display={'flex'} onClick={() => navigate(`/channels/${channelId}`)}>
+        <Box display={'flex'} onClick={() => navigate(`/channel/${channelId}`)}>
             <Box>
                 <TagIcon fontSize='large' />
             </Box>

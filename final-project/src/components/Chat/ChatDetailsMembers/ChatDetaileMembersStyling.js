@@ -8,7 +8,7 @@ export const chatDetailMembersStyling = {
 }
 
 export const chatDetailMembersCollapseBox = {
-    maxHeight: '200px',
+    maxHeight: '150px',
     overflow: 'auto',
     width: '100%',
 }

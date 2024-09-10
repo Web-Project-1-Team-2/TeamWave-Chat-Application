@@ -217,7 +217,9 @@ const ChatsDirectMessages = ({ id }) => {
                                 );
                             })
                         ) : (
-                            <Typography variant="body1">No messages yet</Typography>
+                            <Box width={'100%'} display={'flex'} justifyContent={'center'} alignItems={'center'}>
+                                <Typography variant="h6">No messages yet</Typography>
+                            </Box>
                         )}
                         <div ref={messagesEndRef}></div>
                     </Grid>

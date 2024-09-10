@@ -75,7 +75,7 @@ const ChatMedia = ({ chatId, chatType }) => {
                     </Grid>
                     <Collapse in={expanded} timeout="auto" unmountOnExit>
                         <Box sx={{
-                                maxHeight: '300px',
+                                maxHeight: '150px',
                                 overflow: 'auto',
                         }}>
                             <ImageList variant="masonry" cols={3} gap={5}>

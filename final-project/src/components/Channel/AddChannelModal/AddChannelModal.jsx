@@ -72,7 +72,7 @@ const AddChatModal = ({ open, toggleModal, teamId }) => {
 
                     <TextField
                         id="changeTeamName"
-                        label="Change Team Name..."
+                        label="Set Channel Name"
                         variant="outlined"
                         value={channelName}
                         onChange={(e) => setChannelName(e.target.value)}
@@ -96,11 +96,13 @@ const AddChatModal = ({ open, toggleModal, teamId }) => {
                         width: '80%',
                         maxHeight: '50vh',
                         overflow: 'auto',
-                        bgcolor: '#CCC',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        mb: 2
+                        mb: 2,
+                        border: 3,
+                        borderRadius: 2,
+                        borderColor: 'divider',
                     }}>
                         <List sx={{ width: '80%' }}>
                             {teamUsers

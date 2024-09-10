@@ -23,10 +23,13 @@ function UploadAvatar({ open, handleClose, avatar, uid, username }) {
       console.log("sucess")
       notifySuccess("Avatar uploaded successfully.")
       handleClose();
+      setCurrImage(null);
+      setImage(null);
     } catch (error) {
       console.log(error);
       notifyError("Failed to upload avatar.")
       setImage(null);
+      setCurrImage
     }
 
   };

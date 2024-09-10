@@ -33,9 +33,11 @@ export const editTeamScrollBox = {
     width: '80%',
     maxHeight: '50vh',
     overflow: 'auto',
-    bgcolor: '#CCC',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    mb: 2
+    mb: 2,
+    border: 3,
+    borderColor: 'divider',
+    borderRadius: 2,
 }

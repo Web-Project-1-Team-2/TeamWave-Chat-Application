@@ -213,7 +213,9 @@ const TeamPage = () => {
                         alignItems={'center'}
                         sx={{ marginTop: '20px', gap: 1, width: '100%' }}>
                         {teamChannels.length > 0 ?
-                            teamChannels.map(channel =>
+                            teamChannels
+                            .filter(channel => 'id' in channel)
+                            .map(channel =>
                                 <Grid container item xs={9}
                                     key={channel.id}
                                     justifyContent={'center'}

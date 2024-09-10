@@ -11,8 +11,8 @@ export const createNewDirectMessage = async (sender, receiver) => {
 
     const NewDirectMessage = {
         members: {
-            [sender]: true,
-            [receiver]: true,
+            [sender]: {lastAtChat: Date.now()},
+            [receiver]: {lastAtChat: Date.now()},
         },
     }
 
