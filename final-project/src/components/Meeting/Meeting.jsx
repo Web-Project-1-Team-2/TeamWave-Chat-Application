@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef } from 'react';
 import DailyIframe from '@daily-co/daily-js';
 import { Box } from '@mui/material';
@@ -20,7 +21,6 @@ const Meeting = () => {
     const initialized = useRef(false);
 
     useEffect(() => {
-        console.log("Component mounted");
 
         if (!meetingInfo) return;
 
@@ -67,9 +67,6 @@ const Meeting = () => {
                 callFrame.current.destroy();
                 callFrame.current = null;
                 initialized.current = false;
-                console.log("CallFrame destroyed");
-                console.log("Component unmounted");
-
             }
         };
     }, [meetingInfo]);

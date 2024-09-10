@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -27,47 +28,40 @@ const AddChannelMembers = ({ open, toggleModal, channelId, teamId }) => {
     const [searchMember, setSearchMember] = useState('');
 
     const [newChannelMembers, setNewChannelMembers] = useState({});
-    
+
 
     useEffect(() => {
         if (!teamMembers) return;
-        if(!userList) return;
+        if (!userList) return;
 
         const members = Object.keys(teamMembers);
         const teamMembersData = userList.filter((user) => {
-            // 'teams' in user ? 
-            // (teamId in user.teams && userData.username !== user.username && members.includes(user.username)) : 
-            // false
 
-            if(!('teams' in user)) {
-                console.log('no teams');
+            if (!('teams' in user)) {
                 return false;
             }
 
-            if(!(teamId in user.teams)) {
-                console.log('no team');
+            if (!(teamId in user.teams)) {
                 return false;
             }
 
-            if(userData.username === user.username) {
-                console.log('same user');
+            if (userData.username === user.username) {
                 return false;
             }
 
-            if(!members.includes(user.username)) {
-                console.log('not in members');
+            if (!members.includes(user.username)) {
                 return false;
             }
 
-            if(channelId in user.channels) {
-                console.log('in channel');
-                return false;
+            if (user.channels) {
+                if (channelId in user.channels) {
+                    return false;
+                }
             }
 
             return true;
         })
-        console.log(teamMembersData);
-        
+
         setTeamMembersState([...teamMembersData]);
     }, [userList, teamMembers]);
 
@@ -77,7 +71,7 @@ const AddChannelMembers = ({ open, toggleModal, channelId, teamId }) => {
         const newMembers = Object.keys(newChannelMembers);
 
         try {
-            if(Object.keys(newMembers).length === 0) {
+            if (Object.keys(newMembers).length === 0) {
                 throw new Error('No users selected');
             }
 
@@ -116,30 +110,32 @@ const AddChannelMembers = ({ open, toggleModal, channelId, teamId }) => {
                         width: '80%',
                         maxHeight: '50vh',
                         overflow: 'auto',
-                        bgcolor: '#CCC',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        mb: 2
+                        mb: 2,
+                        border: 3,
+                        borderRadius: 2,
+                        borderColor: 'divider',
                     }}>
-                        {teamMembersState.length === 0 ? 
-                        <Typography variant='h6'>No members found</Typography> :
-                        (<List sx={{ width: '80%' }}>
-                            {teamMembersState
-                                .filter((user) => user.username.toLowerCase().includes(searchMember.toLowerCase()))
-                                .map((member) => (
-                                    <ListItem key={member.uid} sx={{ p: 0, mb: 2 }}>
-                                        <UserCard
-                                            username={member.username}
-                                            firstName={member.firstName}
-                                            lastName={member.lastName}
-                                            email={member.email}
-                                            teamMembers={newChannelMembers}
-                                            setTeamMembers={setNewChannelMembers}
-                                        />
-                                    </ListItem>
-                                ))}
-                        </List>)}
+                        {teamMembersState.length === 0 ?
+                            <Typography variant='h6'>No members found</Typography> :
+                            (<List sx={{ width: '80%' }}>
+                                {teamMembersState
+                                    .filter((user) => user.username.toLowerCase().includes(searchMember.toLowerCase()))
+                                    .map((member) => (
+                                        <ListItem key={member.uid} sx={{ p: 0, mb: 2 }}>
+                                            <UserCard
+                                                username={member.username}
+                                                firstName={member.firstName}
+                                                lastName={member.lastName}
+                                                email={member.email}
+                                                teamMembers={newChannelMembers}
+                                                setTeamMembers={setNewChannelMembers}
+                                            />
+                                        </ListItem>
+                                    ))}
+                            </List>)}
                     </Box>
                     <Box sx={buttonSectionStyle}>
                         <Button variant='contained' onClick={handleAddMembers}>Add</Button>

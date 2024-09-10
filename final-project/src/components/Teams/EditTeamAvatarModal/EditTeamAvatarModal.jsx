@@ -35,12 +35,10 @@ const EditTeamAvatarModal = ({ open, toggle, teamId, teamName }) => {
     const changeTeamAvatar = async () => {
         try {
             if (currTeam?.avatar) {
-                console.log('deleting avatar');
                 await deleteTeamAvatar(teamId, teamName);
             }
 
             const avatarUrl = await uploadTeamAvatar(fileNewAvatar, teamId, teamName);
-            console.log(avatarUrl);
             await setTeamAvatar(teamId, avatarUrl);
             toggle();
             notifySuccess('Team avatar changed successfully');

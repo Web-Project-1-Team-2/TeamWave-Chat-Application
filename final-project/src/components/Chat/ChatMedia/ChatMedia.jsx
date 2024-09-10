@@ -27,7 +27,6 @@ const ChatMedia = ({ chatId, chatType }) => {
     const [chatMessages] = useListVals(ref(db, `${chatType}/${chatId}/messages`));
 
     const [images, setImages] = useState([]);
-    console.log(images);
     
 
     const [imageModal, setImageModal] = useState(false);

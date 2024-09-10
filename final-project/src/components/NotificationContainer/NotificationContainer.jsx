@@ -19,9 +19,7 @@ const NotificationContainer = () => {
 
 
     const [dmIds, setDmIds] = useState([]);
-    // console.log(dmIds);
     const [channelIds, setChannelIds] = useState([]);
-    // console.log(channelIds);
 
     const [lastDirectMessageTimestamp, setLastDirectMessageTimestamp] = useState(Date.now());
     const [lastChannelMessageTimestamp, setLastChannelMessageTimestamp] = useState(Date.now());

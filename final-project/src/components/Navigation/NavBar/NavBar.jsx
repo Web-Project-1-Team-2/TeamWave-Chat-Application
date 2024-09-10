@@ -199,6 +199,18 @@ function NavBar({ children }) {
                     <Box style={{ width: '90%', textAlign: '-webkit-center' }} mt={2}>
                         {userDirectMessages
                             .filter(dm => data.username in dm.members && 'id' in dm)
+                            .sort((a, b) => {
+                                const aMessages = Object.values(a.messages);
+                                const bMessages = Object.values(b.messages);
+
+                                if (aMessages.length === 0) return 1;
+                                if (bMessages.length === 0) return -1;
+
+                                const aLastMessage = aMessages[aMessages.length - 1].timestamp;
+                                const bLastMessage = bMessages[bMessages.length - 1].timestamp;
+
+                                return bLastMessage - aLastMessage;
+                            })
                             .map(dm => <DirectMessageCard directMessageId={dm.id} key={dm.id} />)
                         }
                     </Box>

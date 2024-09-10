@@ -21,6 +21,7 @@ import EditTeamAvatarModal from '../../components/Teams/EditTeamAvatarModal/Edit
 import { notifyError, notifySuccess } from '../../services/notification.service.js';
 import { deleteTeamMember } from '../../services/teams.service.js';
 import ChannelCard from '../../components/Channel/ChannelCard/ChannelCard.jsx';
+import { leaveChannel } from '../../services/channel.service.js';
 
 const TeamPage = () => {
 
@@ -81,7 +82,7 @@ const TeamPage = () => {
 
 
     const leaveTeam = async () => {
-        if (!userData || !teamData) return;
+        if (!userData || !teamData || !channels) return;
 
         try {
             if (userData?.username === teamData.owner) {
@@ -96,6 +97,16 @@ const TeamPage = () => {
                 return;
             }
 
+            if(userData.channels) {
+                const userChannels = Object.keys(userData.channels);
+                const userChannelsInTeam = userChannels.filter(channel => {
+                    const currentChannelTeamId = channels.find(c => c.id === channel).teamId;
+                    return currentChannelTeamId === teamId;
+                });
+                await Promise.all(userChannelsInTeam.map(async (channel) => {
+                    await leaveChannel(channel, userData.username);  
+                }));
+            }
             await deleteTeamMember(userData.username, teamId);
             notifySuccess('Successfully left team');
             navigate('/')
@@ -103,10 +114,6 @@ const TeamPage = () => {
             console.log(error);
             notifyError('Failed to leave team');
         }
-    }
-
-    if (!teamData) {
-        return <div>Loading...</div>;
     }
 
     return (

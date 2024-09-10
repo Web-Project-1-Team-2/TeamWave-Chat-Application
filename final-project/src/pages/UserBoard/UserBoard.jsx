@@ -19,7 +19,6 @@ const UserBoard = () => {
 
   const [userDirectMessages] = useListVals(ref(db, "directMessages"));
   const [unreadDirectMessages, setUnreadDirectMessages] = useState([]);
-  console.log(unreadDirectMessages);
 
 
   useEffect(() => {

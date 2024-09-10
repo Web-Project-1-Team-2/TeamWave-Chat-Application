@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -21,7 +22,6 @@ const AddTeamMemberModal = ({ open, toggleModal, teamId }) => {
     const { userData } = useContext(AppContext);
     const [searchMember, setSearchMember] = useState('');
     const [newTeamMembers, setNewTeamMembers] = useState({});
-    console.log(newTeamMembers);
 
 
     const [addedTeamMembers] = useObjectVal(ref(db, `teams/${teamId}/members`));
@@ -51,8 +51,6 @@ const AddTeamMemberModal = ({ open, toggleModal, teamId }) => {
         if (users.length === 0) {
             throw new Error('No users selected');
         }
-
-        console.log(users);
 
         try {
             await Promise.all(users.map(username => addTeamToUser(username, teamId)));

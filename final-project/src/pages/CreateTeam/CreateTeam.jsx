@@ -67,9 +67,11 @@ const CreateTeam = () => {
 
     return (
         <Box sx={createTeamStyling}>
-            <Box sx={{width: '100%', mb:2 }}>
-                <Typography variant='h2' alignSelf={'flex-start'}>Create Team</Typography>
-                <Divider variant="middle" flexItem />
+            <Box sx={{ width: '100%', mb: 2 }}>
+
+                <Divider textAlign='left' variant="middle" flexItem>
+                    <Typography variant='h2' alignSelf={'flex-start'}>Create Team</Typography>
+                </Divider>
             </Box>
 
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
