@@ -1,7 +1,6 @@
 import { forwardRef, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
@@ -22,8 +21,10 @@ const SnackbarAlert = forwardRef(function SnackbarAlert(props, ref) {
 
 export default function SignIn() {
 
-  const { setAppState } = useContext(AppContext);
-  
+  const { setAppState, themeMode } = useContext(AppContext);
+
+  const currLogo = themeMode === 'dark' ? "/assets/Website-Logo-Dark.png" : "/assets/Website-Logo-Light.png";
+
   const navigate = useNavigate();
 
   const [view, setView] = useState(false);
@@ -86,20 +87,21 @@ export default function SignIn() {
   return (
     <>
       <Grid container component="main" sx={{ height: "100vh" }}>
-        <CssBaseline />
-        <Grid
-          item
+        <Grid item container
+          justifyContent="center"
+          alignItems="center"
           xs={false}
           sm={4}
           md={7}
           sx={{
-            backgroundImage:
-              'url("/static/images/templates/templates-images/sign-in-side-bg.png")',
             backgroundColor: "primary",
             backgroundSize: "cover",
             backgroundPosition: "left",
+            width: "100%",
           }}
-        />
+        >
+          <img src={currLogo} alt="Website Logo" style={{ width: '600px' }} />
+        </Grid>
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             sx={{

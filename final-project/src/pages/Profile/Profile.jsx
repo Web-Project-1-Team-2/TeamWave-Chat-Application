@@ -26,6 +26,8 @@ import {
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import PeopleIcon from "@mui/icons-material/People";
 
+
+
 const Profile = () => {
   const { userData } = useContext(AppContext);
 
@@ -61,6 +63,13 @@ const Profile = () => {
     status: "",
   });
 
+  const [editFirstName, setEditFirstName] = useState(false);
+  const toggleEditFirstName = () => setEditFirstName(!editFirstName);
+
+  const [editLastName, setEditLastName] = useState(false);
+  const toggleEditLastName = () => setEditLastName(!editLastName);
+
+
   useEffect(() => {
     if (!teams || !userData) return;
     const ownerTeams = teams.filter((team) => team.owner === userData.username);
@@ -80,14 +89,21 @@ const Profile = () => {
   if (loadingProfile) return <div>Loading...</div>;
 
   return (
-    <Box width="100%" textAlign="center">
-      <Divider variant="middle" textAlign="left">
-        <Typography variant="h3" mb={3}>
+    <Box sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      width: '100%',
+      gap: 10,
+    }}>
+
+      <Divider variant="middle" textAlign="left" sx={{ width: '100%' }}>
+        <Typography variant="h3">
           Profile
         </Typography>
       </Divider>
 
-      <Stack direction="row" gap={3} alignItems="center">
+      <Stack direction="row" gap={10} alignItems="center" width={'100%'}>
         <Box
           width="100%"
           display="flex"
@@ -97,11 +113,11 @@ const Profile = () => {
         >
           <Box
             display="flex"
+            flexDirection={'column'}
             alignItems="center"
             position={"relative"}
             mb={2}
             gap={3}
-            sx={{ mb: "150px" }}
           >
             <Avatar
               onMouseEnter={toggleIsHovering}
@@ -111,7 +127,7 @@ const Profile = () => {
               {!profileState.avatar &&
                 (profileState.firstName
                   ? profileState.firstName[0].toUpperCase() +
-                    profileState.lastName[0].toUpperCase()
+                  profileState.lastName[0].toUpperCase()
                   : "A")}
             </Avatar>
             {isHovering && (
@@ -127,31 +143,60 @@ const Profile = () => {
               display="flex"
               flexDirection="column"
               alignItems="flex-start"
-              gap={4}
+              gap={2}
             >
-              <Typography variant="h6">
-                Username: {profileState.username}
-              </Typography>
-              <Stack>
-                <Typography variant="h6">
-                  First Name: {profileState.firstName}
-                  <Tooltip title="Change Name" arrow>
-                    <IconButton onClick={handleOpenFirstName}>
-                      <EditIcon cursor="pointer" />
-                    </IconButton>
-                  </Tooltip>
-                </Typography>
-              </Stack>
-              <Stack alignItems="center">
-                <Typography variant="h6">
-                  Last Name: {profileState.lastName}
-                  <Tooltip title="Change Name" arrow>
-                    <IconButton onClick={handleOpenLastName}>
-                      <EditIcon cursor="pointer" />
-                    </IconButton>
-                  </Tooltip>
-                </Typography>
-              </Stack>
+              <Box sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                gap: 1,
+              }}>
+                <Box sx={{height: '40px'}}>
+                  <Typography variant="h4">
+                    Username: {profileState.username}
+                  </Typography>
+                </Box>
+                <Box
+                  onMouseEnter={toggleEditFirstName}
+                  onMouseLeave={toggleEditFirstName}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    height: '40px',
+                    gap: 1,
+                  }}>
+                  <Typography variant="h5">
+                    First Name: {profileState.firstName}
+                  </Typography>
+                  {editFirstName &&
+                    <Tooltip title="Change Name" arrow>
+                      <IconButton onClick={handleOpenFirstName} sx={{ height: '40px', width: '40px' }}>
+                        <EditIcon cursor="pointer" />
+                      </IconButton>
+                    </Tooltip>
+                  }
+                </Box>
+                <Box
+                  onMouseEnter={toggleEditLastName}
+                  onMouseLeave={toggleEditLastName}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    height: '40px',
+                    gap: 1,
+                  }}>
+                  <Typography variant="h5">
+                    Last Name: {profileState.lastName}
+                  </Typography>
+                  {editLastName &&
+                    <Tooltip title="Change Name" arrow>
+                      <IconButton onClick={handleOpenLastName} sx={{ height: '40px', width: '40px' }} >
+                        <EditIcon cursor="pointer" />
+                      </IconButton>
+                    </Tooltip>
+                  }
+                </Box>
+              </Box>
             </Box>
           </Box>
           <UploadAvatar
@@ -176,18 +221,16 @@ const Profile = () => {
         </Box>
         <Stack
           direction="column"
-          spacing={1}
           width="100%"
-          alignItems="center"
+          alignItems="flex-start"
           marginTop="80px"
-        >
+          gap={2}>
           <Box
             width="100%"
             display="flex"
             justifyContent="flex-start"
             alignItems="center"
-            gap={1}
-          >
+            gap={1}>
             <PeopleIcon fontSize="medium" />
             <Typography variant="h5">My teams:</Typography>
           </Box>
@@ -199,14 +242,15 @@ const Profile = () => {
                 teamName={team.name}
                 teamMembers={team.members}
                 teamChannels={team.channels}
-                teamId={team.id}
-              />
+                teamId={team.id} />
             ))}
           </Box>
         </Stack>
       </Stack>
-      <Divider></Divider>
-      <Typography variant="h6">Created on: {profileState.createdOn}</Typography>
+      <Divider textAlign="right" sx={{ width: '100%' }}>
+        <Typography variant="h5">Created On: {profileState.createdOn}</Typography>
+      </Divider>
+
     </Box>
   );
 };

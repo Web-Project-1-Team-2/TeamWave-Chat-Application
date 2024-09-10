@@ -34,3 +34,14 @@ export const sideBarOpenStyles = (open) => {
         },
     }
 }
+
+export const sideBarUnreadMessages = { 
+    borderRadius: '50%', 
+    bgcolor: 'error.dark', 
+    width: '10px', 
+    height: '10px', 
+    position: 'absolute', 
+    right: '1px', 
+    bottom: '6px', 
+    zIndex: 1500 
+}

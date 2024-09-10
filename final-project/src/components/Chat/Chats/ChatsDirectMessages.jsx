@@ -72,13 +72,7 @@ const ChatsDirectMessages = ({ id }) => {
     const messagesEndRef = useRef(null);
 
     const scrollToBottom = () => {
-        // if (messagesEndRef.current) {
-        //     messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
-        // }
-        setTimeout(() => {
-            messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-
-        }, 300)
+        messagesEndRef.current?.scrollIntoView();
     };
 
     useEffect(() => {
@@ -98,7 +92,7 @@ const ChatsDirectMessages = ({ id }) => {
     useEffect(() => {
         const scrollTimeout = setTimeout(() => {
             scrollToBottom();
-        }, 100);
+        }, 500);
 
         return () => clearTimeout(scrollTimeout);
     }, [messagesData]);
@@ -227,7 +221,7 @@ const ChatsDirectMessages = ({ id }) => {
                         <div ref={messagesEndRef}></div>
                     </Grid>
                 </Box>
-                <Grid container justifyContent="center" sx={{gap: 1}}>
+                <Grid container justifyContent="center" sx={{ gap: 1 }}>
                     <Grid item xs={10}>
                         <Grid>
                             <TextField

@@ -4,7 +4,7 @@ import { getDatabase } from "firebase/database";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDEGZqxK0I24sMEGE7Fzjum2xYWOvnlQNk",
+  apiKey: import.meta.env.FIREBASE_API_KEY,
   authDomain: "final-project-telerik-2fe39.firebaseapp.com",
   projectId: "final-project-telerik-2fe39",
   storageBucket: "final-project-telerik-2fe39.appspot.com",

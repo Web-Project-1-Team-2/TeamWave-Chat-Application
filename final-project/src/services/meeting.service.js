@@ -9,7 +9,7 @@ export const createMeeting = async (chatId) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${VIDEO_API_KEY}`,
+                Authorization: `Bearer ${import.meta.env.APP_DAILY_API_KEY}`,
             },
             body: JSON.stringify({ properties: { enable_screenshare: true, enable_chat: true } }),
         });

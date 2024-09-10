@@ -22,8 +22,11 @@ export const dmCardMessageStyling = {
 }
 
 export const dmUnreadIndicator = { 
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: '50%', 
-    bgcolor: '#d32f2f', 
+    bgcolor: 'error.dark', 
     width: '20px',
     height: '20px',
 }

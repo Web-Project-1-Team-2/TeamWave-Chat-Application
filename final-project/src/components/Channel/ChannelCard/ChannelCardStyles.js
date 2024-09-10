@@ -7,7 +7,11 @@ export const ChannelCardActionAreaStyle = {
 }
 
 export const ChannelCardUnreadIndicatorStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: '50%', 
-    bgcolor: 'error.main', 
+    bgcolor: 'error.dark', 
     width: '20px',
+    height: '20px',
 }

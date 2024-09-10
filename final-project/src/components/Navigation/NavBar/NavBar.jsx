@@ -18,7 +18,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { useTheme } from '@mui/material/styles';
 import { useListVals } from 'react-firebase-hooks/database';
 import TeamCard from '../../Teams/TeamCard/TeamCard';
-import { sideBarOpenStyles, sideBarStyles } from './NavBarStyling';
+import { sideBarOpenStyles, sideBarStyles, sideBarUnreadMessages } from './NavBarStyling';
 import SearchIcon from '@mui/icons-material/Search';
 import SearchForUserModal from '../../Navigation/SearchForUserModal/SearchForUserModal';
 import GroupsIcon from '@mui/icons-material/Groups';
@@ -149,7 +149,7 @@ function NavBar({ children }) {
                             {unreadChannelMessages ? (
                                 <Box sx={{ position: 'relative', width: '30px', height: '30px' }}>
                                     <GroupsIcon fontSize='inherit' sx={{ zIndex: 1000 }} />
-                                    <Box sx={{ borderRadius: '50%', bgcolor: '#d32f2f', width: '10px', height: '10px', position: 'absolute', right: '1px', bottom: '6px', zIndex: 1500 }} />
+                                    <Box sx={sideBarUnreadMessages} />
                                 </Box>
                             ) : <GroupsIcon fontSize='inherit' sx={{ zIndex: 1000 }} />}
                         </IconButton >
@@ -157,7 +157,7 @@ function NavBar({ children }) {
                             {unreadDirectMessages ? (
                                 <Box sx={{ position: 'relative', width: '30px', height: '30px' }}>
                                     {dmsOpen ? <ChatIcon fontSize='inherit' sx={{ zIndex: 1000 }} /> : <ChatOutlinedIcon fontSize='inherit' sx={{ zIndex: 1000 }} />}
-                                    <Box sx={{ borderRadius: '50%', bgcolor: '#d32f2f', width: '10px', height: '10px', position: 'absolute', right: '1px', bottom: '6px', zIndex: 1500 }} />
+                                    <Box sx={sideBarUnreadMessages} />
                                 </Box>
                             ) : (dmsOpen ? <ChatIcon fontSize='inherit' /> : <ChatOutlinedIcon fontSize='inherit' />)}
                         </IconButton>

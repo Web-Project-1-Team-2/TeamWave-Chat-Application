@@ -16,11 +16,9 @@ export const changeTeamAvatar = {
 
 export const avatarStyle = {
     width: 250, 
-    height: 250, 
-    // zIndex:  1000, 
-    // position: 'relative',
+    height: 250,
+    border: 7,
     borderColor: 'primary.main',
-    border: 8,
 }
 
 

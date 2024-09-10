@@ -3,7 +3,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppContext } from '../../context/authContext';
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Grid, Typography } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import Chats from '../../components/Chat/Chats/Chats';
 import { useObjectVal } from 'react-firebase-hooks/database';
@@ -108,7 +108,7 @@ const ChannelChatPage = () => {
     }, [messagesData])
 
     if (loadingChannel) {
-        return <div>Loading...</div>
+        return <CircularProgress />
     }
 
     return (
@@ -129,7 +129,7 @@ const ChannelChatPage = () => {
                         <Grid container sx={{ width: '100%', gap: 2 }} justifyContent={'center'}>
                             <Box sx={channelChatDetailStyling}>
                                 <TagIcon sx={{ width: '70px', height: '70px' }} />
-                                <Typography variant='h4'>{channelData.name}</Typography>
+                                <Typography variant='h4'>{channelData?.name}</Typography>
                                 <Divider variant='middle' flexItem />
                             </Box>
                             <Button
