@@ -25,6 +25,7 @@ import { notifyError } from "../../../services/notification.service";
 import ChatBoxDirectMessages from "../ChatBox/ChatBoxDirectMessages";
 import { addMessageToDirectMessage } from "../../../services/directMessages.service";
 import { chatBoxStyling } from "./chatStyling";
+import SendIcon from '@mui/icons-material/Send';
 
 const ChatsDirectMessages = ({ id }) => {
     const { userData, themeMode } = useContext(AppContext);
@@ -262,7 +263,7 @@ const ChatsDirectMessages = ({ id }) => {
                         justifyContent={"center"}
                     >
                         <Button variant={"contained"} size="large" onClick={sendMessage}>
-                            Send
+                            <SendIcon />
                         </Button>
                     </Grid>
                 </Grid>

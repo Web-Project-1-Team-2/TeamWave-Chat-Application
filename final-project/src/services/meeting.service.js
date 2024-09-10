@@ -1,4 +1,3 @@
-import { VIDEO_API_KEY } from "../common/constraints";
 import { ref, update } from 'firebase/database';
 import { db } from '../config/firebase-config.js';
 
@@ -9,7 +8,7 @@ export const createMeeting = async (chatId) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${import.meta.env.APP_DAILY_API_KEY}`,
+                Authorization: `Bearer ${import.meta.env.VITE_APP_DAILY_API_KEY}`,
             },
             body: JSON.stringify({ properties: { enable_screenshare: true, enable_chat: true } }),
         });
@@ -34,7 +33,7 @@ export const createDmMeeting = async (chatId) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${VIDEO_API_KEY}`,
+                Authorization: `Bearer ${import.meta.env.VITE_APP_DAILY_API_KEY}`,
             },
             body: JSON.stringify({ properties: { enable_screenshare: true, enable_chat: true } }),
         });

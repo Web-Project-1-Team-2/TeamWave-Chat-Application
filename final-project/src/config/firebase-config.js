@@ -3,8 +3,9 @@ import { getAuth } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 import { getStorage } from "firebase/storage";
 
+
 const firebaseConfig = {
-  apiKey: import.meta.env.FIREBASE_API_KEY,
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: "final-project-telerik-2fe39.firebaseapp.com",
   projectId: "final-project-telerik-2fe39",
   storageBucket: "final-project-telerik-2fe39.appspot.com",
