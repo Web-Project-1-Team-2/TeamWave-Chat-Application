@@ -172,7 +172,7 @@ export default function SignIn() {
                 mt={5}
               >
                 {"Copyright © "}
-                Name {new Date().getFullYear()}
+                TeamWave {new Date().getFullYear()}
               </Typography>
             </Box>
           </Box>

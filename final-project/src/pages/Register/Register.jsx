@@ -237,7 +237,7 @@ function Register() {
         <Box sx={{ mt: 4, textAlign: "center" }}>
           <Typography variant="body2" color="text.secondary">
             {"Copyright © "}
-            WebsiteName {new Date().getFullYear()}
+            TeamWave {new Date().getFullYear()}
           </Typography>
         </Box>
       </Stack>

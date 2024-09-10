@@ -202,7 +202,7 @@ const Profile = () => {
           <UploadAvatar
             open={open}
             handleClose={handleClose}
-            avatar={userData?.avatar}
+            avatar={userData?.avatar || null}
             username={userData?.username}
             uid={userData?.uid}
           />
@@ -210,7 +210,7 @@ const Profile = () => {
             open={openFirstName}
             handleClose={handleCloseFirstName}
             username={userData?.username}
-            firstName={userData.firstName}
+            firstName={userData?.firstName}
           />
           <UpdateLastName
             open={openLastName}

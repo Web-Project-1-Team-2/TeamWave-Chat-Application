@@ -15,7 +15,7 @@ function UploadAvatar({ open, handleClose, avatar, uid, username }) {
     if (!image) return;
 
     try {
-      if (avatar !== "") {
+      if (avatar) {
         await deleteImage(username, uid);
       }
       const uploadedImage = await uploadImage(image, uid, username);
@@ -24,8 +24,9 @@ function UploadAvatar({ open, handleClose, avatar, uid, username }) {
       notifySuccess("Avatar uploaded successfully.")
       handleClose();
     } catch (error) {
-      alert(error.message);
+      console.log(error);
       notifyError("Failed to upload avatar.")
+      setImage(null);
     }
 
   };
@@ -65,7 +66,7 @@ function UploadAvatar({ open, handleClose, avatar, uid, username }) {
           />
 
           <Button variant="contained" component="label" >
-            Upload Team Avatar
+            Upload Avatar
             <input type="file" hidden accept="image/*" onChange={handleChangeAvatar} />
           </Button>
         </Box>
