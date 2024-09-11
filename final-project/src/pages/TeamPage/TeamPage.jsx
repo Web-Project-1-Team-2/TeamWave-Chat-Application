@@ -122,7 +122,7 @@ const TeamPage = () => {
                 <Box width={'100%'}>
 
                     <Divider variant='middle' textAlign='left'>
-                        <Typography variant="h2" gutterBottom>{teamData.name}</Typography>
+                        <Typography variant="h2" gutterBottom>{teamData?.name}</Typography>
                     </Divider>
                     <Grid container spacing={2} direction={'row'} sx={{ marginTop: '20px' }}>
                         <Grid item xs={8}>
@@ -130,7 +130,7 @@ const TeamPage = () => {
                                 <Grid item xs={5}>
                                     <Grid container spacing={2} direction={'column'} alignItems={'center'} justifyContent={'center'} sx={{ gap: 2 }}>
                                         <Grid container item xs={12} justifyContent={'center'} alignItems={'center'} position={'relative'}>
-                                            <Avatar onMouseEnter={toggleIsHovering} alt={teamData.name} src={teamData.avatar} sx={teamPageAvatarStyling} />
+                                            <Avatar onMouseEnter={toggleIsHovering} alt={teamData?.name} src={teamData?.avatar} sx={teamPageAvatarStyling} />
                                             {isHovering &&
                                                 <div
                                                     style={changeTeamAvatar}
@@ -141,7 +141,7 @@ const TeamPage = () => {
                                         </Grid>
                                         <Grid item xs={12}>
                                             <Typography component="h5" variant="h4">
-                                                Owner: {teamData.owner}
+                                                Owner: {teamData?.owner}
                                             </Typography>
                                         </Grid>
                                     </Grid>
@@ -154,7 +154,7 @@ const TeamPage = () => {
                                             </IconButton>
                                         </Tooltip>
                                     </Grid>
-                                    {userData?.username === teamData.owner &&
+                                    {userData?.username === teamData?.owner &&
                                         <Grid item xs={12}>
                                             <Tooltip title="Add Team Member" arrow>
                                                 <IconButton onClick={toggleAddModal} sx={iconStyling}>
@@ -163,7 +163,7 @@ const TeamPage = () => {
                                             </Tooltip>
                                         </Grid>
                                     }
-                                    {userData?.username === teamData.owner &&
+                                    {userData?.username === teamData?.owner &&
                                         <Grid item xs={12}>
                                             <Tooltip title="Edit Team" arrow>
                                                 <IconButton onClick={toggleEditModal} sx={iconStyling}>
@@ -197,7 +197,7 @@ const TeamPage = () => {
                                             avatar={member.avatar}
                                             username={member.username}
                                             id={member.uid}
-                                            owner={teamData.owner}
+                                            owner={teamData?.owner}
                                             teamId={teamId}
                                         />)}
                                     </Box>
