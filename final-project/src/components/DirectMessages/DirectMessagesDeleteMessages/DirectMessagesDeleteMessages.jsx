@@ -17,6 +17,11 @@ const DirectMessagesDeleteMessages = ({ open, toggleModal, chatId, messageId, im
 
     const { userData } = useContext(AppContext);
 
+    console.log(chatId);
+    console.log(messageId);
+    
+    
+
     const [directMessages] = useListVals(ref(db, `directMessages/${chatId}/messages`));
     const [userSecondToLastMessage, setUserSecondToLastMessage] = useState(null);
 
@@ -25,8 +30,12 @@ const DirectMessagesDeleteMessages = ({ open, toggleModal, chatId, messageId, im
         if (!userData) return;
 
         const userMessages = directMessages.filter(message => message.author === userData?.username && 'id' in message);
-        const secondToLastMessage = userMessages[userMessages.length - 2];
-        setUserSecondToLastMessage(secondToLastMessage);
+        if(userMessages[userMessages.length - 2] !== undefined) {
+            setUserSecondToLastMessage(userMessages[userMessages.length - 2]);
+        } else {
+            setUserSecondToLastMessage(null);
+        }
+        
     }, [directMessages, userData]);
 
     const handleDeleteMessage = async () => {
@@ -37,7 +46,7 @@ const DirectMessagesDeleteMessages = ({ open, toggleModal, chatId, messageId, im
             await updateLastSentDirectMessage(chatId, userData?.username, userSecondToLastMessage?.id);
             await deleteDirectMessage(chatId, messageId);
             toggleModal();
-            notifySuccess('Message edited successfully');
+            notifySuccess('Message deleted successfully');
         } catch (error) {
             console.log(error);
             notifyError('Failed to edit message');

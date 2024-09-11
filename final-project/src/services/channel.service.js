@@ -31,7 +31,7 @@ export const createChannel = async (teamId, channelName, channelMembers, channel
 
     const newChannel = {
         name: channelName,
-        members: members.length > 0 ? { ...channelMembers, [channelCreator]: true, } : {[channelCreator]: true, },
+        members: members.length > 0 ? { ...channelMembers, [channelCreator]: true, } : { [channelCreator]: true, },
         creator: channelCreator,
         teamId: teamId,
     }
@@ -45,16 +45,22 @@ export const createChannel = async (teamId, channelName, channelMembers, channel
 }
 
 export const updateUserLastSentMessage = async (channelId, username, messageId) => {
-    const channelMembers = await get(ref(db, `channels/${channelId}/members/${username}`));
-    await update(ref(db, `channels/${channelId}/members/${username}`), {...channelMembers.val(), lastSentMessage: messageId});
+    if (!messageId) {
+        const channelMembers = await get(ref(db, `channels/${channelId}/members/${username}`));
+        await update(ref(db, `channels/${channelId}/members/${username}`), { ...channelMembers.val(), lastSentMessage: false });
+        return;
+    } else {
+        const channelMembers = await get(ref(db, `channels/${channelId}/members/${username}`));
+        await update(ref(db, `channels/${channelId}/members/${username}`), { ...channelMembers.val(), lastSentMessage: messageId });
+    }
 }
 
 export const addMessageToChannel = async (channelId, message) => {
     const trimmedMessage = message.text.trim();
-    
+
     let imageRef = null;
-    if(message.image) {
-    imageRef = await uploadChannelImage(message.image, channelId);
+    if (message.image) {
+        imageRef = await uploadChannelImage(message.image, channelId);
     }
 
     const newMessage = {
@@ -79,7 +85,7 @@ export const leaveChannel = async (channelId, username) => {
 
 export const updateLastSeen = async (channelId, username) => {
     const channelMembers = await get(ref(db, `channels/${channelId}/members/${username}`));
-    await update(ref(db, `channels/${channelId}/members/${username}`), {...channelMembers.val(), lastAtChannel: Date.now()});
+    await update(ref(db, `channels/${channelId}/members/${username}`), { ...channelMembers.val(), lastAtChannel: Date.now() });
 }
 
 export const editChannelMessage = async (channelId, messageId, newText) => {

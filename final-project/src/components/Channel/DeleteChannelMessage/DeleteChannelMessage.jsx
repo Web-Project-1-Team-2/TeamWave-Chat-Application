@@ -25,8 +25,11 @@ const DeleteChannelMessageModal = ({ open, toggleModal, channelId, messageId, im
         if (!userData) return;
 
         const userMessages = channelMessages.filter(message => message.author === userData?.username && 'id' in message);
-        const secondToLastMessage = userMessages[userMessages.length - 2];
-        setUserSecondToLastMessage(secondToLastMessage);
+        if(userMessages[userMessages.length - 2] !== undefined) {
+            setUserSecondToLastMessage(userMessages[userMessages.length - 2]);
+        } else {
+            setUserSecondToLastMessage(null);
+        }
     }, [channelMessages, userData]);
 
     const handleDeleteMessage = async () => {
@@ -37,7 +40,7 @@ const DeleteChannelMessageModal = ({ open, toggleModal, channelId, messageId, im
             await updateUserLastSentMessage(channelId, userData?.username, userSecondToLastMessage?.id);
             await deleteChannelMessage(channelId, messageId);
             toggleModal();
-            notifySuccess('Message edited successfully');
+            notifySuccess('Message deleted successfully');
         } catch (error) {
             console.log(error);
             notifyError('Failed to edit message');

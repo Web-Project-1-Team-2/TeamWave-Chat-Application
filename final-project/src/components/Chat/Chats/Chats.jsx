@@ -186,7 +186,9 @@ const Chats = ({ id }) => {
             alignContent={"flex-end"}
             spacing={1}>
             {messagesData.length > 0 ? (
-              messagesData.map((message) => {
+              messagesData
+              .filter(message => "id" in message)
+              .map((message) => {
                 return (
                   <Grid
                     container

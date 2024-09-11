@@ -11,8 +11,8 @@ export const createNewDirectMessage = async (sender, receiver) => {
 
     const NewDirectMessage = {
         members: {
-            [sender]: {lastAtChat: Date.now()},
-            [receiver]: {lastAtChat: Date.now()},
+            [sender]: { lastAtChat: Date.now() },
+            [receiver]: { lastAtChat: Date.now() },
         },
     }
 
@@ -22,7 +22,7 @@ export const createNewDirectMessage = async (sender, receiver) => {
     await addDirectMessageToUser(id, sender);
     await addDirectMessageToUser(id, receiver);
     const directMessage = await get(ref(db, `directMessages/${id}`));
-    console.log(directMessage);    
+    console.log(directMessage);
     return directMessage.val();
 }
 
@@ -32,16 +32,23 @@ export const updateUserLastSeenDirectMessage = async (directMessageId, username)
 }
 
 export const updateLastSentDirectMessage = async (directMessageId, username, messageId) => {
-    const directMessageMembers = await get(ref(db, `directMessages/${directMessageId}/members/${username}`));
-    await update(ref(db, `directMessages/${directMessageId}/members/${username}`), { ...directMessageMembers.val(), lastSentMessage: messageId });
+    if (!messageId) {
+        const directMessageMembers = await get(ref(db, `directMessages/${directMessageId}/members/${username}`));
+        await update(ref(db, `directMessages/${directMessageId}/members/${username}`), { ...directMessageMembers.val(), lastSentMessage: false });
+        return;
+    } else {
+        const directMessageMembers = await get(ref(db, `directMessages/${directMessageId}/members/${username}`));
+        await update(ref(db, `directMessages/${directMessageId}/members/${username}`), { ...directMessageMembers.val(), lastSentMessage: messageId });
+    }
+
 }
 
 export const addMessageToDirectMessage = async (directMessageId, message) => {
     const trimmedMessage = message.text.trim();
 
     let imageRef = null;
-    if(message.image) {
-    imageRef = await uploadDirectMessageImage(message.image, directMessageId);
+    if (message.image) {
+        imageRef = await uploadDirectMessageImage(message.image, directMessageId);
     }
 
     const newMessage = {
