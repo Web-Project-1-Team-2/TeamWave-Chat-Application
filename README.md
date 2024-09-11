@@ -1,6 +1,6 @@
 
 # TeamWave Chat Application
-TeamWave is a real-time chat application designed for seamless team communication. It includes a team functionality, which could have separate channels in it for our different needs. A direct message information for all of out conversations that need to be "only between the two of us". Finally you could use our video and audio chat feature to communicate as fast as a click of a button!.
+TeamWave is a real-time chat application designed for seamless team communication. It includes a team functionality, which could have separate channels in it for our different needs. A direct message information for all of out conversations that need to be "only between the two of us". Finally you could use our video and audio chat feature to communicate as fast as a click of a button!
 
 
 <img src="./final-project/public/assets/Website-Logo-Dark.png" alt="Alt text" width="500"/>
